@@ -39,6 +39,23 @@ namespace PackageDelivery.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ChangeProfileViewModel
+    {
+        [Required]
+        [Display(Name = "Phone number")]
+        public string Phone { get; set; }
+
+        [Required]
+        [Display(Name = "Adress")]
+        public string Adress { get; set; }
+
+    }
+
+    public class ChangeProfileIdexViewModel
+    {
+        public ChangeProfileViewModel ChangeProfileViewModel { get; set; }
+        public IndexViewModel IndexViewModel { get; set; }
+    }
     public class ChangePasswordViewModel
     {
         [Required]

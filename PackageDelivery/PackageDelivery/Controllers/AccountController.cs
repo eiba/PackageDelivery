@@ -151,7 +151,15 @@ namespace PackageDelivery.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Fname = model.Fname,
+                    Lname = model.Lname,
+                    Phone = model.Phone,
+                    Adress = model.Adress,
+                    DoB = model.DoB
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

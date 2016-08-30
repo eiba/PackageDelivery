@@ -65,6 +65,26 @@ namespace PackageDelivery.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "First name")]
+        public string Fname { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
+        public string Lname { get; set; }
+
+        [Required]
+        [Display(Name = "Date of birth")]
+        public string DoB { get; set; }
+
+        [Required]
+        [Display(Name = "Phone number")]
+        public string Phone { get; set; }
+
+        [Required]
+        [Display(Name = "Adress")]
+        public string Adress { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

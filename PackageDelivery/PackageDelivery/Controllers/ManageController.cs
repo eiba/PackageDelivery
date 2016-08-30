@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PackageDelivery.Models;
@@ -61,16 +62,30 @@ namespace PackageDelivery.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeProfileSuccess ? "Your info has been successfully updated"
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var model1 = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+            };
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            var model2 = new ChangeProfileViewModel
+            {
+                Adress = currentUser.Adress,
+                Phone = currentUser.Phone,
+            };
+            var model = new ChangeProfileIdexViewModel
+            {
+                ChangeProfileViewModel = model2,
+                IndexViewModel = model1
+
             };
             return View(model);
         }
@@ -322,6 +337,47 @@ namespace PackageDelivery.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+        public ActionResult ChangeProfileInfo()
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            var model = new ChangeProfileViewModel
+            {
+                Adress = currentUser.Adress,
+                Phone = currentUser.Phone,
+                
+            };
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeProfileInfo(ChangeProfileViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
+                var manager = new UserManager<ApplicationUser>(store);
+                ApplicationUser Model = manager.FindById(User.Identity.GetUserId());
+                Model.Adress = model.Adress;
+                Model.Phone = model.Phone;
+
+                IdentityResult result = await manager.UpdateAsync(Model);
+                store.Context.SaveChanges();
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", new { Message = ManageMessageId.ChangeProfileSuccess });
+                }
+                AddErrors(result);
+
+            }
+            return View(model);
+
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -381,7 +437,8 @@ namespace PackageDelivery.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            ChangeProfileSuccess
         }
 
 #endregion
