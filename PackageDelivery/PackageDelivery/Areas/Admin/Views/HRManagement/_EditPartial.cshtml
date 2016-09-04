@@ -1,0 +1,221 @@
+﻿@using PackageDelivery.Areas.Admin.Controllers
+@using PackageDelivery.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@model PackageDelivery.Models.ChangeProfile
+
+@{
+    var vueIdd = Model.vueIdd;
+    var modalIdd = Model.modalIdd;
+    var formId = vueIdd + modalIdd;
+}
+
+<div id="@vueIdd">
+
+
+
+    <modal :show.sync="showModal">
+        <h3 slot="header">Rediger bruker</h3>
+        <h5 slot="body">
+      @using (Ajax.BeginForm("Edit", "HRManagement", new {param=Model.search, check=Model.check},new AjaxOptions
+      {
+          
+          UpdateTargetId = "update",
+          InsertionMode = InsertionMode.Replace,
+          HttpMethod = "POST",
+
+      }, new { @class = "form-horizontal", role = "form", id = formId }))
+      {
+           @Html.AntiForgeryToken()
+
+          <div class="form-horizontal">
+              <hr/>
+              @Html.ValidationSummary(true)
+              @Html.HiddenFor(model => model.Id)
+
+              <div class="form-group">
+                  @Html.LabelFor(model => model.firstName, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="firstName" value="@Model.firstName" class="form-control" type="text" id="model" required>
+                      @Html.ValidationMessageFor(model => model.firstName)
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  @Html.LabelFor(model => model.lastName, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="lastName" value="@Model.lastName" class="form-control" type="text" required>
+                      @Html.ValidationMessageFor(model => model.lastName)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.Adress, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="Adress" value="@Model.Adress" class="form-control" type="text" required>
+                      @Html.ValidationMessageFor(model => model.Adress)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.City, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="City" value="@Model.City" class="form-control" type="text" required>
+                      @Html.ValidationMessageFor(model => model.City)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.zipCode, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="zipCode" value="@Model.zipCode" class="form-control" type="type" required pattern="[0-9]{4}" maxlength="4">
+                      @Html.ValidationMessageFor(model => model.zipCode)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.Phone, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="Phone" value="@Model.Phone" class="form-control" type="text" required pattern="[0-9]{8,12}">
+                      @Html.ValidationMessageFor(model => model.Phone)
+                  </div>
+              </div>
+              @{
+                  var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                  ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;
+                  var roleNr = userr.roleNr;
+                  HRManagementController HR = new HRManagementController();
+
+              }
+              <div class="form-group">
+                  @Html.LabelFor(model => model.UserRole, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <select name="UserRole" class="form-control">
+
+                          <option value=@Model.UserRole>@Model.UserRole</option>
+
+                          @for (int i = 1; i < roleNr; i++)
+                          {
+                              if (HR.ResolveUserRole(i) != Model.UserRole)
+                              {
+                                  <option value=@HR.ResolveUserRole(i)>@HR.ResolveUserRole(i)</option>
+                              }
+                          }
+                      </select>
+                      @Html.ValidationMessageFor(model => model.UserRole)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.Email, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="Email" value="@Model.Email" class="form-control" type="email" required>
+                      @Html.ValidationMessageFor(model => model.Email)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(m => m.Password, new {@class = "col-md-2 control-label"})
+                  <div class="col-md-10">
+                      <input name="Password" value="" class="form-control" type="password">
+                      @Html.ValidationMessageFor(model => model.Password)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(m => m.ConfirmPassword, new {@class = "col-md-2 control-label"})
+                  <div class="col-md-10">
+                      <input name="ConfirmPassword" value="" class="form-control" type="password">
+                      @Html.ValidationMessageFor(model => model.ConfirmPassword)
+                  </div>
+              </div>
+              
+                     <input name="UserName" value="@Model.UserName" class="form-control" type="hidden">
+            
+          </div>
+            
+            }
+</h5>
+    </modal>
+</div>
+
+<script type="x/template" id="@modalIdd">
+    <div class="modal-mask" v-on:click="close" v-show="show" transition="modal">
+        <div class="modal-wrapper">
+            <div class="modal-container" style="width:650px;" v-on:click.stop>
+                
+                <div class="modal-header">
+                    <slot name="header">
+                    </slot>
+                </div>
+
+                <div class="modal-body">
+                    <slot name="body">
+
+                    </slot>
+
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button class="modal-default-button btn-danger btn" id="knapp" v-on:click="closeButton">
+                            Lagre
+                        </button>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+
+    Vue.component('modal', {
+        template: '#@modalIdd',
+        props: {
+            show: {
+                type: Boolean,
+                required: true,
+                twoWay: true
+
+            }
+        },
+        methods: {
+            close: function() {
+                this.show = false;
+            },
+            closeButton: function() {
+                if ($("form#@formId").valid()) {
+                    $("form#@formId").submit();
+
+
+                    this.show = false;
+                    //this.checkBox();
+                }
+            },
+            checkBox: function() {
+                $('#checkbox1').prop('checked', true);
+            }
+        },
+        ready: function() {
+            this.show = true;
+            document.addEventListener("keydown", (e) => {
+                if (this.show && e.keyCode == 27) {
+                    this.close();
+                } else if (this.show && e.keyCode == 13) {
+                    this.closeButton();
+                }
+            });
+        }
+    });
+    
+        new Vue({
+            el: '#@vueIdd',
+            data: {
+                showModal: false,
+            },
+            methods: {
+                showModalf: function() {
+                    this.showModal = true;
+                },
+
+            }
+
+        });
+    
+
+
+</script>

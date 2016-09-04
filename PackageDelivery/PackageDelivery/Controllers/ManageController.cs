@@ -456,7 +456,8 @@ namespace PackageDelivery.Controllers
             RemoveLoginSuccess,
             RemovePhoneSuccess,
             Error,
-            ChangeProfileSuccess
+            ChangeProfileSuccess,
+            AddProfileSuccess
         }
 
 #endregion

@@ -1,0 +1,172 @@
+﻿@using PackageDelivery.Areas.Admin.Models
+@using PackageDelivery.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@model  PackageDelivery.Areas.Admin.Models.ShowModel
+
+@{
+    ViewBag.w = Model.check;
+}
+<div id="employeeModal"></div>
+<div class="col-md-8"></div>
+<div class="col-md-4">
+    <div class="text-danger">
+        @ViewBag.Error
+    </div>
+    <div class="text-success">
+        @ViewBag.success
+    </div>
+</div>
+    <table class="table table-hover">
+        <tr>
+            <th>
+                First name
+            </th>
+            <th>
+                Last name
+            </th>
+            <th>
+                User role
+            </th>
+            <th>
+                Email
+            </th>
+            <th></th>
+        </tr>
+        @{
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+            ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;
+
+
+
+            var j = 0;
+            foreach (var model in Model.userss)
+            {
+                var i = model.Id;
+                var rowId = j.ToString();
+                var vueId = "jk" + rowId + "k";
+                var modalId = "kk" + rowId + "lel";
+                var editvueId = "ab" + rowId + "df";
+                var editmodalId = "bb" + rowId + "dfb";
+                var mailto = "mailto:" + model.Email;
+                var elementid = "";
+                var classR = rowId + "r";
+                var detailsId = rowId + "km";
+                var editId = rowId + "kjb";
+                var status = "";
+                var action = "";
+                var SuccessId = ViewBag.Id;
+                var color = "";
+                if (model.Id == ViewBag.Id && ViewBag.success != null)
+                {
+                    color = "success";
+                }
+                else if (model.Id == ViewBag.Id && ViewBag.Error != null)
+                {
+                    color = "danger";
+                }
+                if (model.IsEnabeled == true)
+                {
+                    status = "Deactivate";
+                    action = "Deactivate";
+                }
+                else
+                {
+                    status = "Activate";
+                    action = "Activate";
+                    elementid = "greyout";
+                }
+
+                if ((elementid == "" && @ViewBag.w == "true") || (@ViewBag.w == "false"))
+                {
+                    var m = new StatusModel { status = status, action = action, Id = model.Id };
+
+                    <tr id="@rowId" class="@color">
+                        <td class="@elementid @classR">
+                            @Html.DisplayFor(modelItem => model.Fname)
+                        </td>
+                        <td class="@elementid @classR">
+                            @Html.DisplayFor(modelItem => model.Lname)
+                        </td>
+                        <td class="@elementid @classR">
+                           @Html.DisplayFor(modelItem => model.AccessLvL)
+                        </td>
+                        <td class="@elementid @classR">
+                            <a href="@mailto">@Html.DisplayFor(modelItem => model.Email)</a>
+                        </td>
+                        <td style="width: 280px">
+                            <div>
+                                    @using (Ajax.BeginForm("showEmployeeDetails", "HRManagement", new
+                                    {
+                                        VueId = vueId,
+                                        modalId = modalId,
+                                        id = model.Id
+                                    }, new AjaxOptions
+                                    {
+                                        UpdateTargetId = "employeeModal",
+                                        InsertionMode = InsertionMode.Replace,
+                                        HttpMethod = "GET",
+
+
+                                    }, new {@class = "form-horizontal", role = "form", id = detailsId}))
+                                    {
+                                        <button type="submit" class="btn btn-primary j"><b>Details</b></button>
+
+                                    }
+                                    
+                                        @using (Ajax.BeginForm("showEmployeeEdit", "HRManagement", new
+                                        {
+                                            vueIdd = editvueId,
+                                            modalIdd = editmodalId,
+                                            check = Model.check,
+                                            search = Model.search,
+                                            id = model.Id
+                                        }, new AjaxOptions
+                                        {
+                                            UpdateTargetId = "employeeModal",
+                                            InsertionMode = InsertionMode.Replace,
+                                            HttpMethod = "GET",
+
+
+                                        }, new { @class = "form-horizontal", role = "form", id = editId }))
+                                        {
+                                            <button type="submit" class="btn btn-primary j"><b>Edit</b></button>
+
+                                        }
+                                        @if (model.AccessLvL != "Owner")
+                                        {
+                                            <label id="@i">
+                                                @Html.Partial("_StatusPartial", m)
+                                            </label>
+                                        }
+                                    
+                                </div>
+
+                        </td>
+
+                    </tr>
+                    <script>
+                    
+                        $(document).ready(function () {
+                            $('#@i').on('click', function () {
+                                var c = "@ViewBag.w";
+                                if ($('.@classR').css('opacity') === '1') {
+                                    $('.@classR').css('opacity', '0.5');
+                                    if (c === 'true') {
+                                        $('#@rowId').remove();
+                                    }
+                                } else if ($('.@classR').css('opacity') === '0.5') {
+                                    $('.@classR').css('opacity', '1');
+                                }
+                            });
+                        });
+
+                    </script>
+
+                }
+                j += 1;
+            }
+
+        }
+    </table>
+

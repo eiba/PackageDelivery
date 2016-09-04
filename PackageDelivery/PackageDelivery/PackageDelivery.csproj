@@ -198,6 +198,10 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HRManagementController.cs" />
+    <Compile Include="Areas\Admin\Models\ShowDetailsModel.cs" />
+    <Compile Include="Areas\Admin\Models\ShowModel.cs" />
+    <Compile Include="Areas\Admin\Models\StatusModel.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -238,6 +242,12 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\_DetailsPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\_EditPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\_RegisterEmployeePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\_ShowUsersPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\HRManagement\_StatusPartial.cshtml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryIFB299.pubxml" />
@@ -252,6 +262,8 @@
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -302,7 +314,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Customer\Controllers\" />
     <Folder Include="Areas\Customer\Models\" />

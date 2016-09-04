@@ -168,6 +168,8 @@ namespace PackageDelivery.Controllers
                     Lname = model.Lname,
                     Phone = model.Phone,
                     AdressId = adress.AdressId,
+                    AccessLvL = "Customer",
+                    IsEnabeled = true,
                     DoB = model.DoB
                 };
                

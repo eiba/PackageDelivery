@@ -11,15 +11,64 @@
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 10px;
-    padding-top: 1px;
+    padding-top: 15px;
     background-color: #ffffff;
     box-shadow: 8px 8px 20px #888888;
     
+}
+a,
+a:hover,
+a:target,
+a:active,
+a:visited,
+a:focus {
+    color: #af0200;
+}
+
+.btn-danger {
+    background-color: #af0200;
+    border-color: #990000;
+}
+.btn-danger:hover,
+.btn-danger:active {
+    background-color: #990000;
+    border-color: #79000c;
+}
+.btn-danger:visited,
+.btn-danger:focus {
+    background-color: #79000c !important;
+    border-color: #79000c !important;
+}
+.btn-primary {
+    background-color: #af0200;
+    border-color: #990000;
+}
+.btn-primary:hover,
+.btn-primary:active {
+    background-color: #990000;
+    border-color: #79000c;
+}
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #79000c !important;
+    border-color: #79000c !important;
 }
 .navbar-inverse {
   background-color: #af0200;
   border-color: #79000c;
   font-size: 120%;
+}
+
+#desc-text {
+    font-size: 1.5em; 
+    display: block;
+    height: 1.7em;
+    margin: auto;
+    margin-top: 3em;
+    padding: 0em 7em 0em 7em;
+    padding-top: 0.17em;
+    text-align: center;
+    color: #545454;
 }
 
 .navbar-inverse .navbar-brand {
@@ -62,4 +111,87 @@ textarea {
 
 * {
     box-sizing: border-box;
+}
+
+.k {
+    padding: 10px; 
+}
+.j {
+    margin: 0;
+    float: left;
+}
+.hdiv {
+    margin: 0;
+    float: right;
+    padding: 0;
+}
+.l {
+    margin-top: -20px;
+}
+.bold {
+    font-weight: bold;
+}
+
+/*Modal css*/
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.modal-container {
+  width: 550px;
+  margin: 0px auto;
+  padding: 20px 20px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+  
+}
+
+
+.modal-header h3 {
+  margin-top: 0;
+  color: #b70011;
+}
+
+.modal-body {
+  margin: 20px 0;
+
+  max-height: calc(100vh - 210px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  
+    
+}
+
+.modal-default-button {
+  float: right;
+}
+
+.modal-enter, .modal-leave {
+  opacity: 0;
+}
+
+.modal-enter .modal-container,
+.modal-leave .modal-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+.greyout {
+    opacity: 0.5;
 }

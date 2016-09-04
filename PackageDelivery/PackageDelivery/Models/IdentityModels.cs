@@ -13,9 +13,7 @@ namespace PackageDelivery.Models
     [Table("ApplicationUser")]
     public class ApplicationUser : IdentityUser
     {
-        [Key]
-        //[Required]
-        public override string Id { get; set; }
+        
         //[Required]
         public string Fname { get; set; }
         //[Required]
@@ -27,6 +25,8 @@ namespace PackageDelivery.Models
         public string Phone { get; set; }
         //[Required]
         public string DoB { get; set; }
+        public string AccessLvL { get; set; }
+        public bool IsEnabeled { get; set; }
 
         public virtual Adresses Adress { get; set; }
        // [ForeignKey("Id")]
@@ -60,5 +60,6 @@ namespace PackageDelivery.Models
         {
             return new ApplicationDbContext();
         }
+
     }
 }

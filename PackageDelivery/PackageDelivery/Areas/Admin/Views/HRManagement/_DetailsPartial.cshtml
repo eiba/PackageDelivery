@@ -1,0 +1,123 @@
+﻿@model PackageDelivery.Areas.Admin.Models.ShowDetailsModel
+
+@{
+    var fullname = Model.user.firstName + " " + Model.user.lastName;
+    var mailto = "mailto:" + Model.user.Email;
+    var vueId = Model.VueId;
+    var modalId = Model.modalId;
+
+}
+
+<script type="x/template" id="@modalId">
+    <div class="modal-mask" v-on:click="close" v-show="show" transition="modal">
+        <div class="modal-wrapper">
+            <div class="modal-container" v-on:click.stop>
+
+                <div class="modal-header">
+                    <slot name="header">
+                    </slot>
+                </div>
+
+                <div class="modal-body">
+                    <slot name="body">
+                    </slot>
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button class="modal-default-button btn-danger btn"
+                                v-on:click="show = false">
+                            OK
+                        </button>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div id="@vueId">
+
+    <modal :show.sync="showModal">
+        <h3 slot="header">@fullname</h3>
+        <h5 slot="body">
+            <dl class="dl-horizontal">
+                <dt>
+                    Email:
+                </dt>
+                <dd>
+                    <a href="@mailto">@Html.DisplayFor(modelItem => Model.user.Email)</a>
+                </dd>
+                <dt>
+                    Adresse:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.Adress)
+                </dd>
+                <dt>
+                    Poststed:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.City)
+                </dd>
+                <dt>
+                    Postnummer:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.zipCode)
+                </dd>
+                <dt>
+                    Tlf:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.Phone)
+                </dd>
+                <dt>
+                    Brukerolle:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.UserRole)
+                </dd>
+            </dl>
+            <h4>@Html.ActionLink("Rediger", "Edit", new { id = Model.user.Id })</h4>
+        </h5>
+    </modal>
+</div>
+
+<script>
+                            Vue.component('modal', {
+                                template: '#@modalId',
+                                props: {
+                                    show: {
+                                        type: Boolean,
+                                        required: true,
+                                        twoWay: true
+
+                                    }
+                                },
+                                methods: {
+                                    close: function() {
+                                        this.show = false;
+                                    }
+                                },
+                                ready: function () {
+                                    this.show = true;
+                                    document.addEventListener("keydown", (e) => {
+                                        if (this.show && e.keyCode == 27) {
+                                            this.close();
+                                        }
+                                        else if (this.show && e.keyCode == 13) {
+                                            this.close();
+                                        }
+
+
+                                    });
+                                }
+                            });
+                            new Vue({
+                                el: '#@vueId',
+                                data: {
+                                    showModal: false,
+                                }
+                            });
+</script>

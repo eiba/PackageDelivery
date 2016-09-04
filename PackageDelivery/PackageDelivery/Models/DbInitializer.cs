@@ -31,21 +31,49 @@ namespace PackageDelivery.Models
                 StreetAdress = "Streets 1:12"
 
             };
+            
             db.Adresses.Add(OwnerAdress);
+            
             var Owner = new ApplicationUser
             {
                 UserName = "Owner@qut.edu.au",
                 Email = "Owner@qut.edu.au",
                 Fname = "Mr.",
                 Lname = "Owner",
-                AdressId = 0,
+                AdressId = OwnerAdress.AdressId,
+                AccessLvL = "Owner",
+                IsEnabeled = true,
                 Phone = "04456456266",
                 DoB = "12/12/1212"
             };
             userManager.Create(Owner, "Password1.");
             userManager.AddToRole(Owner.Id, "Owner");
-            
 
+            var EmployeeAdress = new Adresses
+            {
+                Suburb = "South Bank",
+                State = "Queensland",
+                PostCode = 3455,
+                StreetAdress = "Some street 78"
+
+            };
+            db.Adresses.Add(EmployeeAdress);
+            var Employee = new ApplicationUser
+            {
+                UserName = "Employee@qut.edu.au",
+                Email = "Employee@qut.edu.au",
+                Fname = "Mr.",
+                Lname = "Employee",
+                AdressId = EmployeeAdress.AdressId,
+                AccessLvL = "Admin",
+                IsEnabeled = true,
+                Phone = "876890043",
+                DoB = "13/13/1313"
+            };
+            userManager.Create(Employee, "Password1.");
+            userManager.AddToRole(Employee.Id, "Admin");
+
+            db.SaveChanges();
         }
     }
 }
