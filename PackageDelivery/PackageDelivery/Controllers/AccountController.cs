@@ -17,6 +17,7 @@ namespace PackageDelivery.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext Context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -151,16 +152,27 @@ namespace PackageDelivery.Controllers
         {
             if (ModelState.IsValid)
             {
+                var adress = new Adresses
+                {
+                    State = model.State,
+                    Suburb = model.Suburb,
+                    PostCode = model.PostCode,
+                    StreetAdress = model.StreetAdress
+                };
+                Context.Adresses.Add(adress);
+                Context.SaveChanges();
                 var user = new ApplicationUser {
                     UserName = model.Email,
                     Email = model.Email,
                     Fname = model.Fname,
                     Lname = model.Lname,
                     Phone = model.Phone,
-                    Adress = model.Adress,
+                    AdressId = adress.AdressId,
                     DoB = model.DoB
                 };
+               
                 var result = await UserManager.CreateAsync(user, model.Password);
+               
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

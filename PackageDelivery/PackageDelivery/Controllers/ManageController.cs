@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -16,6 +17,7 @@ namespace PackageDelivery.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        ApplicationDbContext Context = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -76,9 +78,13 @@ namespace PackageDelivery.Controllers
             };
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
+            var adress = Context.Adresses.Find(currentUser.AdressId);
             var model2 = new ChangeProfileViewModel
             {
-                Adress = currentUser.Adress,
+                State = adress.State,
+                PostCode = adress.PostCode,
+                Suburb = adress.Suburb,
+                StreetAdress = adress.StreetAdress,
                 Phone = currentUser.Phone,
             };
             var model = new ChangeProfileIdexViewModel
@@ -341,13 +347,15 @@ namespace PackageDelivery.Controllers
         {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
+            var adress = Context.Adresses.Find(currentUser.AdressId);
             var model = new ChangeProfileViewModel
             {
-                Adress = currentUser.Adress,
+                State = adress.State,
+                PostCode = adress.PostCode,
+                Suburb = adress.Suburb,
+                StreetAdress = adress.StreetAdress,
                 Phone = currentUser.Phone,
-                
             };
-
 
             return View(model);
         }
@@ -361,8 +369,18 @@ namespace PackageDelivery.Controllers
                 var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
                 var manager = new UserManager<ApplicationUser>(store);
                 ApplicationUser Model = manager.FindById(User.Identity.GetUserId());
-                Model.Adress = model.Adress;
+                Adresses adress = Context.Adresses.Find(Model.AdressId);
+                adress.PostCode = model.PostCode;
+                adress.State = model.State;
+                adress.Suburb = model.Suburb;
+                adress.StreetAdress = model.StreetAdress;
                 Model.Phone = model.Phone;
+
+                // Set adress state to modified
+                Context.Entry(adress).State = EntityState.Modified;
+
+                // Save and redirect
+                Context.SaveChanges();
 
                 IdentityResult result = await manager.UpdateAsync(Model);
                 store.Context.SaveChanges();

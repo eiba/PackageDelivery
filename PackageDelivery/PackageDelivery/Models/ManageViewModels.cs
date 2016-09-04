@@ -46,8 +46,20 @@ namespace PackageDelivery.Models
         public string Phone { get; set; }
 
         [Required]
-        [Display(Name = "Adress")]
-        public string Adress { get; set; }
+        [Display(Name = "Street Adress")]
+        public string StreetAdress { get; set; }
+
+        [Required]
+        [Display(Name = "Postcode")]
+        public int PostCode { get; set; }
+
+        [Required]
+        [Display(Name = "Suburb")]
+        public string Suburb { get; set; }
+
+        [Required]
+        [Display(Name = "State")]
+        public string State { get; set; }
 
     }
 

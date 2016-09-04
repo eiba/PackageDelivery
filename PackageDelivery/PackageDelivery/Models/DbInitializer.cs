@@ -18,6 +18,34 @@ namespace PackageDelivery.Models
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
+            roleManager.Create(new IdentityRole("Admin")); // rights to view admin and ansatt
+            roleManager.Create(new IdentityRole("Customer")); // The customer role
+            roleManager.Create(new IdentityRole("Owner"));// The owner of the website, in addition to admin rights he can only add employees(admins)
+
+
+            var OwnerAdress = new Adresses
+            {
+                Suburb = "Some suburb i don't even know",
+                State = "Queensland",
+                PostCode = 2342,
+                StreetAdress = "Streets 1:12"
+
+            };
+            db.Adresses.Add(OwnerAdress);
+            var Owner = new ApplicationUser
+            {
+                UserName = "Owner@qut.edu.au",
+                Email = "Owner@qut.edu.au",
+                Fname = "Mr.",
+                Lname = "Owner",
+                AdressId = 0,
+                Phone = "04456456266",
+                DoB = "12/12/1212"
+            };
+            userManager.Create(Owner, "Password1.");
+            userManager.AddToRole(Owner.Id, "Owner");
+            
+
         }
     }
 }

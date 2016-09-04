@@ -73,6 +73,8 @@ namespace PackageDelivery.Models
         public string Lname { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "Date of birth")]
         public string DoB { get; set; }
 
@@ -81,8 +83,20 @@ namespace PackageDelivery.Models
         public string Phone { get; set; }
 
         [Required]
-        [Display(Name = "Adress")]
-        public string Adress { get; set; }
+        [Display(Name = "Postcode")]
+        public int PostCode { get; set; }
+
+        [Required]
+        [Display(Name = "Suburb")]
+        public string Suburb { get; set; }
+
+        [Required]
+        [Display(Name = "State")]
+        public string State { get; set; }
+
+        [Required]
+        [Display(Name = "Street adress")]
+        public string StreetAdress { get; set; }
 
         [Required]
         [EmailAddress]
