@@ -1,7 +1,7 @@
 ﻿@model PackageDelivery.Areas.Admin.Models.ShowDetailsModel
 
 @{
-    var fullname = Model.user.firstName + " " + Model.user.lastName;
+    var fullname = Model.user.Fname + " " + Model.user.Lname;
     var mailto = "mailto:" + Model.user.Email;
     var vueId = Model.VueId;
     var modalId = Model.modalId;
@@ -49,37 +49,63 @@
                     <a href="@mailto">@Html.DisplayFor(modelItem => Model.user.Email)</a>
                 </dd>
                 <dt>
-                    Adresse:
-                </dt>
-                <dd>
-                    @Html.DisplayFor(modelItem => Model.user.Adress)
-                </dd>
-                <dt>
-                    Poststed:
-                </dt>
-                <dd>
-                    @Html.DisplayFor(modelItem => Model.user.City)
-                </dd>
-                <dt>
-                    Postnummer:
-                </dt>
-                <dd>
-                    @Html.DisplayFor(modelItem => Model.user.zipCode)
-                </dd>
-                <dt>
-                    Tlf:
+                    Phone number:
                 </dt>
                 <dd>
                     @Html.DisplayFor(modelItem => Model.user.Phone)
                 </dd>
                 <dt>
-                    Brukerolle:
+                    Date of birth:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.user.UserRole)
+                    @Html.DisplayFor(modelItem => Model.user.DoB)
                 </dd>
+                <dt>
+                    Street Adress:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.Adress.StreetAdress)
+                </dd>
+                <dt>
+                    PostCode:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.Adress.PostCode)
+                </dd>
+                <dt>
+                    Suburb:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.Adress.Suburb)
+                </dd>
+                <dt>
+                    State:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.Adress.State)
+                </dd>
+                <dt>
+                    User role:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.user.AccessLvL)
+                </dd>
+                @if (Model.Employee.EmployeeId != null)
+                {
+                    <dt>
+                        Bank account:
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(modelItem => Model.Employee.BankAccount)
+                    </dd>
+                    <dt>
+                        Car rego:
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(modelItem => Model.Employee.CarRego)
+                    </dd>
+                }
             </dl>
-            <h4>@Html.ActionLink("Rediger", "Edit", new { id = Model.user.Id })</h4>
         </h5>
     </modal>
 </div>

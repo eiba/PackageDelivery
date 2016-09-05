@@ -2,7 +2,7 @@
 @using PackageDelivery.Models
 @using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.EntityFramework
-@model PackageDelivery.Models.ChangeProfile
+@model PackageDelivery.Models.ChangeProfileAdmin
 
 @{
     var vueIdd = Model.vueIdd;
@@ -29,78 +29,83 @@
            @Html.AntiForgeryToken()
 
           <div class="form-horizontal">
-              <hr/>
               @Html.ValidationSummary(true)
               @Html.HiddenFor(model => model.Id)
 
               <div class="form-group">
-                  @Html.LabelFor(model => model.firstName, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.Fname, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="firstName" value="@Model.firstName" class="form-control" type="text" id="model" required>
-                      @Html.ValidationMessageFor(model => model.firstName)
+                      <input name="Fname" value="@Model.Fname" class="form-control" id="model" required>
+                      @Html.ValidationMessageFor(model => model.Fname)
                   </div>
               </div>
 
               <div class="form-group">
-                  @Html.LabelFor(model => model.lastName, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.Lname, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="lastName" value="@Model.lastName" class="form-control" type="text" required>
-                      @Html.ValidationMessageFor(model => model.lastName)
+                      <input name="Lname" value="@Model.Lname" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.Lname)
                   </div>
               </div>
               <div class="form-group">
-                  @Html.LabelFor(model => model.Adress, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.StreetAdress, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="Adress" value="@Model.Adress" class="form-control" type="text" required>
-                      @Html.ValidationMessageFor(model => model.Adress)
+                      <input name="StreetAdress" value="@Model.StreetAdress" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.StreetAdress)
                   </div>
               </div>
               <div class="form-group">
-                  @Html.LabelFor(model => model.City, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.PostCode, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="City" value="@Model.City" class="form-control" type="text" required>
-                      @Html.ValidationMessageFor(model => model.City)
+                      <input name="PostCode" value="@Model.PostCode" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.PostCode) 
                   </div>
               </div>
               <div class="form-group">
-                  @Html.LabelFor(model => model.zipCode, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.Suburb, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="zipCode" value="@Model.zipCode" class="form-control" type="type" required pattern="[0-9]{4}" maxlength="4">
-                      @Html.ValidationMessageFor(model => model.zipCode)
+                      <input name="Suburb" value="@Model.Suburb" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.Suburb)
+                  </div>
+              </div>
+              <div class="form-group">
+                  @Html.LabelFor(model => model.State, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="State" value="@Model.State" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.State)
                   </div>
               </div>
               <div class="form-group">
                   @Html.LabelFor(model => model.Phone, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <input name="Phone" value="@Model.Phone" class="form-control" type="text" required pattern="[0-9]{8,12}">
+                      <input name="Phone" value="@Model.Phone" class="form-control" required pattern="[0-9]{8,12}">
                       @Html.ValidationMessageFor(model => model.Phone)
                   </div>
               </div>
-              @{
-                  var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-                  ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;
-                  var roleNr = userr.roleNr;
-                  HRManagementController HR = new HRManagementController();
-
-              }
               <div class="form-group">
-                  @Html.LabelFor(model => model.UserRole, new {@class = "control-label col-md-2"})
+                  @Html.LabelFor(model => model.DoB, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
-                      <select name="UserRole" class="form-control">
-
-                          <option value=@Model.UserRole>@Model.UserRole</option>
-
-                          @for (int i = 1; i < roleNr; i++)
-                          {
-                              if (HR.ResolveUserRole(i) != Model.UserRole)
-                              {
-                                  <option value=@HR.ResolveUserRole(i)>@HR.ResolveUserRole(i)</option>
-                              }
-                          }
-                      </select>
-                      @Html.ValidationMessageFor(model => model.UserRole)
+                      <input name="DoB" value="@Model.DoB" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.DoB)
                   </div>
               </div>
+
+              @if ((Model.BankAccount !=  null) && (Model.CarRego != null)) {
+              <div class="form-group">
+                  @Html.LabelFor(model => model.CarRego, new {@class = "control-label col-md-2"})
+                  <div class="col-md-10">
+                      <input name="CarRego" value="@Model.CarRego" class="form-control" required>
+                      @Html.ValidationMessageFor(model => model.CarRego)
+                  </div>
+              </div>
+                  <div class="form-group">
+                      @Html.LabelFor(model => model.BankAccount, new {@class = "control-label col-md-2"})
+                      <div class="col-md-10">
+                          <input name="BankAccount" value="@Model.BankAccount" class="form-control" required>
+                          @Html.ValidationMessageFor(model => model.BankAccount)
+                      </div>
+                  </div>
+              }
               <div class="form-group">
                   @Html.LabelFor(model => model.Email, new {@class = "control-label col-md-2"})
                   <div class="col-md-10">
@@ -178,13 +183,9 @@
                 this.show = false;
             },
             closeButton: function() {
-                if ($("form#@formId").valid()) {
                     $("form#@formId").submit();
-
-
                     this.show = false;
-                    //this.checkBox();
-                }
+                
             },
             checkBox: function() {
                 $('#checkbox1').prop('checked', true);

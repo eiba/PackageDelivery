@@ -87,19 +87,6 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return PartialView("_ShowUsersPartial", model);
         }
         
-        /*
-        public ActionResult RegisterEmployee()
-        {
-            var store = new UserStore<ApplicationUser>(context);
-            var manager = new UserManager<ApplicationUser>(store);
-            ApplicationUser userr = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            if (userr == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            }
-            return View();
-        }*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -207,39 +194,13 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 ModelState.AddModelError("", error);
             }
         }
-        /*
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser user = context.Users.Find(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
 
-            var model = new ChangeProfile
-            {
-                firstName = user.firstName,
-                lastName = user.lastName,
-                Adress = user.Adress,
-                City = user.City,
-                zipCode = user.zipCode,
-                Phone = user.Phone,
-                UserRole = user.UserRole,
-                Id = user.Id,
-                Email = user.Email
-            };
-
-            return System.Web.UI.WebControls.View(model);
-        }
+        
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(ChangeProfile model, string param, string check)
+        public async Task<ActionResult> Edit(ChangeProfileAdmin model, string param, string check)
         {
 
             var k = "";
@@ -260,7 +221,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
                 var user = await manager.FindByNameAsync(model.UserName);
-                ApplicationUser Model = manager.FindByName(model.UserName);
+                ApplicationUser appUser = manager.FindByName(model.UserName);
 
                 var results = from s in context.Users
                               where
@@ -270,16 +231,16 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 {
                     foreach (var resultk in results)
                     {
-                        if (resultk.Id != Model.Id)
+                        if (resultk.Id != appUser.Id)
                         {
                             if (Request.IsAjaxRequest())
                             {
-                                ViewBag.Error = "Emailen er allerede i bruk.";
-                                ViewBag.Id = Model.Id;
+                                ViewBag.Error = "Email is already in use";
+                                ViewBag.Id = appUser.Id;
                                 return PartialView("_ShowUsersPartial", ShowModel);
                             }
                             return RedirectToAction("Index", "HRManagement",
-                                new { Message = ManageController.ManageMessageId.Error, orsak = "email er allerede i bruk" });
+                                new { Message = ManageController.ManageMessageId.Error, orsak = "Email is already in use" });
 
                         }
                     }
@@ -292,60 +253,36 @@ namespace PackageDelivery.Areas.Admin.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
                 }
-                var roleNr = userr.roleNr;
-                var modelRoleNr = ResolveRoleNr(model.UserRole);
-                if ((roleNr > ResolveRoleNr(Model.UserRole) || userr.Id == Model.Id))
+
+
+                appUser.Fname = model.Fname;
+                appUser.Lname = model.Lname;
+                appUser.Phone = model.Phone;
+                appUser.DoB = model.DoB;
+                appUser.Phone = model.Phone;
+                appUser.UserName = model.Email;
+                appUser.Email = model.Email;
+
+                var adress = context.Adresses.Find(appUser.AdressId);
+                adress.PostCode = model.PostCode;
+                adress.Suburb = model.Suburb;
+                adress.State = model.State;
+                adress.StreetAdress = model.StreetAdress;
+
+                store.Context.Entry(adress).State = System.Data.Entity.EntityState.Modified;
+                store.Context.SaveChanges();
+
+                if (model.BankAccount != null && model.CarRego != null)
                 {
-                    if (roleNr > modelRoleNr || userr.Id == Model.Id)
-                    {
-                        var rolesForUser = await manager.GetRolesAsync(Model.Id);
+                    var employee = context.Employees.Find(appUser.Id);
+                    employee.BankAccount = model.BankAccount;
+                    employee.CarRego = model.CarRego;
 
-                        if (rolesForUser.Count() > 0)
-                        {
-                            foreach (var item in rolesForUser.ToList())
-                            {
-                                await manager.RemoveFromRoleAsync(Model.Id, item);
-                            }
-                        }
-
-                        manager.AddToRole(Model.Id, model.UserRole);
-                    }
-                    else
-                    {
-                        if (Request.IsAjaxRequest())
-                        {
-                            ViewBag.Error = "Oops! du kan ikke tildele roller høyere eller lik din egen!";
-                            ViewBag.Id = Model.Id;
-                            return PartialView("_ShowUsersPartial", ShowModel);
-                        }
-                        return RedirectToAction("Index", "HRManagement", new { Message = ManageController.ManageMessageId.Error });
-                    }
-                }
-                else
-                {
-                    if (Request.IsAjaxRequest())
-                    {
-                        ViewBag.Error = "Oops! du har ikke lov til å endre på brukere av høyere rang!";
-                        ViewBag.Id = Model.Id;
-                        return PartialView("_ShowUsersPartial", ShowModel);
-                    }
-
-                    return RedirectToAction("Index", "HRManagement", new { Message = ManageController.ManageMessageId.Error });
+                    store.Context.Entry(employee).State = System.Data.Entity.EntityState.Modified;
+                    store.Context.SaveChanges();
                 }
 
-
-                Model.City = model.City;
-                Model.Adress = model.Adress;
-                Model.zipCode = model.zipCode;
-                Model.Phone = model.Phone;
-                Model.firstName = model.firstName;
-                Model.lastName = model.lastName;
-                Model.UserRole = model.UserRole;
-                Model.UserName = model.Email;
-                Model.roleNr = ResolveRoleNr(model.UserRole);
-                Model.Email = model.Email;
-
-                IdentityResult result = await manager.UpdateAsync(Model);
+                IdentityResult result = await manager.UpdateAsync(appUser);
                 store.Context.SaveChanges();
 
                 if (result.Succeeded)
@@ -353,16 +290,16 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
                     if (model.Password != null)
                     {
-                        var provider = new DpapiDataProtectionProvider("Aeero");
+                        var provider = new DpapiDataProtectionProvider("PackageDelivery");
                         manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("Passwordresetting"));
-                        string resetToken = await manager.GeneratePasswordResetTokenAsync(Model.Id);
-                        var Presult = await manager.ResetPasswordAsync(Model.Id, resetToken, model.Password);
+                        string resetToken = await manager.GeneratePasswordResetTokenAsync(appUser.Id);
+                        var Presult = await manager.ResetPasswordAsync(appUser.Id, resetToken, model.Password);
                         if (!Presult.Succeeded)
                         {
                             if (Request.IsAjaxRequest())
                             {
-                                ViewBag.Error = "Passordet må matche kriteriene!";
-                                ViewBag.Id = Model.Id;
+                                ViewBag.Error = "The passwords must match the critera!";
+                                ViewBag.Id = appUser.Id;
                                 return PartialView("_ShowUsersPartial", ShowModel);
                             }
                             return RedirectToAction("Index", "HRManagement", new { Message = ManageController.ManageMessageId.Error });
@@ -371,7 +308,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                     }
                     if (Request.IsAjaxRequest())
                     {
-                        ViewBag.Success = "Brukeren " + model.Email + " ble oppdatert.";
+                        ViewBag.Success = "The user " + model.Email + " was updated.";
                         ViewBag.Id = model.Id;
                         return PartialView("_ShowUsersPartial", ShowModel);
                     }
@@ -382,13 +319,13 @@ namespace PackageDelivery.Areas.Admin.Controllers
             }
             if (Request.IsAjaxRequest())
             {
-                ViewBag.Error = "Oops, noe gikk galt, husk at passordene må være like og møte kriteriene!";
+                ViewBag.Error = "Oops, something went wrong, remember the passwords must match and meet the criteria!";
                 ViewBag.Id = model.Id;
                 return PartialView("_ShowUsersPartial", ShowModel);
             }
-            return System.Web.UI.WebControls.View(model);
+            return null;
         }
-        */
+        
         [HttpGet]
         public async Task<ActionResult> Deactivate(string id)
         {
@@ -479,22 +416,8 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
-        /*
-        public ActionResult Details(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ApplicationUser User = context.Users.Find(id);
-            if (User == null)
-            {
-                return HttpNotFound();
-            }
-            return View(User);
 
-        }
-        */
+        
         public IEnumerable<ApplicationUser> resolveUsers(string param, string k)
         {
             var results = from s in context.Users
@@ -554,7 +477,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             return PartialView("_RegisterEmployeePartial", model);
         }
-        /*
+        
         [HttpGet]
         public ActionResult showEmployeeDetails(string VueId, string modalId, string id)
         {
@@ -562,16 +485,29 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var employee = new Employees();
+           
             ApplicationUser user = context.Users.Find(id);
+            var adress = context.Adresses.Find(user.AdressId);
+
+            if (context.Employees.Find(id) != null)
+            {
+                employee = context.Employees.Find(id);
+            }
+  
+            
             var ShowDetailsModel = new ShowDetailsModel
             {
                 user = user,
+                Adress = adress,
+                Employee = employee,
                 VueId = VueId,
                 modalId = modalId
             };
 
             return PartialView("_DetailsPartial", ShowDetailsModel);
         }
+        
         [HttpGet]
         public ActionResult showEmployeeEdit(string vueIdd, string modalIdd, string check, string search, string id)
         {
@@ -579,19 +515,36 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            var employee = new Employees();
             ApplicationUser user = context.Users.Find(id);
-            var ChangeProfileModel = new ChangeProfile
+            var adress = context.Adresses.Find(user.AdressId);
+
+            if (context.Employees.Find(id) != null)
             {
-                 = user.firstName,
-                lastName = user.lastName,
-                Adress = user.Adress,
-                City = user.City,
-                zipCode = user.zipCode,
+                employee = context.Employees.Find(id);
+            }
+            else
+            {
+                employee.CarRego = null;
+                employee.BankAccount = null;
+            }
+            
+            var ChangeProfileModel = new ChangeProfileAdmin
+            {
+                Fname = user.Fname,
+                Lname = user.Lname,
+                Suburb = user.Adress.Suburb,
+                State = user.Adress.State,
+                PostCode = user.Adress.PostCode,
                 Phone = user.Phone,
                 Email = user.Email,
                 UserName = user.Email,
                 Id = user.Id,
-                UserRole = user.UserRole,
+                AccessLvL = user.AccessLvL,
+                StreetAdress = adress.StreetAdress,
+                CarRego = employee.CarRego,
+                BankAccount = employee.BankAccount,
+                DoB = user.DoB,
                 vueIdd = vueIdd,
                 modalIdd = modalIdd,
                 check = check,
@@ -600,6 +553,6 @@ namespace PackageDelivery.Areas.Admin.Controllers
             };
 
             return PartialView("_EditPartial", ChangeProfileModel);
-        }*/
+        }
     }
 }
