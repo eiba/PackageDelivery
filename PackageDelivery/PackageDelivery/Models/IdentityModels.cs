@@ -24,6 +24,7 @@ namespace PackageDelivery.Models
         //[Required]
         public string Phone { get; set; }
         //[Required]
+        [DataType(DataType.Date)]
         public string DoB { get; set; }
         public string AccessLvL { get; set; }
         public bool IsEnabeled { get; set; }

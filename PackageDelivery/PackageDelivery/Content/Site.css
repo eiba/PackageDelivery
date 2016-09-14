@@ -34,11 +34,13 @@ a:focus {
     background-color: #990000;
     border-color: #79000c;
 }
+
 .btn-danger:visited,
 .btn-danger:focus {
     background-color: #79000c !important;
     border-color: #79000c !important;
 }
+    
 .btn-primary {
     background-color: #af0200;
     border-color: #990000;

@@ -12,21 +12,18 @@ namespace PackageDelivery.Models
     public class Adresses
     {
         [Key]
-        //[Required]
         public int AdressId { get; set; }
 
-        //[Required]
         public string Suburb { get; set; }
-        //[Required]
         public int PostCode { get; set; }
-        //[Required]
+
         public string State { get; set; }
-        //[Required]
+
         public string StreetAdress { get; set; }
 
-        //[ForeignKey("AdressId")]
+
         public virtual IList<ApplicationUser> User { get; set; }
-        //[ForeignKey("AdressId")]
+
         public virtual IList<Orders> Orders { get; set; }
 
     }
@@ -35,12 +32,10 @@ namespace PackageDelivery.Models
     public class Employees
     {
         [Key,ForeignKey("User")]
-        //[Required]
         public string EmployeeId { get; set; }
 
-        //[Required]
         public string BankAccount { get; set; }
-        //[Required]
+    
         public string CarRego { get; set; }
 
         public virtual ApplicationUser User { get; set; }
@@ -50,24 +45,16 @@ namespace PackageDelivery.Models
     public class Packages
     {
         [Key]
-        //[Required]
         public int PackageId { get; set; }
 
         [ForeignKey("User")]
-        //[Required]
         public string SenderId { get; set; }
-        //[Required]
         public string RecieverName { get; set; }
-        //[Required]
-        public int Weight { get; set; }
-        //[Required]
+        public double Weight { get; set; }
         public string SpecialInstructions { get; set; }
-        //[Required]
         public int RecieverAdressId { get; set; }
         [ForeignKey("Order")]
-        //[Required]
         public int OrderId { get; set; }
-        //[Required]
         public double Cost { get; set; }
 
         public virtual ApplicationUser User { get; set; }
@@ -78,26 +65,23 @@ namespace PackageDelivery.Models
     public class Orders
     {
         [Key]
-        //[Required]
         public int OrderId { get; set; }
 
-        //[Required]
-        public string SenderId { get; set; }
-        //[Required]
-        public string OrderTime { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime OrderTime { get; set; }
 
         [ForeignKey("Adress")]
-        //[Required]
         public int PickupAdressId { get; set; }
-        //[Required]
+        
         public string ReadyForPickupTime { get; set; }
-        //[Required]
+       
         public string WareHouseArrivalTime { get; set; }
-        //[Required]
-        public Status OrderStatus { get; set; }
-        //[Required]
-        public Priority OrderPriority { get; set; }
-        //[Required]
+       
+        public string OrderStatus { get; set; }
+        public string PaymentType { get; set; }
+     
+        public string OrderPriority { get; set; }
+
         public string WareHouseDepartureTime { get; set; }
 
         public virtual Adresses Adress { get; set; }

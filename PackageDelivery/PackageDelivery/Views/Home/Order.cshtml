@@ -1,0 +1,131 @@
+﻿@model PackageDelivery.Models.OrderModel
+@{
+    ViewBag.Title = "Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Order</h2>
+
+@using (Html.BeginForm("Order", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Place an order.</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <h4>Delivery adress:</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeliveryAdress.StreetAdress, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DeliveryAdress.StreetAdress, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeliveryAdress.PostCode, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DeliveryAdress.PostCode, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeliveryAdress.Suburb, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DeliveryAdress.Suburb, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DeliveryAdress.State, new {@class = "col-md-2 control-label"})
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.DeliveryAdress.State, new {@class = "form-control"})
+        </div>
+    </div>
+    <hr />
+    <h4>Pickup Adress:</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PickupAdress.StreetAdress, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PickupAdress.StreetAdress, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PickupAdress.PostCode, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PickupAdress.PostCode, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PickupAdress.Suburb, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PickupAdress.Suburb, new { @class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PickupAdress.State, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PickupAdress.State, new { @class = "form-control"})
+        </div>
+    </div>
+    <hr/>
+    <h4>Package info:</h4>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Weight, new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.PackageInfo.Weight, new {@class = "form-control", @placeholder="kg"})
+        </div>  
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.RecieverName, new {@class = "col-md-2 control-label"})
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PackageInfo.RecieverName, new {@class = "form-control"})
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Priority, new {@class = "col-md-2 control-label"})
+        <div class="col-md-10">
+            <select name="PackageInfo.Priority" class="form-control">
+
+                <option value=Low>Low</option>
+                <option value=Medium>Medium</option>
+                <option value=High>High</option>
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.PaymentType, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <select name="PackageInfo.PaymentType" class="form-control">
+
+                <option value=Cash>Cash</option>
+                <option value=Credit>Credit</option>
+                
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.ReadyForPickupTIme, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PackageInfo.ReadyForPickupTIme, new { @class = "form-control", type = "" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.sInstructions, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.PackageInfo.sInstructions, new { @class = "form-control", style="height: 100px;"})
+        </div>
+    </div>
+    <hr/>
+    <br/>
+    <div class="col-md-4">
+        <label>Estimated cost:</label>
+    </div>
+    <div class="col-md-8">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Place order" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

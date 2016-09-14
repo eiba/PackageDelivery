@@ -370,17 +370,27 @@ namespace PackageDelivery.Controllers
                 var manager = new UserManager<ApplicationUser>(store);
                 ApplicationUser Model = manager.FindById(User.Identity.GetUserId());
                 Adresses adress = Context.Adresses.Find(Model.AdressId);
-                adress.PostCode = model.PostCode;
-                adress.State = model.State;
-                adress.Suburb = model.Suburb;
-                adress.StreetAdress = model.StreetAdress;
                 Model.Phone = model.Phone;
-
-                // Set adress state to modified
-                Context.Entry(adress).State = EntityState.Modified;
-
-                // Save and redirect
-                Context.SaveChanges();
+                var newAdress = new Adresses
+                {
+                    StreetAdress = model.StreetAdress,
+                    State = model.State,
+                    Suburb = model.Suburb,
+                    PostCode = model.PostCode
+                };
+                
+                var Adress = adressExist(newAdress);
+                if (Adress == null)
+                {
+                    Context.Adresses.Add(newAdress);
+                    Context.SaveChanges();
+                    Model.AdressId = newAdress.AdressId;
+                }
+                else
+                {
+                    Model.AdressId = Adress.AdressId;
+                }
+                
 
                 IdentityResult result = await manager.UpdateAsync(Model);
                 store.Context.SaveChanges();
@@ -446,7 +456,18 @@ namespace PackageDelivery.Controllers
             }
             return false;
         }
-
+        public Adresses adressExist(Adresses adress)
+        {
+            var Adresses = Context.Set<Adresses>();
+            foreach (var Adress in Adresses)
+            {
+                if (adress.StreetAdress == Adress.StreetAdress && adress.PostCode == Adress.PostCode)
+                {
+                    return Adress;
+                }
+            }
+            return null;
+        }
         public enum ManageMessageId
         {
             AddPhoneSuccess,

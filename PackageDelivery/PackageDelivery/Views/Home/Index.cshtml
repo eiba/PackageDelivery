@@ -3,9 +3,10 @@
 }
 
 <div>
-    <h1>package delivery and stuffff</h1>
+    <h1>Package delivery</h1>
+    <p class="text-success">@ViewBag.Success</p>
 
-    <p>yo</p>
+    @Html.ActionLink("Request a delivery", "Order", "Home", new { @class = "btn btn-lg btn-danger center-block home-button-link" })
 
-    <img src="http://i.imgur.com/IfTN6LA.jpg" height="40%" width="40%">
+
 </div>

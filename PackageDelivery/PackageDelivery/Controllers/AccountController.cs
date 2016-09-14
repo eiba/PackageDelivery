@@ -159,8 +159,17 @@ namespace PackageDelivery.Controllers
                     PostCode = model.PostCode,
                     StreetAdress = model.StreetAdress
                 };
-                Context.Adresses.Add(adress);
-                Context.SaveChanges();
+                var Adress = adressExist(adress);
+                if (Adress == null)
+                {
+                    Context.Adresses.Add(adress);
+                    Context.SaveChanges();
+                }
+                else
+                {
+                    adress = Adress;
+                }
+                
                 var user = new ApplicationUser {
                     UserName = model.Email,
                     Email = model.Email,
@@ -172,7 +181,7 @@ namespace PackageDelivery.Controllers
                     IsEnabeled = true,
                     DoB = model.DoB
                 };
-               
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                
                 if (result.Succeeded)
@@ -473,7 +482,18 @@ namespace PackageDelivery.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
+        public Adresses adressExist(Adresses adress)
+        {
+            var Adresses = Context.Set<Adresses>();
+            foreach (var Adress in Adresses)
+            {
+                if (adress.StreetAdress == Adress.StreetAdress && adress.PostCode == Adress.PostCode)
+                {
+                    return Adress;
+                }
+            }
+            return null;
+        }
         internal class ChallengeResult : HttpUnauthorizedResult
         {
             public ChallengeResult(string provider, string redirectUri)
