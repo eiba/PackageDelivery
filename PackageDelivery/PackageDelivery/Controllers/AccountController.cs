@@ -145,6 +145,7 @@ namespace PackageDelivery.Controllers
 
         //
         // POST: /Account/Register
+        //Registers user
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -152,14 +153,14 @@ namespace PackageDelivery.Controllers
         {
             if (ModelState.IsValid)
             {
-                var adress = new Adresses
+                var adress = new Adresses                       //Makes adress object
                 {
                     State = model.State,
                     Suburb = model.Suburb,
                     PostCode = model.PostCode,
                     StreetAdress = model.StreetAdress
-                };
-                var Adress = adressExist(adress);
+                };  
+                var Adress = adressExist(adress);              //Checks is adress already exist in the database. If it does use that adress instead.
                 if (Adress == null)
                 {
                     Context.Adresses.Add(adress);
@@ -170,7 +171,7 @@ namespace PackageDelivery.Controllers
                     adress = Adress;
                 }
                 
-                var user = new ApplicationUser {
+                var user = new ApplicationUser {    //Creates the user
                     UserName = model.Email,
                     Email = model.Email,
                     Fname = model.Fname,
@@ -182,9 +183,9 @@ namespace PackageDelivery.Controllers
                     DoB = model.DoB
                 };
 
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);       //adds to databse
                
-                if (result.Succeeded)
+                if (result.Succeeded)//if users creation succeeds
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     

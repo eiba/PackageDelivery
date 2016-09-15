@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PackageDelivery.Areas.Admin.Models;
 using PackageDelivery.Models;
 
 namespace PackageDelivery.Controllers
@@ -32,14 +34,14 @@ namespace PackageDelivery.Controllers
 
             return View();
         }
-
+        //Shows order request form
         [Authorize(Roles = "Owner,Admin,Customer")]
         public ActionResult Order()
         {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
             var adress = context.Adresses.Find(user.AdressId);
-            var delAdress = new DeliveryAdress
+            var delAdress = new DeliveryAdress      //gets the logged in users adress
             {
                 StreetAdress = adress.StreetAdress,
                 PostCode = adress.PostCode,
@@ -60,14 +62,17 @@ namespace PackageDelivery.Controllers
             return View(model);
         }
 
+        //Order creation post method
         [Authorize(Roles = "Owner,Admin,Customer")]
         [HttpPost]
         public ActionResult Order(OrderModel model)
         {
-            var message = "Something went wrong, sorry";
+            var message = "Something went wrong, sorry"; //the message that will be displayed if the order creation does not go through
             if (ModelState.IsValid) { 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;     //current user
+
+                //Creates the order
             var pickupAdress = new Adresses
             {
                 StreetAdress = model.PickupAdress.StreetAdress,
@@ -76,7 +81,7 @@ namespace PackageDelivery.Controllers
                 State = model.PickupAdress.State,
 
             };
-                var pickup = adressExist(pickupAdress);
+                var pickup = adressExist(pickupAdress);     //Checks if adress is already in the database or not
                 if (pickup == null)
                 {
                     context.Adresses.Add(pickupAdress);
@@ -124,18 +129,18 @@ namespace PackageDelivery.Controllers
                     SpecialInstructions = model.PackageInfo.sInstructions,
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
-                    Cost = 234.4
+                    Cost = 234.4        //Test value, no cost estimation added yet
           
                 };
 
                 context.Packages.Add(package);
                 context.SaveChanges();
-                message = "Your order has been recieved, thank you!";
+                message = "Your order has been recieved, thank you!";       //Order creation completed, show this message to user.
             }
             return RedirectToAction("Index","Home", new {message=message});
         }
 
-        //Check if adress is already in database
+        //Check if adress is already in database, if it is return that adress instead
         public Adresses adressExist(Adresses adress)
         {
             var Adresses = context.Set<Adresses>();
@@ -148,5 +153,7 @@ namespace PackageDelivery.Controllers
             }
             return null;
         }
+
+ 
     }
 }

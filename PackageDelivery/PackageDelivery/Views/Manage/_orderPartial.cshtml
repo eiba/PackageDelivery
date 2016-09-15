@@ -1,0 +1,71 @@
+﻿@using PackageDelivery.Models
+@model PackageDelivery.Models.OrderViewModel
+
+<table class="table table-hover">
+    <tr class="dl-horizontal">
+        <th>
+            Order Id
+        </th>
+        <th>
+            Order Status
+        </th>
+        <th>
+            Ready for pickup time
+        </th>
+        <th>
+            Reciever name
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (KeyValuePair<Packages, Orders> pair in Model.OrderDictionaryMap)
+    {
+        <tr>
+            <td>@pair.Value.OrderId</td>
+            <td>@pair.Value.OrderStatus</td>
+            <td>@pair.Value.ReadyForPickupTime</td>
+            <td>@pair.Key.RecieverName</td>
+
+            <td>
+                @using (Ajax.BeginForm("showOrderDetails", "Manage", new
+                {
+                    orderId = pair.Value.OrderId,
+                    packageId = pair.Key.PackageId
+                }, new AjaxOptions
+                {
+                    UpdateTargetId = "orderModal",
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET",
+
+
+                }, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <button type="submit" class="btn btn-primary j"><b>Details</b></button>
+
+                }
+
+                @using (Ajax.BeginForm("showOrderEdit", "Manage", new
+                {
+                    orderId = pair.Value.OrderId,
+                    packageId = pair.Key.PackageId
+                }, new AjaxOptions
+                {
+                    UpdateTargetId = "orderModal",
+                    InsertionMode = InsertionMode.Replace,
+                    HttpMethod = "GET",
+
+
+                }, new { @class = "form-horizontal", role = "form" }))
+                {
+                    <button type="submit" class="btn btn-primary j"><b>Edit</b></button>
+
+                }
+            </td>
+        </tr>
+    }
+
+
+
+</table>
+

@@ -24,7 +24,7 @@
 
 
 <h2>@ViewBag.Title</h2>
-
+@*Search box*@
 <div class="row">
     <div class="col-lg-3">
         <form method="get">
@@ -76,9 +76,8 @@
         });
     });
 </script>
-
 <div id="regModal"></div>
-<br />
+<br/>
 @using (Ajax.BeginForm("showEmployeeCreate", "HRManagement", new { param = Model.SearchModel.search }, new AjaxOptions
 {
     UpdateTargetId = "regModal",
@@ -93,6 +92,7 @@
 <br /><br />
 <div class="col-md-8"></div>
 <div class="col-md-4">
+    @*Error and success message fields*@
     @if (ViewBag.StatusMessage != null && ViewBag.StatusMessage == ManageController.ManageMessageId.Error.ToString())
     {
         <p class="text-warning">@ViewBag.StatusMessage</p>
@@ -119,6 +119,6 @@
 }
 <input type="checkbox" id="checkbox1">@ViewBag.Messsage
 <div id="update">
-    @Html.Partial("_ShowUsersPartial", PartialModel)
+    @Html.Partial("_ShowUsersPartial", PartialModel)        @*The entire user list load in as a partial view*@
 </div>
 

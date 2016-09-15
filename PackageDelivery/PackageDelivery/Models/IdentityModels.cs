@@ -14,25 +14,19 @@ namespace PackageDelivery.Models
     public class ApplicationUser : IdentityUser
     {
         
-        //[Required]
         public string Fname { get; set; }
-        //[Required]
         public string Lname { get; set; }
-        //[Required]
         [ForeignKey("Adress")]
         public int AdressId { get; set; }
-        //[Required]
         public string Phone { get; set; }
-        //[Required]
         [DataType(DataType.Date)]
         public string DoB { get; set; }
         public string AccessLvL { get; set; }
         public bool IsEnabeled { get; set; }
 
         public virtual Adresses Adress { get; set; }
-       // [ForeignKey("Id")]
         public virtual IList<Packages> Packages { get; set; }
-       //[ForeignKey("Id")]
+
         public virtual Employees Employee { get; set; }
 
 

@@ -8,6 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PackageDelivery.Models
 {
+
+    //This class contains all the database tabels except the user table. See the class "IdentityModels.cs" for the ApplicationUser table.
     [Table("Adresses")]
     public class Adresses
     {
@@ -88,6 +90,7 @@ namespace PackageDelivery.Models
         public virtual IList<Packages> Package { get; set; }
     }
 
+    //Sets the different values for priority and status.
     public enum Status
     {
         Recieved,Underway,Completed

@@ -216,6 +216,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\OrderModel.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -314,6 +315,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\ChangeProfileInfo.cshtml" />
     <Content Include="Views\Home\Order.cshtml" />
+    <Content Include="Views\Manage\MyOrders.cshtml" />
+    <Content Include="Views\Manage\_OrderDetialsPartial.cshtml" />
+    <Content Include="Views\Manage\_OrderEditPartial.cshtml" />
+    <Content Include="Views\Manage\_orderPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

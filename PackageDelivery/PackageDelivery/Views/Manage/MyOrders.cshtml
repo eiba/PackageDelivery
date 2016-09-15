@@ -1,0 +1,27 @@
+﻿@using System.Activities.Statements
+@using PackageDelivery.Models
+@model PackageDelivery.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Orders</h2>
+
+<div id="orderModal"></div>
+
+    @if (Model.OrderDictionaryMap.Count != 0)
+    {
+
+
+        <div id="update">
+            @Html.Partial("_orderPartial", @Model)        @*The entire order list loads in as a partial view*@
+        </div>
+    }
+    else
+    {
+        <p>
+            No results to display.
+        </p>
+    }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using PackageDelivery.Areas.Admin.Models;
 using PackageDelivery.Models;
 
 namespace PackageDelivery.Controllers
@@ -343,13 +346,14 @@ namespace PackageDelivery.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
+        //Display page with current user info (adress and phone)
         public ActionResult ChangeProfileInfo()
         {
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            var currentUser = manager.FindById(User.Identity.GetUserId());
-            var adress = Context.Adresses.Find(currentUser.AdressId);
-            var model = new ChangeProfileViewModel
-            {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())); //Manager for handeling application users
+            var currentUser = manager.FindById(User.Identity.GetUserId());                                              //The current logged in user
+            var adress = Context.Adresses.Find(currentUser.AdressId);                                                   //Adress of logged in user
+            var model = new ChangeProfileViewModel                                                                      //Send in model to view with adress information
+            {   
                 State = adress.State,
                 PostCode = adress.PostCode,
                 Suburb = adress.Suburb,
@@ -406,6 +410,162 @@ namespace PackageDelivery.Controllers
 
         }
 
+        //Returns and displays all the users current orders.
+        public ActionResult MyOrders()
+        {
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+
+               var packages = from s in Context.Packages
+                where
+                    s.SenderId == user.Id
+                select s;
+            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
+
+            var newpackages = packages.ToList();
+            foreach (var package in newpackages)
+            {
+                var order = from s in Context.Orders
+                            where 
+                            s.OrderId == package.OrderId
+                            select s;
+
+                map.Add(package,order.First());
+            }
+            
+
+            var model = new OrderViewModel
+            {
+                OrderDictionaryMap = map
+            };
+
+            return View(model);
+        }
+        [HttpGet]
+        public ActionResult showOrderDetails(int? packageId, int? orderId)
+        {
+            if (packageId == null || orderId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var package = Context.Packages.Find(packageId);
+            var order = Context.Orders.Find(orderId);
+            var model = new OrderDetailsViewModel
+            {
+                package =package,
+                order =order,
+                pickupadress = Context.Adresses.Find(order.PickupAdressId),
+                deliveradress = Context.Adresses.Find(package.RecieverAdressId)
+            };
+
+            return PartialView("_OrderDetialsPartial",model);
+        }
+        [HttpGet]
+        public ActionResult showOrderEdit(int? packageId, int? orderId)
+        {
+            if (packageId == null || orderId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var package = Context.Packages.Find(packageId);
+            var order = Context.Orders.Find(orderId);
+            var model = new OrderDetailsViewModel
+            {
+                package = package,
+                order = order,
+                pickupadress = Context.Adresses.Find(order.PickupAdressId),
+                deliveradress = Context.Adresses.Find(package.RecieverAdressId)
+            };
+
+            return PartialView("_OrderEditPartial", model);
+        }
+
+        public async Task<ActionResult> editOrder(int? packageId, int? orderId, OrderDetailsViewModel model)
+        {
+            if (ModelState.IsValid) { 
+
+            var package = Context.Packages.Find(packageId);
+            var order = Context.Orders.Find(orderId);
+
+                var pickupAdress = new Adresses
+                {
+                    State = model.pickupadress.State,
+                    PostCode = model.pickupadress.PostCode,
+                    StreetAdress = model.pickupadress.StreetAdress,
+                    Suburb = model.pickupadress.Suburb,
+                };
+                var pickup = adressExist(pickupAdress);     //Checks if adress is already in the database or not
+                if (pickup == null)
+                {
+                    Context.Adresses.Add(pickupAdress);
+                    Context.SaveChanges();
+                }
+                else
+                {
+                    pickupAdress = pickup;
+                }
+                var deliveryAdress = new Adresses
+                {
+                    StreetAdress = model.deliveradress.StreetAdress,
+                    PostCode = model.deliveradress.PostCode,
+                    Suburb = model.deliveradress.Suburb,
+                    State = model.deliveradress.State,
+
+                };
+                var delivery = adressExist(deliveryAdress);
+                if (delivery == null)
+                {
+                    Context.Adresses.Add(deliveryAdress);
+                    Context.SaveChanges();
+                }
+                else
+                {
+                    deliveryAdress = delivery;
+                }
+                package.RecieverName = model.package.RecieverName;
+                package.Weight = model.package.Weight;
+                package.SpecialInstructions= model.package.SpecialInstructions;
+                package.RecieverAdressId = deliveryAdress.AdressId;
+                Context.Entry(package).State = EntityState.Modified;
+                Context.SaveChanges();
+
+                order.PickupAdressId = pickupAdress.AdressId;
+                order.OrderPriority = model.order.OrderPriority;
+                order.PaymentType = model.order.PaymentType;
+                order.ReadyForPickupTime = model.order.ReadyForPickupTime;
+                Context.Entry(order).State = EntityState.Modified;
+                Context.SaveChanges();
+
+            }
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+
+            var Packages = from s in Context.Packages
+                           where
+                               s.SenderId == user.Id
+                           select s;
+            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
+
+            var Newpackages = Packages.ToList();
+            foreach (var Package in Newpackages)
+            {
+                var order = from s in Context.Orders
+                            where
+                            s.OrderId == Package.OrderId
+                            select s;
+
+                map.Add(Package, order.First());
+            }
+
+
+            var Model = new OrderViewModel
+            {
+                OrderDictionaryMap = map
+            };
+
+            return PartialView("_orderPartial",Model);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
@@ -456,6 +616,8 @@ namespace PackageDelivery.Controllers
             }
             return false;
         }
+
+        //This method checks if the adress sent in already exists in the database. If it doesn't returns null, otherwise returns the adress.
         public Adresses adressExist(Adresses adress)
         {
             var Adresses = Context.Set<Adresses>();

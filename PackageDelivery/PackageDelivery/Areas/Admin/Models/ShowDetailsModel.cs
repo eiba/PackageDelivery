@@ -12,6 +12,8 @@ namespace PackageDelivery.Areas.Admin.Models
         public ApplicationUser user { get; set; }
         public Adresses Adress { get; set; }
         public Employees Employee { get; set; }
+
+        //Ids for the vue modal box
         public string VueId { get; set; }
         public string modalId { get; set; }
     }

@@ -1,0 +1,206 @@
+﻿@model PackageDelivery.Models.OrderDetailsViewModel
+
+@{
+    var modalId = Model.order.OrderId +"a";
+}
+
+<script type="x/template" id="@modalId">
+    <div class="modal-mask" v-on:click="close" v-show="show" transition="modal">
+        <div class="modal-wrapper">
+            <div class="modal-container" v-on:click.stop>
+
+                <div class="modal-header">
+                    <slot name="header">
+                    </slot>
+                </div>
+
+                <div class="modal-body">
+                    <slot name="body">
+                    </slot>
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button class="modal-default-button btn-danger btn"
+                                v-on:click="show = false">
+                            OK
+                        </button>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div id="app">
+
+    <modal :show.sync="showModal">
+        <h3 slot="header">Order @Model.order.OrderId</h3>
+        <h5 slot="body">
+            <dl class="dl-horizontal">
+                <h4>Order details:</h4>
+                
+                <dt>
+                    Order Id:
+                </dt>
+                <dd>
+                @Html.DisplayFor(modelItem => Model.order.OrderId)
+                <dt>
+                    Order created:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.order.OrderTime)
+                </dd>
+                <dt>
+                    Order status:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.order.OrderStatus)
+                </dd>
+                <dt>
+                    Payment Type:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.order.PaymentType)
+                </dd>
+                <dt>
+                    Priority:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.order.OrderPriority)
+                </dd>
+                <br/><br/>
+                <hr />
+                <h4>Package Details:</h4>
+                
+                <dt>
+                    Package id:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.package.PackageId)
+                </dd>
+                <dt>
+                    Reciever name:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.package.RecieverName)
+                </dd>
+                <dt>
+                    Weight:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.package.Weight)
+                </dd>
+                <dt>
+                    Special instructions:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.package.SpecialInstructions)
+                </dd>
+                <dt>
+                    Cost:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.package.Cost)
+                </dd>
+                <br />
+                <br/>
+                <hr />
+                <h4>Deilvery Adress:</h4>
+                
+                <dt>
+                    Street Adress:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.deliveradress.StreetAdress)
+                </dd>
+                <dt>
+                    Postcode:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.deliveradress.PostCode)
+                </dd>
+                <dt>
+                    Suburb:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.deliveradress.Suburb)
+                </dd>
+                <dt>
+                    State:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.deliveradress.State)
+                </dd>
+                <br />
+                <br/>
+                <hr />
+                <h4>Pickup Adress:</h4>
+               
+                <dt>
+                    Street Adress:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.pickupadress.StreetAdress)
+                </dd>
+                <dt>
+                    Postcode:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.pickupadress.PostCode)
+                </dd>
+                <dt>
+                    Suburb:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.pickupadress.Suburb)
+                </dd>
+                <dt>
+                    State:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.pickupadress.State)
+                </dd>
+            </dl>
+        </h5>
+    </modal>
+</div>
+
+<script>
+                            Vue.component('modal', {
+                                template: '#@modalId',
+                                props: {
+                                    show: {
+                                        type: Boolean,
+                                        required: true,
+                                        twoWay: true
+
+                                    }
+                                },
+                                methods: {
+                                    close: function() {
+                                        this.show = false;
+                                    }
+                                },
+                                ready: function () {
+                                    this.show = true;
+                                    document.addEventListener("keydown", (e) => {
+                                        if (this.show && e.keyCode == 27) {
+                                            this.close();
+                                        }
+                                        else if (this.show && e.keyCode == 13) {
+                                            this.close();
+                                        }
+
+
+                                    });
+                                }
+                            });
+                            new Vue({
+                                el: '#app',
+                                data: {
+                                    showModal: false,
+                                }
+                            });
+</script>
+

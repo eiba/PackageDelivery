@@ -1,0 +1,236 @@
+﻿@using PackageDelivery.Areas.Admin.Controllers
+@using PackageDelivery.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@model PackageDelivery.Models.OrderDetailsViewModel
+
+@{
+    var vueIdd = Model.order.OrderId + 'b';
+    var modalIdd = Model.order.OrderId + 'a';
+    var formId = vueIdd + modalIdd;
+}
+
+<div id="app">
+
+
+
+    <modal :show.sync="showModal">
+        <h3 slot="header">Edit Order</h3>
+        <h5 slot="body">
+            @using (Ajax.BeginForm("editOrder", "Manage", new { orderId = Model.order.OrderId, packageId = Model.package.PackageId }, new AjaxOptions
+            {
+
+                UpdateTargetId = "update",
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "POST",
+
+            }, new { @class = "form-horizontal", role = "form", id = formId }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true)
+
+                    <h4>Delivery adress:</h4>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.deliveradress.StreetAdress, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.deliveradress.StreetAdress, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.deliveradress.StreetAdress)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.deliveradress.PostCode, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.deliveradress.PostCode, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.deliveradress.PostCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.deliveradress.Suburb, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.deliveradress.Suburb, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.deliveradress.Suburb)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.deliveradress.State, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.deliveradress.State, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.deliveradress.State)
+                        </div>
+                    </div>
+                    <hr/>
+                    <h4>Pickup adress</h4>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.pickupadress.StreetAdress, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.pickupadress.StreetAdress, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.pickupadress.StreetAdress)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.pickupadress.PostCode, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.pickupadress.PostCode, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.pickupadress.PostCode)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.pickupadress.Suburb, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.pickupadress.Suburb, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.pickupadress.Suburb)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.pickupadress.State, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.pickupadress.State, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.pickupadress.State)
+                        </div>
+                    </div>
+                    <hr />
+                    <h4>Order info</h4>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.PaymentType, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <select name="order.PaymentType" class="form-control">
+
+                                <option value=Cash>Cash</option>
+                                <option value=Credit>Credit</option>
+
+                            </select>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.order.PaymentType)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.OrderPriority, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            <select name="order.OrderPriority" class="form-control">
+
+                                <option value=Low>Low</option>
+                                <option value=Medium>Medium</option>
+                                <option value=High>High</option>
+                            </select>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.order.OrderPriority)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.order.ReadyForPickupTime, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.order.ReadyForPickupTime, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.order.ReadyForPickupTime)
+                        </div>
+                    </div>
+                    <hr />
+                    <h4>Package</h4>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.package.RecieverName, new {@class = "control-label col-md-2"})
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.package.RecieverName, new {@class = "form-control", type = ""})
+                            @Html.ValidationMessageFor(model => model.package.RecieverName)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.package.Weight, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.package.Weight, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.package.Weight)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.package.SpecialInstructions, new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.TextAreaFor(m => m.package.SpecialInstructions, new { @class = "form-control", style = "height: 100px;" })
+                            @Html.ValidationMessageFor(model => model.package.SpecialInstructions)
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </h5>
+    </modal>
+</div>
+
+<script type="x/template" id="@modalIdd">
+    <div class="modal-mask" v-on:click="close" v-show="show" transition="modal">
+        <div class="modal-wrapper">
+            <div class="modal-container" style="width:650px;" v-on:click.stop>
+
+                <div class="modal-header">
+                    <slot name="header">
+                        <h3>Edit order @Model.order.OrderId </h3>
+                    </slot>
+                </div>
+
+                <div class="modal-body">
+                    <slot name="body">
+
+                    </slot>
+
+                </div>
+
+                <div class="modal-footer">
+                    <slot name="footer">
+                        <button class="modal-default-button btn-danger btn" id="knapp" v-on:click="closeButton">
+                            Save
+                        </button>
+                    </slot>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+
+    Vue.component('modal', {
+        template: '#@modalIdd',
+        props: {
+            show: {
+                type: Boolean,
+                required: true,
+                twoWay: true
+
+            }
+        },
+        methods: {
+            close: function() {
+                this.show = false;
+            },
+            closeButton: function() {
+                    $("form#@formId").submit();
+                    this.show = false;
+
+            }
+        },
+        ready: function() {
+            this.show = true;
+            document.addEventListener("keydown", (e) => {
+                if (this.show && e.keyCode == 27) {
+                    this.close();
+                } else if (this.show && e.keyCode == 13) {
+                    this.closeButton();
+                }
+            });
+        }
+    });
+
+        new Vue({
+            el: '#app',
+            data: {
+                showModal: false,
+            },
+            methods: {
+                showModalf: function() {
+                    this.showModal = true;
+                },
+
+            }
+
+        });
+
+</script>

@@ -9,7 +9,7 @@ namespace PackageDelivery.Areas.Admin.Models
     public class ShowModel
     {
         public IEnumerable<ApplicationUser> userss { get; set; }
-        public string check {get; set; } 
-        public string search { get; set; }
+        public string check {get; set; }                //Is "show only active users checked?
+        public string search { get; set; }              //the search
     }
 }

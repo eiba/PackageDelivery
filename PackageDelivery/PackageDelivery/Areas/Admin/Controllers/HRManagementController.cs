@@ -26,7 +26,9 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
         // GET: Admin/HR
 
-        public ActionResult Index(ManageController.ManageMessageId? message, string search, string orsak)
+        //Index of HRmanagement, message is the status message to be displayed to the user, search is the user has searched for something
+        //cause is the cause of an error
+        public ActionResult Index(ManageController.ManageMessageId? message, string search, string cause)
         {
             /*var store = new UserStore<ApplicationUser>(context);
             var manager = new UserManager<ApplicationUser>(store);
@@ -37,18 +39,18 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             }*/
 
-            ViewBag.StatusMessage =
+            ViewBag.StatusMessage =                                                                     //sets values of different message types
                 message == ManageController.ManageMessageId.ChangeProfileSuccess ? "Profile changed."
                 : message == ManageController.ManageMessageId.AddProfileSuccess ? "User added to database"
-                : message == ManageController.ManageMessageId.Error ? "Illegal operation" + " " + orsak
+                : message == ManageController.ManageMessageId.Error ? "Illegal operation" + " " + cause
                 : "";
 
-            var results = from s in context.Users
+            var results = from s in context.Users                                                       //Gets all users in database, order by last name
                       orderby s.Lname
                       select s;
             
 
-            if (search != null)
+            if (search != null)                                                                         //Find all users that match the search result
             {
 
                 results = from s in context.Users
@@ -68,6 +70,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return View(model);
         }
         
+        //post method for search
         [HttpPost]
         public ActionResult Index(string param, string k)
         {
@@ -87,20 +90,20 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return PartialView("_ShowUsersPartial", model);
         }
         
-
+        //Register user method
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RegisterEmployee(EmployeeRegisterViewModel model, string param)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;
+            ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;        //gets user
             if (userr == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             }
 
-            var ShowModel = new ShowModel
+            var ShowModel = new ShowModel                                                               //What users to show when view is updated
             {
                 userss = resolveUsers(param, "true"),
                 check = "true"
@@ -114,7 +117,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 foreach (var r in results)
                 {
-                    if (r.Email == model.Email)
+                    if (r.Email == model.Email)             //If the sent in email is already in the database, return error
                     {
                         if (Request.IsAjaxRequest())
                         {
@@ -126,7 +129,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)         //Creates the emplyee
             {
                 var adress = new Adresses
                 {
@@ -147,7 +150,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                     AdressId = adress.AdressId,
                     Phone = model.Phone,
                     DoB = model.DoB,
-                    AccessLvL = "Admin",
+                    AccessLvL = "Admin",            //Adds to admin, as all employees have admin access.
                     IsEnabeled = true
                 };
                 var result = await userManager.CreateAsync(user, model.Password);
@@ -162,15 +165,15 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     
-                    userManager.AddToRole(user.Id, "Admin");
+                    userManager.AddToRole(user.Id, "Admin"); //add to admin role
                    
                     var UserName = user.Fname + " " + user.Lname;
                     if (Request.IsAjaxRequest())
                     {
 
-                        ViewBag.Success = "The user " + model.Email + " was added to the database.";
+                        ViewBag.Success = "The user " + model.Email + " was added to the database.";        //success status message
                         ViewBag.Id = user.Id;
-                        return PartialView("_ShowUsersPartial", ShowModel);
+                        return PartialView("_ShowUsersPartial", ShowModel);                                 //return and update view.
                     }
                     return RedirectToAction("Index", "HRManagement", new { Message = ManageController.ManageMessageId.AddProfileSuccess, User = UserName });
 
@@ -179,7 +182,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 AddErrors(result);
 
             }
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())            //Something went wrong. Don't know exactly what, but probably the password check.
             {
                 ViewBag.Error = "Oops, something went wrong, check that the passwords matches the criteria!";
                 return PartialView("_ShowUsersPartial", ShowModel);
@@ -195,21 +198,19 @@ namespace PackageDelivery.Areas.Admin.Controllers
             }
         }
 
-        
-
-
+        //Edit method for user
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ChangeProfileAdmin model, string param, string check)
         {
 
-            var k = "";
+            var k = "";                                     
             var checkedd = check;
-            if (check == null)
+            if (check == null) //is "show only active users on?"
             {
                 checkedd = "true";
             }
-            var ShowModel = new ShowModel
+            var ShowModel = new ShowModel       //Resolves what users to show after update
             {
                 search = param,
                 userss = resolveUsers(param, check),
@@ -221,7 +222,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
                 var user = await manager.FindByNameAsync(model.UserName);
-                ApplicationUser appUser = manager.FindByName(model.UserName);
+                ApplicationUser appUser = manager.FindByName(model.UserName);   //the current user
 
                 var results = from s in context.Users
                               where
@@ -231,7 +232,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 {
                     foreach (var resultk in results)
                     {
-                        if (resultk.Id != appUser.Id)
+                        if (resultk.Id != appUser.Id)       //Check if the emil belongs to the edited user. If not you cannot use it as it is already in use
                         {
                             if (Request.IsAjaxRequest())
                             {
@@ -240,7 +241,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                 return PartialView("_ShowUsersPartial", ShowModel);
                             }
                             return RedirectToAction("Index", "HRManagement",
-                                new { Message = ManageController.ManageMessageId.Error, orsak = "Email is already in use" });
+                                new { Message = ManageController.ManageMessageId.Error, cause = "Email is already in use" });       //return error message
 
                         }
                     }
@@ -254,7 +255,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
                 }
 
-
+                //so far so good, change the details of the user
                 appUser.Fname = model.Fname;
                 appUser.Lname = model.Lname;
                 appUser.Phone = model.Phone;
@@ -282,19 +283,19 @@ namespace PackageDelivery.Areas.Admin.Controllers
                     store.Context.SaveChanges();
                 }
 
-                IdentityResult result = await manager.UpdateAsync(appUser);
+                IdentityResult result = await manager.UpdateAsync(appUser); //update the user in the databse
                 store.Context.SaveChanges();
 
-                if (result.Succeeded)
+                if (result.Succeeded)   //if update succeeds
                 {
 
                     if (model.Password != null)
                     {
                         var provider = new DpapiDataProtectionProvider("PackageDelivery");
                         manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(provider.Create("Passwordresetting"));
-                        string resetToken = await manager.GeneratePasswordResetTokenAsync(appUser.Id);
+                        string resetToken = await manager.GeneratePasswordResetTokenAsync(appUser.Id);  //need a token to change the password
                         var Presult = await manager.ResetPasswordAsync(appUser.Id, resetToken, model.Password);
-                        if (!Presult.Succeeded)
+                        if (!Presult.Succeeded) //if password change does not succeed
                         {
                             if (Request.IsAjaxRequest())
                             {
@@ -306,7 +307,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
                         }
                     }
-                    if (Request.IsAjaxRequest())
+                    if (Request.IsAjaxRequest())        //it succeeds, show success status message
                     {
                         ViewBag.Success = "The user " + model.Email + " was updated.";
                         ViewBag.Id = model.Id;
@@ -318,7 +319,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             }
             if (Request.IsAjaxRequest())
-            {
+            {                               //Oops, something went wrong. Don't exactly know what, but probably the password.
                 ViewBag.Error = "Oops, something went wrong, remember the passwords must match and meet the criteria!";
                 ViewBag.Id = model.Id;
                 return PartialView("_ShowUsersPartial", ShowModel);
@@ -326,6 +327,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return null;
         }
         
+        //Deactivation method of user
         [HttpGet]
         public async Task<ActionResult> Deactivate(string id)
         {
@@ -337,7 +339,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            if (userr.AccessLvL != "Owner")
+            if (userr.AccessLvL != "Owner") //If you are not the owner, this operation is illegal. Abort.
             {
                 return RedirectToAction("Index", new { Message = ManageController.ManageMessageId.Error });
             }
@@ -346,7 +348,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            if (user.AccessLvL != "Owner") { 
+            if (user.AccessLvL != "Owner") {            //If you're trying to deactivate the owner accout it is also illegal.
             user.LockoutEnabled = true;
             user.LockoutEndDateUtc = new DateTime(9999, 12, 30);
             user.IsEnabeled = false;
@@ -355,7 +357,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             await manager.UpdateAsync(user);
             context.SaveChanges();
 
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())           //Updates view responsively
             {
                 var model = new StatusModel
                 {
@@ -372,7 +374,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return RedirectToAction("Index", "HRManagement");
         }
 
-
+        //Method for activating a deactivated user
         public async Task<ActionResult> Activate(string id)
         {
             if (id == null)
@@ -381,26 +383,26 @@ namespace PackageDelivery.Areas.Admin.Controllers
             }
             var store = new UserStore<ApplicationUser>(context);
             var manager = new UserManager<ApplicationUser>(store);
-            ApplicationUser user = context.Users.Find(id);
-            ApplicationUser userr = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+            ApplicationUser user = context.Users.Find(id);                                  //Finds user
+            ApplicationUser userr = manager.FindByIdAsync(User.Identity.GetUserId()).Result;//Finds logged in user
 
             if (user == null)
             {
                 return HttpNotFound();
             }
-            if (userr.AccessLvL != "Owner")
+            if (userr.AccessLvL != "Owner") //if the current user is not the owner this operation is illegal. Abort.
             {
                 return RedirectToAction("Index", new { Message = ManageController.ManageMessageId.Error });
             }
             
 
-            user.LockoutEnabled = false;
+            user.LockoutEnabled = false;                //sets the lockout
             user.IsEnabeled = true;
 
             await manager.UpdateAsync(user);
-            context.SaveChanges();
+            context.SaveChanges();                      //saves the database
 
-            if (Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())                //changes the variables in the view for display
             {
                 var model = new StatusModel
                 {
@@ -409,7 +411,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                     action = "Deactivate"
                 };
 
-                ViewBag.Success = "The user " + user.Email + " has been activated.";
+                ViewBag.Success = "The user " + user.Email + " has been activated.";        //status message that the user has been activated.
                 ViewBag.Id = user.Id;
                 return PartialView("_StatusPartial", model);
             }
@@ -417,7 +419,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        //Resolves the users based on the serach criteria, param and k which is if the user has "show only active users" on or not
         public IEnumerable<ApplicationUser> resolveUsers(string param, string k)
         {
             var results = from s in context.Users
@@ -465,7 +467,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return results;
         }
         
-
+        //Shows the employee create modal
         [HttpGet]
         public ActionResult showEmployeeCreate(string param)
         {
@@ -478,6 +480,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return PartialView("_RegisterEmployeePartial", model);
         }
         
+        //Get method for the show employee details
         [HttpGet]
         public ActionResult showEmployeeDetails(string VueId, string modalId, string id)
         {
@@ -490,7 +493,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             ApplicationUser user = context.Users.Find(id);
             var adress = context.Adresses.Find(user.AdressId);
 
-            if (context.Employees.Find(id) != null)
+            if (context.Employees.Find(id) != null)     //if the user is an  emplyee
             {
                 employee = context.Employees.Find(id);
             }
@@ -508,28 +511,29 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return PartialView("_DetailsPartial", ShowDetailsModel);
         }
         
+        //Gets the modal box for employee editing
         [HttpGet]
         public ActionResult showEmployeeEdit(string vueIdd, string modalIdd, string check, string search, string id)
         {
-            if (id == null)
+            if (id == null)                                             //Id is null, return bad request
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var employee = new Employees();
-            ApplicationUser user = context.Users.Find(id);
-            var adress = context.Adresses.Find(user.AdressId);
+            ApplicationUser user = context.Users.Find(id);              //get the requested user
+            var adress = context.Adresses.Find(user.AdressId);          //get it's adress
 
-            if (context.Employees.Find(id) != null)
+            if (context.Employees.Find(id) != null)         //find the employee table if the user is an employee
             {
-                employee = context.Employees.Find(id);
+                employee = context.Employees.Find(id); 
             }
             else
             {
-                employee.CarRego = null;
+                employee.CarRego = null;                    //user is not an employee
                 employee.BankAccount = null;
             }
             
-            var ChangeProfileModel = new ChangeProfileAdmin
+            var ChangeProfileModel = new ChangeProfileAdmin     //everything to be shown
             {
                 Fname = user.Fname,
                 Lname = user.Lname,
