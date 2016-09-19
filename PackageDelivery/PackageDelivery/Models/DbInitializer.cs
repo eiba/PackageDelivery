@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Text;
 using System.Web;
+using System.Xml;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -74,6 +77,14 @@ namespace PackageDelivery.Models
             userManager.AddToRole(Employee.Id, "Admin");
 
             db.SaveChanges();
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                using (var writer = new XmlTextWriter(@"c:\Documents\Model.edmx", Encoding.Default))
+                {
+                    EdmxWriter.WriteEdmx(ctx, writer);
+                }
+            }
         }
     }
 }

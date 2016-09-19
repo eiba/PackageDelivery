@@ -251,6 +251,7 @@
     <Content Include="Areas\Admin\Views\HRManagement\_RegisterEmployeePartial.cshtml" />
     <Content Include="Areas\Admin\Views\HRManagement\_ShowUsersPartial.cshtml" />
     <Content Include="Areas\Admin\Views\HRManagement\_StatusPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Orders.cshtml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryIFB299.pubxml" />
