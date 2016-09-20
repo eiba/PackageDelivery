@@ -34,6 +34,14 @@ namespace PackageDelivery.Controllers
 
             return View();
         }
+
+        public ActionResult Quote()
+        {
+            ViewBag.Message = "Get a quote on your delivery before you pay";
+
+            return View();
+        }
+
         //Shows order request form
         [Authorize(Roles = "Owner,Admin,Customer")]
         public ActionResult Order()

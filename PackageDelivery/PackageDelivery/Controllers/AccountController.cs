@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PackageDelivery.Models;
@@ -187,6 +188,9 @@ namespace PackageDelivery.Controllers
                
                 if (result.Succeeded)//if users creation succeeds
                 {
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+                    userManager.AddToRole(user.Id, "Customer");
+                    
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
