@@ -76,15 +76,40 @@ namespace PackageDelivery.Models
             userManager.Create(Employee, "Password1.");
             userManager.AddToRole(Employee.Id, "Admin");
 
-            db.SaveChanges();
 
+            var order = new Orders
+            {
+                OrderTime = DateTime.Now,
+                PickupAdressId = Owner.AdressId,
+                ReadyForPickupTime = "siiji",
+                OrderStatus = "Requested",
+                PaymentType = "Cash",
+                OrderPriority = "High",
+            };
+            db.Orders.Add(order);
+
+            var package = new Packages
+            {
+                SenderId = Owner.Id,
+                RecieverName = "Bob Bird",
+                Weight = 65.0,
+                SpecialInstructions = "Don't let the cat in",
+                RecieverAdressId = Employee.AdressId,
+                OrderId = order.OrderId,
+                Cost = 124.0
+            };
+            db.Packages.Add(package);
+
+            db.SaveChanges();
+            //this method is for when you want to make a database diagram
+            /* 
             using (var ctx = new ApplicationDbContext())
             {
                 using (var writer = new XmlTextWriter(@"c:\Documents\Model.edmx", Encoding.Default))
                 {
                     EdmxWriter.WriteEdmx(ctx, writer);
                 }
-            }
+            }*/
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PackageDelivery.Models.Orders>
+﻿@model IEnumerable<PackageDelivery.Models.Packages>
 
 @{
     ViewBag.Title = "Orders";
@@ -7,70 +7,52 @@
 
 <h2>Orders</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Adress.Suburb)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReadyForPickupTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WareHouseArrivalTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderStatus)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PaymentType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderPriority)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WareHouseDepartureTime)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-lg-3">
+        <form method="get">
+            <div class="input-group">
+                <input type="text" name="search" value="@ViewBag.search" placeholder="Search orders..." class="form-control">
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary" value="Search">
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                Package id
+            </th>
+            <th>
+                Order id
+            </th>
+            <th>
+                Reciever
+            </th>
+            <th></th>
+        </tr>
+        @if (Model == null)
+        {
+            return;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackageId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecieverName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-primary j" })
+                </td>
+            </tr>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Adress.Suburb)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReadyForPickupTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WareHouseArrivalTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderPriority)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WareHouseDepartureTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.OrderId })
-        </td>
-    </tr>
-}
-
-</table>
+    </table>

@@ -60,7 +60,7 @@ namespace PackageDelivery.Models
         public string sInstructions { get; set; }
 
         [Required]
-        [Display(Name = "Weight")]
+        [Display(Name = "Weight(kg)")]
         public double Weight { get; set; }
 
         [Required]
