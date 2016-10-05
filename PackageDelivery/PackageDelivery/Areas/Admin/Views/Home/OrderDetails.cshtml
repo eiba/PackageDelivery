@@ -169,8 +169,16 @@
         <dd>
             @Html.DisplayFor(model => model.Adress.State)
         </dd>
+        <hr/>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Orders")
+    <div class="row">
+        <div class="col-md-2">
+            <h4>@Html.ActionLink("Today's orders", "TodaysOrders") <i style="padding-left: 35px;">|</i></h4>
+        </div>
+        <div class="col-md-10">
+            <h4>@Html.ActionLink("Order history", "Orders")</h4>
+        </div>
+        </div>
 </p>

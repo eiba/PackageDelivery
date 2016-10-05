@@ -71,10 +71,11 @@ namespace PackageDelivery.Models
         [Display(Name = "Priority")]
         public string Priority { get; set; }
 
-        [Required]
+        
         [DataType(DataType.DateTime)]
         [Display(Name = "Ready for pickup time")]
-        public string ReadyForPickupTIme { get; set; }
+        [Required]
+        public DateTime ReadyForPickupTIme { get; set; }
 
         [Required]
         [Display(Name = "Payment type")]

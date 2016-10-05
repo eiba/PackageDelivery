@@ -79,7 +79,7 @@ namespace PackageDelivery.Models
 
         [DataType(DataType.DateTime)]
         //[Required]
-        public string ReadyForPickupTime { get; set; }
+        public DateTime ReadyForPickupTime { get; set; }
        
         public string WareHouseArrivalTime { get; set; }
        

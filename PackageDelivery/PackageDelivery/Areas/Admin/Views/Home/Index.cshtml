@@ -24,6 +24,13 @@
            v-on:mouseleave="MouseLeave">
             Orders
         </a>
+        <a class="btn btn-lg btn-danger center-block home-button-link"
+           href='@Url.Action("TodaysOrders", "Home")'
+           style="width: 14em; margin-top: 1em; margin-bottom: 1em;"
+           v-on:mouseover="todaysOrderMouseOver"
+           v-on:mouseleave="MouseLeave">
+            Todays Orders
+        </a>
     </div>
     <div class="col-md-6">
         <span id="desc-text">{{ description }}</span>
@@ -53,6 +60,11 @@
                 this
                     .description =
                     "Here you can view all orders in the database";
+            },
+            todaysOrderMouseOver: function () {
+                this
+                    .description =
+                    "View the daily orders";
             }
 
         }

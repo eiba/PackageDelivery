@@ -76,18 +76,17 @@ namespace PackageDelivery.Models
             userManager.Create(Employee, "Password1.");
             userManager.AddToRole(Employee.Id, "Admin");
 
-
+            
             var order = new Orders
             {
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
-                ReadyForPickupTime = "siiji",
+                ReadyForPickupTime = new DateTime(2016,12,30,15,40,56),
                 OrderStatus = "Requested",
                 PaymentType = "Cash",
                 OrderPriority = "High",
             };
             db.Orders.Add(order);
-
             var package = new Packages
             {
                 SenderId = Owner.Id,
@@ -99,6 +98,30 @@ namespace PackageDelivery.Models
                 Cost = 124.0
             };
             db.Packages.Add(package);
+
+            db.SaveChanges();
+
+            var order2 = new Orders
+            {
+                OrderTime = DateTime.Now,
+                PickupAdressId = Owner.AdressId,
+                ReadyForPickupTime = DateTime.Now,
+                OrderStatus = "Requested",
+                PaymentType = "Card",
+                OrderPriority = "Low",
+            };
+            db.Orders.Add(order2);
+            var package2 = new Packages
+            {
+                SenderId = Employee.Id,
+                RecieverName = "Jayman",
+                Weight = 123.0,
+                SpecialInstructions = "I like trains",
+                RecieverAdressId = Owner.AdressId,
+                OrderId = order2.OrderId,
+                Cost = 420.0
+            };
+            db.Packages.Add(package2);
 
             db.SaveChanges();
             //this method is for when you want to make a database diagram
