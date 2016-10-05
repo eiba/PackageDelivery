@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PackageDelivery.Models.Packages>
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Orders</h2>
+
+<div class="row">
+    <div class="col-lg-3">
+        <form method="get">
+            <div class="input-group">
+                <input type="text" name="search" value="@ViewBag.search" placeholder="Search orders..." class="form-control">
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary" value="Search">
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                Package id
+            </th>
+            <th>
+                Order id
+            </th>
+            <th>
+                Reciever
+            </th>
+            <th></th>
+        </tr>
+        @if (Model == null)
+        {
+            return;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackageId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecieverName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-primary j" })
+                </td>
+            </tr>
+        }
+
+    </table>

@@ -25,8 +25,8 @@ namespace PackageDelivery.Models
 
 
         public virtual IList<ApplicationUser> User { get; set; }
-
         public virtual IList<Orders> Orders { get; set; }
+
 
     }
 
@@ -48,19 +48,21 @@ namespace PackageDelivery.Models
     {
         [Key]
         public int PackageId { get; set; }
-
         [ForeignKey("User")]
         public string SenderId { get; set; }
         public string RecieverName { get; set; }
         public double Weight { get; set; }
         public string SpecialInstructions { get; set; }
-        public int RecieverAdressId { get; set; }
+        [ForeignKey("Adress")]
+        public int? RecieverAdressId { get; set; }
         [ForeignKey("Order")]
         public int OrderId { get; set; }
         public double Cost { get; set; }
 
         public virtual ApplicationUser User { get; set; }
         public virtual Orders Order { get; set; }
+        public virtual Adresses Adress { get; set; }
+
     }
 
     [Table("Orders")]
@@ -74,7 +76,9 @@ namespace PackageDelivery.Models
 
         [ForeignKey("Adress")]
         public int PickupAdressId { get; set; }
-        
+
+        [DataType(DataType.DateTime)]
+        //[Required]
         public string ReadyForPickupTime { get; set; }
        
         public string WareHouseArrivalTime { get; set; }
@@ -87,7 +91,7 @@ namespace PackageDelivery.Models
         public string WareHouseDepartureTime { get; set; }
 
         public virtual Adresses Adress { get; set; }
-        public virtual IList<Packages> Package { get; set; }
+        //public virtual IList<Packages> Package { get; set; }
     }
 
     //Sets the different values for priority and status.
