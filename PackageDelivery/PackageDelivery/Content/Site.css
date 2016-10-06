@@ -16,19 +16,25 @@
     box-shadow: 8px 8px 20px #888888;
     
 }
+
 a,
+a:hover{
+    color: #af0200;
+}/*,
 a:hover,
 a:target,
 a:active,
 a:visited,
 a:focus {
     color: #af0200;
-}
+}*/
+
 
 .btn-danger {
     background-color: #af0200;
     border-color: #990000;
 }
+/*
 .btn-danger:hover,
 .btn-danger:active {
     background-color: #990000;
@@ -52,9 +58,10 @@ a:focus {
 }
 .btn-primary:visited,
 .btn-primary:focus {
-    background-color: #79000c !important;
-    border-color: #79000c !important;
+    background-color: #af0200;
+    border-color: #990000;
 }
+    */
 .navbar-inverse {
   background-color: #af0200;
   border-color: #79000c;

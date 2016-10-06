@@ -8,16 +8,21 @@
 <h2>Orders</h2>
 
 <div class="row">
-    <div class="col-lg-3">
+    <div class="col-lg-3" style="border: 2px solid black; margin-left: 15px; padding-bottom: 10px; padding-top: 20px;">
         <form method="get">
-            <div class="input-group">
-                <input type="text" name="search" value="@ViewBag.search" placeholder="Search orders..." class="form-control">
-                <span class="input-group-btn">
-                    <input type="submit" class="btn btn-primary" value="Search">
-                </span>
-            </div>
+            <label>Apply filter:</label>
+            <hr/>
+            <label>From:</label>
+            <input type="datetime-local" name="from" value="@ViewBag.from" class="form-control">
+            <label>To:</label>
+            <input type="datetime-local" name="to" value="@ViewBag.to" class="form-control">
+            <label>Search:</label>
+            <input type="text" name="search" value="@ViewBag.search" placeholder="Searchword..." class="form-control">
+            <br/>
+            <input type="submit" class="btn btn-danger" value="Apply">
         </form>
     </div>
+
 </div>
     <br />
     <table class="table">
@@ -50,7 +55,7 @@
                     @Html.DisplayFor(modelItem => item.RecieverName)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-primary j" })
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger" })
                 </td>
             </tr>
         }
