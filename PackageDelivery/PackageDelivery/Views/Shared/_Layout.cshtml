@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@* This is the main website *@
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,18 +22,24 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                @* home button *@
                 @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse" >
                 <ul class="nav navbar-nav">
+                    @* about button *@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
+                    @* contact button *@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @* quote button *@
                     <li>@Html.ActionLink("Quote", "Quote", "Home")</li>
                 </ul>
+                @* register/manage button and login/logout button *@
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
+    @* the body content, I'm assuming @renderbody is some kind of comtainer/object that is manipulated to hold the content of the moment *@
     <div class="container body-content">
         @RenderBody()
         <hr />

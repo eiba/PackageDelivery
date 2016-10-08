@@ -1,23 +1,28 @@
 ﻿@using Microsoft.AspNet.Identity
+@* Case structure to check if you the user are currently logged in or not..   
+    not sure but there may be a problem here when the website is loaded again and cookies? 
+    remain that say you are authenticated but the serverside knows nothing about it?*@
 @if (Request.IsAuthenticated)
-{
+{@* the user is logged in*@
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
-    @Html.AntiForgeryToken()
+        @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
             <li>
+                @*calls the index.cshtml inside the manage folder?*@
                 <a href="@Url.Action("Index", "Manage", new {area = ""})">
                     You are logged in as @User.Identity.GetUserName() <i class="glyphicon glyphicon-user"></i></a>
             </li>
-            
+            @* logging out is not a Url.Action? not scripting here or the script is short enough that you put it in here
+                or it does not actually launch another page so it just does an action to the serverside state machine and the page is refreshed*@
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off <i class="glyphicon glyphicon-log-out"></i></a></li>
         </ul>
     }
 }
 else
-{
-    
+{@* the user is not logged in*@
+
     <ul class="nav navbar-nav navbar-right">
         <li>
             <a href="@Url.Action("Register", "Account", new {area = ""})">

@@ -89,6 +89,7 @@ namespace PackageDelivery.Controllers
                 Suburb = adress.Suburb,
                 StreetAdress = adress.StreetAdress,
                 Phone = currentUser.Phone,
+                Role = currentUser.AccessLvL, // the variable for the accesslvl being populated
             };
             var model = new ChangeProfileIdexViewModel
             {

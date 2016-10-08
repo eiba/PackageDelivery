@@ -76,7 +76,31 @@ namespace PackageDelivery.Models
             userManager.Create(Employee, "Password1.");
             userManager.AddToRole(Employee.Id, "Admin");
 
-            
+            //adding a customer type user to the DB
+            var CustomerAddress = new Adresses
+            {
+                Suburb = "South Bum",
+                State = "QueensHat",
+                PostCode = 666,
+                StreetAdress = "Some street 32"
+
+            };
+            db.Adresses.Add(CustomerAddress);
+            var Customer = new ApplicationUser
+            {
+                UserName = "Customer@qut.edu.au",
+                Email = "Customer@qut.edu.au",
+                Fname = "Mr.",
+                Lname = "Customer",
+                AdressId = CustomerAddress.AdressId,
+                AccessLvL = "Customer",
+                IsEnabeled = true,
+                Phone = "666666666",
+                DoB = "13/13/1366"
+            };
+            userManager.Create(Customer, "Password1.");
+            userManager.AddToRole(Customer.Id, "Customer");
+
             var order = new Orders
             {
                 OrderTime = DateTime.Now,
