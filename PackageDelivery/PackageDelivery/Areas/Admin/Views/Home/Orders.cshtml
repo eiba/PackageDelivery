@@ -57,6 +57,9 @@
                 <td>
                     @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger" })
                 </td>
+                <td>
+                    @Html.ActionLink("Sticker", "StickerMaker", new { id = item.PackageId }, new { @class = "btn btn-danger" })
+                </td>
             </tr>
         }
 

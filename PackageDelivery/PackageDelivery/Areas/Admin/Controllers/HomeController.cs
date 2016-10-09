@@ -132,6 +132,21 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return View(Package);
         }
 
+        public ActionResult StickerMaker(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages Package = context.Packages.Find(id);
+            if (Package == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(Package);
+        }
+
         public ActionResult TodaysOrders()
         {
             var results = from m in context.Packages

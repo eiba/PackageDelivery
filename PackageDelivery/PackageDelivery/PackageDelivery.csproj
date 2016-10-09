@@ -256,6 +256,7 @@
     <Content Include="Areas\Admin\Views\Home\Orders.cshtml" />
     <Content Include="Areas\Admin\Views\Home\OrderDetails.cshtml" />
     <Content Include="Areas\Admin\Views\Home\TodaysOrders.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\StickerMaker.cshtml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryIFB299.pubxml" />
