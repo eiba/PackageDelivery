@@ -1,0 +1,59 @@
+﻿@model PackageDelivery.Models.Packages
+
+@{
+        ViewBag.Title = "StickerMaker";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<h2>Automatically generated sticker for Package @Html.DisplayFor(model => model.Order.OrderId)</h2>
+<br />
+<br />
+<div>
+    <br />
+    <table class="table">
+        <tr>
+            <th><u><i>Reciever information</i></u></th>
+            <th></th>
+            <th><u><i>Sender information</i></u></th>
+        </tr>
+        <tr>
+            <th>Reciever signature:</th>
+            <th></th>
+            <th>Sender signature</th>
+        </tr>
+    </table>
+
+    <table class="table">
+        <tr>
+            <th>Reciever name:</th>
+            <th>@Html.DisplayFor(model => model.RecieverName)</th>
+            <th>Sender name:</th>
+            <th>Steve Wilson</th>
+        </tr>
+        <tr>
+            <th>Reciever address:</th>
+            <th>@Html.DisplayFor(model => model.Adress.StreetAdress), <br />@Html.DisplayFor(model => model.Adress.PostCode), <br />@Html.DisplayFor(model => model.Adress.Suburb), <br />@Html.DisplayFor(model => model.Adress.State)</th>
+            <th>Pickup address</th>
+            <th>@Html.DisplayFor(model => model.Order.Adress.StreetAdress), <br />@Html.DisplayFor(model => model.Order.Adress.PostCode), <br />@Html.DisplayFor(model => model.Order.Adress.Suburb), <br />@Html.DisplayFor(model => model.Order.Adress.State)</th>
+        </tr>
+    </table>
+    <br />
+    <table class="table">
+        <tr>
+            <th>Order ID: @Html.DisplayFor(model => model.Order.OrderId)</th>
+            <th></th>
+            <th>Order priority: @Html.DisplayFor(model => model.Order.OrderPriority)</th>
+            <th></th>
+            <th>Weight: @Html.DisplayFor(model => model.Weight)</th>
+        </tr>
+    </table>
+    <table class="table">
+        <tr>
+            <th><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/UPC-A-036000291452.png/220px-UPC-A-036000291452.png"></th>
+            <th>Special insturctions: <br />@Html.DisplayFor(model => model.SpecialInstructions)</th>
+        </tr>
+    </table>
+</div>
+<input type="submit" class="btn btn-danger" value="Print">
+<a href="http://www.w3schools.com" target="_blank">Visit W3Schools.com!</a>
