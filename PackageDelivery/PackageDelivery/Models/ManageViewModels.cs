@@ -61,6 +61,11 @@ namespace PackageDelivery.Models
         [Display(Name = "State")]
         public string State { get; set; }
 
+        //the variable to hold the accesslvl of the current user, I tried using the built in functionality but no idea how it works or how to search for how it works
+        [Required]
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+
     }
 
     public class ChangeProfileIdexViewModel

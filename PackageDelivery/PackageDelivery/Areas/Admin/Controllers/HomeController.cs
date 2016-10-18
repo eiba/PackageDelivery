@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
 using PackageDelivery.Models;
+using SendGrid;
 
 namespace PackageDelivery.Areas.Admin.Controllers
 {
@@ -37,7 +40,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.Cost.ToString()== Search ||
                                   m.SpecialInstructions.Contains(Search) ||
                                   m.Weight.ToString() == Search ||
-                                  m.Order.OrderPriority == Search ||
+                                  m.Order.OrderPriority.ToString() == Search ||
                                   m.Order.OrderStatus == Search ||
                                   m.SenderId == Search ||
                                   m.Order.PaymentType == Search ||
@@ -73,7 +76,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.Cost.ToString() == Search ||
                                   m.SpecialInstructions.Contains(Search) ||
                                   m.Weight.ToString() == Search ||
-                                  m.Order.OrderPriority == Search ||
+                                  m.Order.OrderPriority.ToString() == Search ||
                                   m.Order.OrderStatus == Search ||
                                   m.SenderId == Search ||
                                   m.Order.PaymentType == Search ||
@@ -185,6 +188,45 @@ namespace PackageDelivery.Areas.Admin.Controllers
                 convInt = number.ToString();
             }
             return convInt;
+        }
+
+        public ActionResult StartOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages Package = context.Packages.Find(id);
+            if (Package == null)
+            {
+                return HttpNotFound();
+            }
+            
+           
+            string to = "eirikbaug@hotmail.com";
+            string from = "andreas@erdust.com";
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = "Mailll biiatch";
+            message.Body = "this better work";
+            SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
+
+            // Credentials are necessary if the server requires the client 
+            // to authenticate before it will send e-mail on the client's behalf.
+            client.UseDefaultCredentials = false;
+            var credentials = new NetworkCredential("azure_c2e053642715e025ba3d377408e8c9b2@azure.com", "Password1.");
+            client.Credentials = credentials; 
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}",
+                            ex.ToString());
+            }
+            
+            return RedirectToAction("Index");
         }
     }
 }

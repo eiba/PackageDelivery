@@ -80,6 +80,14 @@
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Priority, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
+            @Html.EnumDropDownListFor(model => model.PackageInfo.Priority, new {@class = "form-control"})
+        </div>
+    </div>
+    @*
+    @Html.EnumDropDownListFor(model => model.PackageInfo.Priority)
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Priority, new {@class = "col-md-2 control-label"})
+        <div class="col-md-10">
             <select name="PackageInfo.Priority" class="form-control">
 
                 <option value=Low>Low</option>
@@ -89,6 +97,19 @@
             </select>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <select name="PackageInfo.Priority" class="form-control">
+
+                <option value=Low></option>
+                <option value=Medium></option>
+                <option value=High></option>
+
+            </select>
+        </div>
+    </div>
+    *@
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.PaymentType, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">

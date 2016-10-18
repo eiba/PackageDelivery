@@ -69,7 +69,7 @@ namespace PackageDelivery.Models
 
         [Required]
         [Display(Name = "Priority")]
-        public string Priority { get; set; }
+        public Priority Priority { get; set; }
 
         
         [DataType(DataType.DateTime)]

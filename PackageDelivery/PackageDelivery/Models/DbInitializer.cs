@@ -76,6 +76,30 @@ namespace PackageDelivery.Models
             userManager.Create(Employee, "Password1.");
             userManager.AddToRole(Employee.Id, "Admin");
 
+            //adding a customer type user to the DB
+            var CustomerAddress = new Adresses
+            {
+                Suburb = "South Bum",
+                State = "QueensHat",
+                PostCode = 666,
+                StreetAdress = "Some street 32"
+
+            };
+            db.Adresses.Add(CustomerAddress);
+            var Customer = new ApplicationUser
+            {
+                UserName = "Customer@qut.edu.au",
+                Email = "Customer@qut.edu.au",
+                Fname = "Mr.",
+                Lname = "Customer",
+                AdressId = CustomerAddress.AdressId,
+                AccessLvL = "Customer",
+                IsEnabeled = true,
+                Phone = "666666666",
+                DoB = "13/13/1366"
+            };
+            userManager.Create(Customer, "Password1.");
+            userManager.AddToRole(Customer.Id, "Customer");
             
             var order = new Orders
             {
@@ -84,7 +108,7 @@ namespace PackageDelivery.Models
                 ReadyForPickupTime = new DateTime(2016,12,30,15,40,56),
                 OrderStatus = "Requested",
                 PaymentType = "Cash",
-                OrderPriority = "High",
+                OrderPriority = Priority.High,
             };
             db.Orders.Add(order);
             var package = new Packages
@@ -108,7 +132,7 @@ namespace PackageDelivery.Models
                 ReadyForPickupTime = DateTime.Now,
                 OrderStatus = "Requested",
                 PaymentType = "Card",
-                OrderPriority = "Low",
+                OrderPriority = Priority.Low,
             };
             db.Orders.Add(order2);
             var package2 = new Packages
@@ -122,7 +146,7 @@ namespace PackageDelivery.Models
                 Cost = 420.0
             };
             db.Packages.Add(package2);
-
+            
             db.SaveChanges();
             //this method is for when you want to make a database diagram
             /* 

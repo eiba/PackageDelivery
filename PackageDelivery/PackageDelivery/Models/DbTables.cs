@@ -86,7 +86,7 @@ namespace PackageDelivery.Models
         public string OrderStatus { get; set; }
         public string PaymentType { get; set; }
      
-        public string OrderPriority { get; set; }
+        public Priority OrderPriority { get; set; }
 
         public string WareHouseDepartureTime { get; set; }
 
