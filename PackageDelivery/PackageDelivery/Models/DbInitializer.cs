@@ -100,7 +100,7 @@ namespace PackageDelivery.Models
             };
             userManager.Create(Customer, "Password1.");
             userManager.AddToRole(Customer.Id, "Customer");
-            
+
             var order = new Orders
             {
                 OrderTime = DateTime.Now,
