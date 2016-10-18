@@ -28,11 +28,29 @@
             <div class="navbar-collapse collapse" >
                 <ul class="nav navbar-nav">
                     @* about button *@
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home", new { area = "" })</li>*@
+                    <li>
+                        @*calls the index.cshtml inside the manage folder?*@
+                        <a href="@Url.Action("About", "Home", new {area = ""})">
+                            About
+                        </a>
+                    </li>
                     @* contact button *@
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" })</li>*@
+                    <li>
+                        @*calls the index.cshtml inside the manage folder?*@
+                        <a href="@Url.Action("Contact", "Home", new {area = ""})">
+                            Contact
+                        </a>
+                    </li>
                     @* quote button *@
-                    <li>@Html.ActionLink("Quote", "Quote", "Home")</li>
+                    @*<li>@Html.ActionLink("Quote", "Quote", "Home", new { area = "" })</li>*@
+                    <li>
+                        @*calls the index.cshtml inside the manage folder?*@
+                        <a href="@Url.Action("Quote", "Home", new {area = ""})">
+                            Quote
+                        </a>
+                    </li>
                 </ul>
                 @* register/manage button and login/logout button *@
                 @Html.Partial("_LoginPartial")
