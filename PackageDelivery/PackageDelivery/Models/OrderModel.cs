@@ -79,6 +79,6 @@ namespace PackageDelivery.Models
 
         [Required]
         [Display(Name = "Payment type")]
-        public string PaymentType { get; set; }
+        public PaymentType PaymentType { get; set; }
     }
 }

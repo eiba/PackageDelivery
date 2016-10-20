@@ -414,6 +414,7 @@ namespace PackageDelivery.Controllers
         //Returns and displays all the users current orders.
         public ActionResult MyOrders()
         {
+
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
 
@@ -477,15 +478,44 @@ namespace PackageDelivery.Controllers
                 pickupadress = Context.Adresses.Find(order.PickupAdressId),
                 deliveradress = Context.Adresses.Find(package.RecieverAdressId)
             };
-
+            ViewBag.date = convertDateTime(order.ReadyForPickupTime);
             return PartialView("_OrderEditPartial", model);
         }
 
         public async Task<ActionResult> editOrder(int? packageId, int? orderId, OrderDetailsViewModel model)
         {
-            if (ModelState.IsValid) { 
+            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+            if (ModelState.IsValid) {
 
-            var package = Context.Packages.Find(packageId);
+                if (model.order.ReadyForPickupTime < DateTime.Now)
+                {
+                    var Packagess = from s in Context.Packages
+                                   where
+                                       s.SenderId == user.Id
+                                   select s;
+                    var Newpackagess = Packagess.ToList();
+                    foreach (var Package in Newpackagess)
+                    {
+                        var orders = from s in Context.Orders
+                                    where
+                                    s.OrderId == Package.OrderId
+                                    select s;
+
+                        map.Add(Package, orders.First());
+                    }
+
+
+                    var Models = new OrderViewModel
+                    {
+                        OrderDictionaryMap = map
+                    };
+                    ViewBag.Id = orderId;
+                    ViewBag.Error = "Order ready for pickup date cannot be in the past";
+                    return PartialView("_orderPartial", Models);
+                }
+                var package = Context.Packages.Find(packageId);
             var order = Context.Orders.Find(orderId);
 
                 var pickupAdress = new Adresses
@@ -523,30 +553,23 @@ namespace PackageDelivery.Controllers
                 {
                     deliveryAdress = delivery;
                 }
-                package.RecieverName = model.package.RecieverName;
-                package.Weight = model.package.Weight;
                 package.SpecialInstructions= model.package.SpecialInstructions;
                 package.RecieverAdressId = deliveryAdress.AdressId;
                 Context.Entry(package).State = EntityState.Modified;
                 Context.SaveChanges();
 
                 order.PickupAdressId = pickupAdress.AdressId;
-                order.OrderPriority = model.order.OrderPriority;
-                order.PaymentType = model.order.PaymentType;
                 order.ReadyForPickupTime = model.order.ReadyForPickupTime;
+                
                 Context.Entry(order).State = EntityState.Modified;
                 Context.SaveChanges();
 
             }
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
-            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
 
             var Packages = from s in Context.Packages
                            where
                                s.SenderId == user.Id
                            select s;
-            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
-
             var Newpackages = Packages.ToList();
             foreach (var Package in Newpackages)
             {
@@ -563,8 +586,40 @@ namespace PackageDelivery.Controllers
             {
                 OrderDictionaryMap = map
             };
-
+            ViewBag.Id = orderId;
+            ViewBag.Success = "Successfully updated order " + model.order.OrderId;
             return PartialView("_orderPartial",Model);
+        }
+
+        //Method that converts the datetime to a displayable format in the view
+        public string convertDateTime(DateTime? datetime)
+        {
+            var convertedString = "";
+            if (datetime.HasValue)
+            {
+                var year = datetime.Value.Year.ToString();
+                var month = convertInt(datetime.Value.Month);
+                var day = convertInt(datetime.Value.Day);
+                var hour = convertInt(datetime.Value.Hour);
+                var minute = convertInt(datetime.Value.Minute);
+
+                convertedString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
+            }
+            return convertedString;
+        }
+
+        public string convertInt(int number)
+        {
+            var convInt = "";
+            if (number < 10)
+            {
+                convInt = "0" + number;
+            }
+            else
+            {
+                convInt = number.ToString();
+            }
+            return convInt;
         }
 
         protected override void Dispose(bool disposing)

@@ -8,6 +8,8 @@ using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using PackageDelivery.Models;
 using SendGrid;
 
@@ -41,9 +43,9 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.SpecialInstructions.Contains(Search) ||
                                   m.Weight.ToString() == Search ||
                                   m.Order.OrderPriority.ToString() == Search ||
-                                  m.Order.OrderStatus == Search ||
+                                  m.Order.OrderStatus.ToString() == Search ||
                                   m.SenderId == Search ||
-                                  m.Order.PaymentType == Search ||
+                                  m.Order.PaymentType.ToString() == Search ||
                                   m.Order.ReadyForPickupTime.ToString() == Search ||
                                   m.Order.WareHouseArrivalTime == Search ||
                                   m.Order.WareHouseDepartureTime == Search ||
@@ -77,9 +79,9 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.SpecialInstructions.Contains(Search) ||
                                   m.Weight.ToString() == Search ||
                                   m.Order.OrderPriority.ToString() == Search ||
-                                  m.Order.OrderStatus == Search ||
+                                  m.Order.OrderStatus.ToString() == Search ||
                                   m.SenderId == Search ||
-                                  m.Order.PaymentType == Search ||
+                                  m.Order.PaymentType.ToString() == Search ||
                                   m.Order.ReadyForPickupTime.ToString() == Search ||
                                   m.Order.WareHouseArrivalTime == Search ||
                                   m.Order.WareHouseDepartureTime == Search ||
@@ -201,13 +203,14 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
-            
-           
-            string to = "eirikbaug@hotmail.com";
-            string from = "andreas@erdust.com";
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            ApplicationUser User = manager.FindByIdAsync(Package.SenderId).Result;
+            string to = User.Email;
+            string from = "noreply@OnTheSpotDelivery.com";
             MailMessage message = new MailMessage(from, to);
-            message.Subject = "Mailll biiatch";
-            message.Body = "this better work";
+            message.Subject = "Package is underway!";
+            message.Body = "Your order in underway \n Kind regards, On the spot delivery";
             SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
 
             // Credentials are necessary if the server requires the client 

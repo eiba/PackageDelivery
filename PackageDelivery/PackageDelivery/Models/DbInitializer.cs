@@ -106,8 +106,8 @@ namespace PackageDelivery.Models
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
                 ReadyForPickupTime = new DateTime(2016,12,30,15,40,56),
-                OrderStatus = "Requested",
-                PaymentType = "Cash",
+                OrderStatus = Status.Recieved,
+                PaymentType = PaymentType.Credit,
                 OrderPriority = Priority.High,
             };
             db.Orders.Add(order);
@@ -130,8 +130,8 @@ namespace PackageDelivery.Models
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
                 ReadyForPickupTime = DateTime.Now,
-                OrderStatus = "Requested",
-                PaymentType = "Card",
+                OrderStatus = Status.Recieved,
+                PaymentType = PaymentType.Cash,
                 OrderPriority = Priority.Low,
             };
             db.Orders.Add(order2);

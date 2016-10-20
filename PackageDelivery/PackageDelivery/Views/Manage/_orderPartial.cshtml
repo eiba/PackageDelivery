@@ -1,6 +1,15 @@
 ﻿@using PackageDelivery.Models
 @model PackageDelivery.Models.OrderViewModel
 
+<div class="col-md-8"></div>
+<div class="col-md-4">
+    <div class="text-danger">
+        @ViewBag.Error
+    </div>
+    <div class="text-success">
+        @ViewBag.Success
+    </div>
+</div>
 <table class="table table-hover">
     <tr class="dl-horizontal">
         <th>
@@ -21,7 +30,16 @@
 
     @foreach (KeyValuePair<Packages, Orders> pair in Model.OrderDictionaryMap)
     {
-        <tr>
+        var color = "";
+        if (pair.Value.OrderId == ViewBag.Id && ViewBag.success != null)
+        {
+            color = "success";
+        }
+        else if (pair.Value.OrderId == ViewBag.Id && ViewBag.Error != null)
+        {
+            color = "danger";
+        }
+        <tr class="@color">
             <td>@pair.Value.OrderId</td>
             <td>@pair.Value.OrderStatus</td>
             <td>@pair.Value.ReadyForPickupTime</td>

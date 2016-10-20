@@ -17,10 +17,11 @@ namespace PackageDelivery.Models
         public int AdressId { get; set; }
 
         public string Suburb { get; set; }
+        [Display(Name = "Postcode")]
         public int PostCode { get; set; }
 
         public string State { get; set; }
-
+        [Display(Name = "Street Adress")]
         public string StreetAdress { get; set; }
 
 
@@ -52,6 +53,7 @@ namespace PackageDelivery.Models
         public string SenderId { get; set; }
         public string RecieverName { get; set; }
         public double Weight { get; set; }
+        [Display(Name = "Special instructions")]
         public string SpecialInstructions { get; set; }
         [ForeignKey("Adress")]
         public int? RecieverAdressId { get; set; }
@@ -79,12 +81,13 @@ namespace PackageDelivery.Models
 
         [DataType(DataType.DateTime)]
         //[Required]
+        [Display(Name = "Ready for pickup time")]
         public DateTime ReadyForPickupTime { get; set; }
        
         public string WareHouseArrivalTime { get; set; }
        
-        public string OrderStatus { get; set; }
-        public string PaymentType { get; set; }
+        public Status OrderStatus { get; set; }
+        public PaymentType PaymentType { get; set; }
      
         public Priority OrderPriority { get; set; }
 
@@ -102,5 +105,10 @@ namespace PackageDelivery.Models
     public enum Priority
     {
         Low, Medium, High
+    }
+
+    public enum PaymentType
+    {
+        Cash, Credit
     }
 }

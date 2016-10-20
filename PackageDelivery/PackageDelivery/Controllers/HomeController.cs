@@ -122,7 +122,7 @@ namespace PackageDelivery.Controllers
                 OrderTime = DateTime.Now,
                 PickupAdressId = pickupAdress.AdressId,
                 OrderPriority = model.PackageInfo.Priority,
-                OrderStatus = "Order recieved",
+                OrderStatus = Status.Recieved,
                 ReadyForPickupTime = model.PackageInfo.ReadyForPickupTIme,
                 PaymentType = model.PackageInfo.PaymentType
             };

@@ -271,6 +271,7 @@
     <Content Include="Areas\Admin\Views\Home\StickerMaker.cshtml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\PackageDelivery299 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryIFB299.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />

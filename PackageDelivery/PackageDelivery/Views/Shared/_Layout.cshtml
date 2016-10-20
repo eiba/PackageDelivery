@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using PackageDelivery.Models
+<!DOCTYPE html>
 @* This is the main website *@
 <html>
 <head>
@@ -52,7 +55,21 @@
                             Quote
                         </a>
                     </li>
-
+                    @{
+                        var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
+                        ApplicationUser CurrentUser = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+                        if (CurrentUser != null) { 
+                        if (CurrentUser.AccessLvL == "Admin" || CurrentUser.AccessLvL == "Owner")
+                        {
+                            <li>
+                                @*calls the index.cshtml inside the manage folder?*@
+                                <a href="@Url.Action("Index", "Home", new {area = "Admin"})">
+                                    Admin
+                                </a>
+                            </li>
+                            }
+                        }
+                    }
                 </ul>
                 @* register/manage button and login/logout button *@
                 @Html.Partial("_LoginPartial")
@@ -64,7 +81,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - On The Spot Delivery</p>
         </footer>
     </div>
 
