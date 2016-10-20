@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.Weight)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Order.ReadyForPickupTime.TimeOfDay)
+                @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
             </td>
             <td>
                 @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })

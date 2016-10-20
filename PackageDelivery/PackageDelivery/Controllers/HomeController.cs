@@ -137,8 +137,8 @@ namespace PackageDelivery.Controllers
                     SpecialInstructions = model.PackageInfo.sInstructions,
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
-                    Cost = 234.4        //Test value, no cost estimation added yet
-          
+                    Cost = 234.4,        //Test value, no cost estimation added yet
+                    ReadyForPickupTime = order.ReadyForPickupTime
                 };
 
                 context.Packages.Add(package);

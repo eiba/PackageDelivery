@@ -119,7 +119,8 @@ namespace PackageDelivery.Models
                 SpecialInstructions = "Don't let the cat in",
                 RecieverAdressId = Employee.AdressId,
                 OrderId = order.OrderId,
-                Cost = 124.0
+                Cost = 124.0,
+                ReadyForPickupTime = order.ReadyForPickupTime
             };
             db.Packages.Add(package);
 
@@ -143,7 +144,8 @@ namespace PackageDelivery.Models
                 SpecialInstructions = "I like trains",
                 RecieverAdressId = Owner.AdressId,
                 OrderId = order2.OrderId,
-                Cost = 420.0
+                Cost = 420.0,
+                ReadyForPickupTime = order2.ReadyForPickupTime
             };
             db.Packages.Add(package2);
             

@@ -555,6 +555,7 @@ namespace PackageDelivery.Controllers
                 }
                 package.SpecialInstructions= model.package.SpecialInstructions;
                 package.RecieverAdressId = deliveryAdress.AdressId;
+                package.ReadyForPickupTime = model.order.ReadyForPickupTime;
                 Context.Entry(package).State = EntityState.Modified;
                 Context.SaveChanges();
 

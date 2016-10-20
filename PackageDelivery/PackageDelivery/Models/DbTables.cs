@@ -60,6 +60,8 @@ namespace PackageDelivery.Models
         [ForeignKey("Order")]
         public int OrderId { get; set; }
         public double Cost { get; set; }
+        [Display(Name = "Ready for pickup time")]
+        public DateTime ReadyForPickupTime { get; set; }
 
         public virtual ApplicationUser User { get; set; }
         public virtual Orders Order { get; set; }

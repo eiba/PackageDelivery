@@ -15,67 +15,67 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Fname, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Fname, new { @class = "form-control", @placeholder = "First name" })
+            @Html.TextBoxFor(m => m.Fname, new { @class = "form-control"})
         </div>
      </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Lname, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Lname, new {@class = "form-control", @placeholder = "Last name " })
+            @Html.TextBoxFor(m => m.Lname, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Phone, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Phone, new {@class = "form-control", @placeholder = "mobile/private Ph No. " })
+            @Html.TextBoxFor(m => m.Phone, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.DoB, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.DoB, new {@class = "form-control", @placeholder = "dd/mm/yyyy", @type = "date"})
+            @Html.TextBoxFor(m => m.DoB, new {@class = "form-control", @type = "date"})
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.StreetAdress, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.StreetAdress, new {@class = "form-control", @placeholder = "eg. 11 Barny st " })
+            @Html.TextBoxFor(m => m.StreetAdress, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PostCode, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.PostCode, new {@class = "form-control", @placeholder = "eg. 1234" })
+            @Html.TextBoxFor(m => m.PostCode, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Suburb, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Suburb, new {@class = "form-control", @placeholder = "eg. Brisbane CBD, logan, caboolture, chermside etc" })
+            @Html.TextBoxFor(m => m.Suburb, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.State, new { @class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.State, new { @class = "form-control", @placeholder = "eg QLD, Queensland, etc" })
+            @Html.TextBoxFor(m => m.State, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Email, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new {@class = "form-control", @placeholder = "Something@Something.Something" })
+            @Html.TextBoxFor(m => m.Email, new {@class = "form-control" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Must include uppercase, lowercase, number and character, eg. 'Password1.'" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Uppercase, lowercase, number, character" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Must include uppercase, lowercase, number and character, eg. 'Password1.'" })
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Uppercase, lowercase, number, character" })
         </div>
     </div>
     <div class="form-group">
