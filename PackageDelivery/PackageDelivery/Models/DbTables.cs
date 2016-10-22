@@ -86,6 +86,8 @@ namespace PackageDelivery.Models
         [Display(Name = "Ready for pickup time")]
         public DateTime ReadyForPickupTime { get; set; }
        
+        public DateTime BeginDeliveryTime { get; set; }
+
         public string WareHouseArrivalTime { get; set; }
        
         public Status OrderStatus { get; set; }
@@ -96,6 +98,7 @@ namespace PackageDelivery.Models
         public string WareHouseDepartureTime { get; set; }
 
         public virtual Adresses Adress { get; set; }
+
         //public virtual IList<Packages> Package { get; set; }
     }
 

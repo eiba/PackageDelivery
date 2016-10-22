@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Today's Orders</h2>
+<h2>Today's Pickups</h2>
 
 
 <table class="table">
@@ -28,31 +28,87 @@
 {
     foreach (var item in Model)
     {
-        <tr>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.RecieverName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cost)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
-                @Html.ActionLink("Start Order", "StartOrder", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+        if(item.ReadyForPickupTime.Date == DateTime.Now.Date)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecieverName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Weight)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+                    @Html.ActionLink("Start Order", "StartOrder", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
 
-            </td>
-        </tr>
+                </td>
+            </tr>
+        }
     }
 }
 else
 {
-   
         <p>No deliveries today</p>
 }
+</table>
+<br />
+
+<h2>Today's Deliveries</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Reciever
+        </th>
+        <th>
+            Cost
+        </th>
+        <th>
+            Weight
+        </th>
+        <th>
+            Ready for pickup
+        </th>
+        <th></th>
+    </tr>
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            if (item.Order.BeginDeliveryTime.Date == DateTime.Now.Date)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecieverName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cost)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+                        @Html.ActionLink("Start Order", "StartOrder", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+
+                    </td>
+                </tr>
+            }
+        }
+    }
+    else
+    {
+
+        <p>No deliveries today</p>
+    }
 </table>
