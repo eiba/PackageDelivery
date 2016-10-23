@@ -86,6 +86,7 @@ namespace PackageDelivery.Controllers
         [HttpPost]
         public ActionResult Order(OrderModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Index", "Home", new { errormessage = "Something went wrong, sorry" });
@@ -111,7 +112,8 @@ namespace PackageDelivery.Controllers
                 Suburb = model.PickupAdress.Suburb,
                 State = model.PickupAdress.State,
 
-            };
+
+                };
                 var pickup = adressExist(pickupAdress);     //Checks if adress is already in the database or not
                 if (pickup == null)
                 {
@@ -122,14 +124,14 @@ namespace PackageDelivery.Controllers
                 {
                     pickupAdress = pickup;
                 }
-            var deliveryAdress = new Adresses
-            {
-                StreetAdress = model.DeliveryAdress.StreetAdress,
-                PostCode = model.DeliveryAdress.PostCode,
-                Suburb = model.DeliveryAdress.Suburb,
-                State = model.DeliveryAdress.State,
+                var deliveryAdress = new Adresses
+                {
+                    StreetAdress = model.DeliveryAdress.StreetAdress,
+                    PostCode = model.DeliveryAdress.PostCode,
+                    Suburb = model.DeliveryAdress.Suburb,
+                    State = model.DeliveryAdress.State,
 
-            };
+                };
                 var delivery = adressExist(deliveryAdress);
                 if (delivery == null)
                 {
@@ -140,15 +142,28 @@ namespace PackageDelivery.Controllers
                 {
                     deliveryAdress = delivery;
                 }
-            var order = new Orders
-            {
-                OrderTime = DateTime.Now,
-                PickupAdressId = pickupAdress.AdressId,
-                OrderPriority = model.PackageInfo.Priority,
-                OrderStatus = Status.Recieved,
-                ReadyForPickupTime = model.PackageInfo.ReadyForPickupTIme,
-                PaymentType = model.PackageInfo.PaymentType
-            };
+                var order = new Orders
+                {
+                    OrderTime = DateTime.Now,
+                    PickupAdressId = pickupAdress.AdressId,
+                    OrderPriority = model.PackageInfo.Priority,
+                    OrderStatus = Status.Requested,
+                    ReadyForPickupTime = model.PackageInfo.ReadyForPickupTIme,
+                    PaymentType = model.PackageInfo.PaymentType,
+                    BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme
+                };
+                if (model.PackageInfo.Priority == Priority.Low)
+                {
+                    order.BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme.AddDays(7);
+                }
+                else if (model.PackageInfo.Priority == Priority.Medium)
+                {
+                    order.BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme.AddDays(3);
+                }
+                else
+                {
+                    order.BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme.AddDays(1);
+                }
                 context.Orders.Add(order);
                 context.SaveChanges();
                 double WhichSpeed = 1.0;

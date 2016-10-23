@@ -55,7 +55,7 @@
                             Quote
                         </a>
                     </li>
-                    @*
+                    
     @{
         if(User.Identity.GetUserId() != null) {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
@@ -71,7 +71,7 @@
                 }
             }
         }
-    }*@
+    }
                 </ul>
                 @* register/manage button and login/logout button *@
                 @Html.Partial("_LoginPartial")

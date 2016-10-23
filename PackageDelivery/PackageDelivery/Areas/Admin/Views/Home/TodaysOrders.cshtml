@@ -6,7 +6,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <h2>Today's Orders</h2>
+<hr />
 <div class="col-md-8"></div>
 <div class="col-md-4">
     <div class="text-danger">
@@ -18,8 +20,8 @@
 </div>
 
 <table class="table">
-    <tr>
-        
+    <h2>Today's pickups</h2>
+    <tr>   
         <th>
             Ready for pickup
         </th>
@@ -30,8 +32,11 @@
 {
     foreach (var item in Model)
     {
-        var pickuptime = item.Order.ReadyForPickupTime.TimeOfDay.Hours + ":" + item.Order.ReadyForPickupTime.TimeOfDay.Minutes;
-        if (item.Order.OrderStatus != Status.Completed) {
+
+        if(item.Order.ReadyForPickupTime.Date == DateTime.Now.Date ){
+            if (item.Order.OrderStatus != Status.Completed && (item.Order.OrderStatus == Status.Pickup || item.Order.OrderStatus == Status.Requested)) {
+                var pickuptime = item.Order.ReadyForPickupTime.TimeOfDay.Hours + ":" + item.Order.ReadyForPickupTime.TimeOfDay.Minutes;
+
         <tr>
             <td>
                 @pickuptime
@@ -41,23 +46,81 @@
             </td>
             <td>
                 @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
-                @if (item.Order.OrderStatus == Status.Recieved)
+                @if (item.Order.OrderStatus == Status.Requested)
                 {
-                @Html.ActionLink("Start Delivery", "StartOrder", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
+                @Html.ActionLink("Start Pickup", "StartPickup", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
                 }
-                else
+                else if(item.Order.OrderStatus == Status.Pickup)
                 {
-                @Html.ActionLink("Complete Delivery", "CompleteOrder", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+                @Html.ActionLink("Complete Pickup", "CompletePickup", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
                 }
-                @Html.ActionLink("Delay Delivery", "DelayOrder", new { id = item.PackageId } ,new { @class = "btn btn-danger j" })
+                @Html.ActionLink("Delay Pickup", "DelayOrder", new { id = item.PackageId, type="pickup" } ,new { @class = "btn btn-danger j" })
             </td>
         </tr>
+		}
+
         }
     }
 }
 else
 {
 
-        <p>No deliveries today</p>
+        <p>No pickups today</p>
 }
+</table>
+<br />
+
+<h2>Today's Deliveries</h2>
+
+
+<table class="table">
+
+    <tr>   
+
+        <th>
+            Start delivery
+        </th>
+        <th>Order status</th>
+        <th></th>
+    </tr>
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            if (item.Order.BeginDeliveryTime.Date == DateTime.Now.Date)
+            {
+                if (item.Order.OrderStatus != Status.Completed && (item.Order.OrderStatus == Status.Recieved || item.Order.OrderStatus == Status.Underway))
+                {
+                  var startdeliverytime = item.Order.BeginDeliveryTime.TimeOfDay.Hours + ":" + item.Order.BeginDeliveryTime.TimeOfDay.Minutes;
+
+                    <tr>
+                        <td>
+                            @startdeliverytime
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Order.OrderStatus)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "OrderDetails", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
+                            @if (item.Order.OrderStatus == Status.Recieved)
+                            {
+                                @Html.ActionLink("Start Delivery", "StartDelivery", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
+                            }
+                            else if(item.Order.OrderStatus == Status.Underway)
+                            {
+                                @Html.ActionLink("Complete Delivery", "CompleteDelivery", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
+                            }
+                            @Html.ActionLink("Delay Delivery", "DelayOrder", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    }
+    else
+    {
+
+        <p>No deliveries today</p>
+    }
+
 </table>

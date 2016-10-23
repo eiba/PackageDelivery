@@ -44,8 +44,6 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.SenderId == Search ||
                                   m.Order.PaymentType.ToString() == Search ||
                                   m.Order.ReadyForPickupTime.ToString() == Search ||
-                                  m.Order.WareHouseArrivalTime == Search ||
-                                  m.Order.WareHouseDepartureTime == Search ||
                                   m.Order.OrderTime.ToString() == Search ||
                                   m.Order.PickupAdressId.ToString() == Search ||
                                   m.RecieverAdressId.ToString() == Search ||
@@ -80,8 +78,6 @@ namespace PackageDelivery.Areas.Admin.Controllers
                                   m.SenderId == Search ||
                                   m.Order.PaymentType.ToString() == Search ||
                                   m.Order.ReadyForPickupTime.ToString() == Search ||
-                                  m.Order.WareHouseArrivalTime == Search ||
-                                  m.Order.WareHouseDepartureTime == Search ||
                                   m.Order.OrderTime.ToString() == Search ||
                                   m.Order.PickupAdressId.ToString() == Search ||
                                   m.RecieverAdressId.ToString() == Search ||
@@ -197,7 +193,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return convInt;
         }
 
-        public ActionResult StartOrder(int? id)
+        public ActionResult StartDelivery(int? id)
         {
             if (id == null)
             {
@@ -238,10 +234,54 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             }
 
-            return RedirectToAction("TodaysOrders", new { successmessage = "The order was successfully started" });
+            return RedirectToAction("TodaysOrders", new { successmessage = "The delivery was successfully started" });
         }
 
-        public ActionResult CompleteOrder(int? id)
+        public ActionResult StartPickup(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages package = context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+
+            package.Order.OrderStatus = Status.Pickup;           //Chaorder status to underway and save it
+            context.Entry(package).State = EntityState.Modified;
+            context.SaveChanges();
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            ApplicationUser User = manager.FindByIdAsync(package.SenderId).Result;
+            string to = User.Email;
+            string from = "noreply@OnTheSpotDelivery.com";
+            MailMessage message = new MailMessage(from, to);
+            message.Subject = "Pickup is underway!";
+            message.Body = "A driver picking up you package at " + package.Order.Adress.StreetAdress + " is underway \n Kind regards, On the spot delivery";
+            SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
+
+            // Credentials are necessary if the server requires the client 
+            // to authenticate before it will send e-mail on the client's behalf.
+            client.UseDefaultCredentials = false;
+            var credentials = new NetworkCredential("azure_c2e053642715e025ba3d377408e8c9b2@azure.com", "Password1.");
+            client.Credentials = credentials;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("TodaysOrders", new { errormessage = "The email could not be sent" });
+
+            }
+
+            return RedirectToAction("TodaysOrders", new { successmessage = "The pickup was successfully started" });
+        }
+
+        public ActionResult CompleteDelivery(int? id)
         {
             if (id == null)
             {
@@ -261,8 +301,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return RedirectToAction("TodaysOrders");
         }
 
-        [HttpGet]
-        public ActionResult DelayOrder(int? id)
+        public ActionResult CompletePickup(int? id)
         {
             if (id == null)
             {
@@ -273,12 +312,34 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return HttpNotFound();
             }
+
+            package.Order.OrderStatus = Status.Recieved;
+            context.Entry(package).State = EntityState.Modified;
+            context.SaveChanges();
+
+
+            return RedirectToAction("TodaysOrders", new { successmessage = "Pickup completed" });
+        }
+
+        [HttpGet]
+        public ActionResult DelayOrder(int? id, string type)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages package = context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Type = type;
             ViewBag.PackageId = package.PackageId;
             return View();
         }
 
         [HttpPost]
-        public ActionResult DelayOrder(string packageId, string message)
+        public ActionResult DelayOrder(string packageId, string message, string type)
         {
             
             if (packageId == null)
@@ -298,7 +359,19 @@ namespace PackageDelivery.Areas.Admin.Controllers
             string from = "noreply@OnTheSpotDelivery.com";
             MailMessage mailMessage = new MailMessage(from, to);
             mailMessage.Subject = "Package delayed";
-            mailMessage.Body = "Your order being delivered to "+ package.Adress.StreetAdress +" has been delayed by "+message+". \n Sorry for the inconvenience, On the spot delivery";
+            if (type == "pickup")
+            {
+                mailMessage.Body = "Your order being delivered to " + package.Adress.StreetAdress +
+                                   " has been delayed by " + message +
+                                   ". \n Sorry for the inconvenience, On the spot delivery";
+
+            }
+            else
+            {
+                mailMessage.Body = "Your order being picked up at " + package.Order.Adress.StreetAdress +
+                                   " has been delayed by " + message +
+                                   ". \n Sorry for the inconvenience, On the spot delivery";
+            }
             SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
 
             // Credentials are necessary if the server requires the client 

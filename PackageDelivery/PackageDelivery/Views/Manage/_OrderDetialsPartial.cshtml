@@ -75,6 +75,12 @@
                 <dd>
                     @Html.DisplayFor(modelItem => Model.order.ReadyForPickupTime)
                 </dd>
+                <dt>
+                    Begin delivery time:
+                </dt>
+                <dd>
+                    @Html.DisplayFor(modelItem => Model.order.BeginDeliveryTime)
+                </dd>
                 <br/><br/>
                 <hr />
                 <h4>Package Details:</h4>
@@ -96,6 +102,24 @@
                 </dt>
                 <dd>
                     @Html.DisplayFor(modelItem => Model.package.Weight)
+                </dd>
+                <dt>
+                    Package height(mm)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.package.Height)
+                </dd>
+                <dt>
+                    Package length(mm)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.package.Length)
+                </dd>
+                <dt>
+                    Package width(mm)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.package.Width)
                 </dd>
                 <dt>
                     Special instructions:

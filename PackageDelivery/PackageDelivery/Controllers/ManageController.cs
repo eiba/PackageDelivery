@@ -514,7 +514,7 @@ namespace PackageDelivery.Controllers
                 return PartialView("_orderPartial", models);
             }
 
-                if (model.order.ReadyForPickupTime < DateTime.Now)
+                if (model.order.ReadyForPickupTime < DateTime.Now || model.order.OrderStatus >= Status.Recieved)
                 {
                 var packages = from s in Context.Packages
                                where
@@ -537,7 +537,7 @@ namespace PackageDelivery.Controllers
                     OrderDictionaryMap = map
                 };
                     ViewBag.Id = orderId;
-                    ViewBag.Error = "Order ready for pickup date cannot be in the past";
+                    ViewBag.Error = "Order ready for pickup date cannot be in the past, or changed after the order has been recieved";
                     return PartialView("_orderPartial", models);
                 }
                 var package = Context.Packages.Find(packageId);
@@ -585,7 +585,19 @@ namespace PackageDelivery.Controllers
 
                 order.PickupAdressId = pickupAdress.AdressId;
                 order.ReadyForPickupTime = model.order.ReadyForPickupTime;
-                
+                if (order.OrderPriority == Priority.Low)
+                {
+                    order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(7);
+                }
+                else if (order.OrderPriority == Priority.Medium)
+                {
+                order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(3);
+                }
+                else
+                {
+                order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(1);
+                }
+
                 Context.Entry(order).State = EntityState.Modified;
                 Context.SaveChanges();
 

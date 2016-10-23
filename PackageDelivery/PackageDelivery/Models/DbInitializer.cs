@@ -101,23 +101,39 @@ namespace PackageDelivery.Models
             userManager.Create(Customer, "Password1.");
             userManager.AddToRole(Customer.Id, "Customer");
 
+            var Customer2 = new ApplicationUser
+            {
+                UserName = "eirikbaug@hotmail.com",
+                Email = "eirikbaug@hotmail.com",
+                Fname = "Eirik",
+                Lname = "Baug",
+                AdressId = CustomerAddress.AdressId,
+                AccessLvL = "Customer",
+                IsEnabeled = true,
+                Phone = "666666666",
+                DoB = "13/13/1366"
+            };
+            userManager.Create(Customer2, "Password1.");
+            userManager.AddToRole(Customer2.Id, "Customer");
+
             var order = new Orders
             {
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
-                ReadyForPickupTime = new DateTime(2016,12,30,15,40,56),
-                OrderStatus = Status.Recieved,
+                ReadyForPickupTime = DateTime.Now,
+                BeginDeliveryTime = new DateTime(2016,10,23,17,45,50),
+                OrderStatus = Status.Requested,
                 PaymentType = PaymentType.Credit,
                 OrderPriority = Priority.High,
             };
             db.Orders.Add(order);
             var package = new Packages
             {
-                SenderId = Owner.Id,
+                SenderId = Customer2.Id,
                 RecieverName = "Bob Bird",
                 Weight = 65.0,
                 SpecialInstructions = "Don't let the cat in",
-                RecieverAdressId = Employee.AdressId,
+                RecieverAdressId = Customer2.AdressId,
                 OrderId = order.OrderId,
                 Cost = 124.0,
             };
@@ -130,7 +146,8 @@ namespace PackageDelivery.Models
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
                 ReadyForPickupTime = DateTime.Now,
-                OrderStatus = Status.Recieved,
+                BeginDeliveryTime = new DateTime(2016, 10, 23, 17, 45, 50),
+                OrderStatus = Status.Requested,
                 PaymentType = PaymentType.Cash,
                 OrderPriority = Priority.Low,
             };

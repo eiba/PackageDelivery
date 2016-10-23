@@ -61,24 +61,16 @@
 
 
         </dd>
-
         <dt>
-            Warehouse arrival time
+            Begin delivery time
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Order.WareHouseArrivalTime)
+            @Html.DisplayFor(model => model.Order.BeginDeliveryTime)
+
 
         </dd>
 
-        <dt>
-            Warehouse departure time
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Order.WareHouseDepartureTime)
-
-        </dd>
         <hr/>
         <h4>Package info</h4>
         <dt>
@@ -106,10 +98,28 @@
             @Html.DisplayFor(model => model.SpecialInstructions)
         </dd>
         <dt>
-            Package weight
+            Package weight(kg)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt>
+            Package height(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+        <dt>
+            Package length(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Length)
+        </dd>
+        <dt>
+            Package width(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Width)
         </dd>
         <dt>
             User Id

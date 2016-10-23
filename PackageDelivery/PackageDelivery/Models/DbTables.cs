@@ -89,21 +89,21 @@ namespace PackageDelivery.Models
         [Display(Name = "Ready for pickup time")]
         public DateTime ReadyForPickupTime { get; set; }
        
-        public string WareHouseArrivalTime { get; set; }
+        public DateTime BeginDeliveryTime { get; set; }
+
         public Status OrderStatus { get; set; }
         public PaymentType PaymentType { get; set; }
         public Priority OrderPriority { get; set; }
 
-        public string WareHouseDepartureTime { get; set; }
-
         public virtual Adresses Adress { get; set; }
+
         //public virtual IList<Packages> Package { get; set; }
     }
 
     //Sets the different values for priority and status.
     public enum Status
     {
-        Recieved,Underway,Completed
+        Requested,Pickup,Recieved,Underway,Completed
     }
     public enum Priority
     {
