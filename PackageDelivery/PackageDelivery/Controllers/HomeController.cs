@@ -23,7 +23,7 @@ namespace PackageDelivery.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "About On The Spot";
 
             return View();
         }
