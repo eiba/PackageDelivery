@@ -232,7 +232,7 @@ namespace PackageDelivery.Controllers
                 //int employeecount = Request.Form["employees"].AsInt();
                 double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
                 double VolumePrice = (model.PackageInfo.Height * model.PackageInfo.Length * model.PackageInfo.Width) / 100000000.0;
-                double WeightPrice = ((model.PackageInfo.Weight) * 4.0);
+                double WeightPrice = (((model.PackageInfo.Weight)/1000) * 4.0);
                 double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
                 double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
                 var package = new Packages
