@@ -11,6 +11,9 @@
 <table class="table">
     <tr>
         <th>
+            Order id
+        </th>
+        <th>
             Reciever
         </th>
         <th>
@@ -28,9 +31,12 @@
 {
     foreach (var item in Model)
     {
-        if(item.ReadyForPickupTime.Date == DateTime.Now.Date)
+        if(item.Order.ReadyForPickupTime.Date == DateTime.Now.Date)
             {
             <tr>
+                <td>
+                    @Html.DisplayFor(modeltem => item.Order.OrderId)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RecieverName)
                 </td>
@@ -66,6 +72,9 @@ else
 <table class="table">
     <tr>
         <th>
+            Order id
+        </th>
+        <th>
             Reciever
         </th>
         <th>
@@ -83,9 +92,12 @@ else
     {
         foreach (var item in Model)
         {
-            if (item.Order.BeginDeliveryTime.Date == DateTime.Now.Date)
+            if (item.Order.BeginDeliveryTime.Date == item.Order.ReadyForPickupTime.Date)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Order.OrderId)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RecieverName)
                     </td>
