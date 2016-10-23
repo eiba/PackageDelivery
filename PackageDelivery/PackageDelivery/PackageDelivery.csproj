@@ -214,7 +214,6 @@
     <Compile Include="Areas\Admin\Models\ShowDetailsModel.cs" />
     <Compile Include="Areas\Admin\Models\ShowModel.cs" />
     <Compile Include="Areas\Admin\Models\StatusModel.cs" />
-    <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -243,13 +242,13 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\delivery.jpg" />
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Customer\Views\web.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -270,11 +269,13 @@
     <Content Include="Areas\Admin\Views\Home\TodaysOrders.cshtml" />
     <Content Include="Areas\Admin\Views\Home\StickerMaker.cshtml" />
     <Content Include="Areas\Admin\Views\Home\DelayOrder.cshtml" />
+    <None Include="Properties\PublishProfiles\onthe299spot - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\OnTheSpotDeliveries - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDelivery299 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryIFB299.pubxml" />
+    <None Include="Properties\PublishProfiles\PackageDeliveryonthespot - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\PackageDeliveryy - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.1.0.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -351,9 +352,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Customer\Controllers\" />
-    <Folder Include="Areas\Customer\Models\" />
-    <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Views\OrderRequest\" />
   </ItemGroup>
   <ItemGroup>

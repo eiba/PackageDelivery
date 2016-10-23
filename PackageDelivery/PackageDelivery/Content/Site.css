@@ -204,3 +204,7 @@ textarea {
 .greyout {
     opacity: 0.5;
 }
+
+.allign {
+    text-align: center;
+}

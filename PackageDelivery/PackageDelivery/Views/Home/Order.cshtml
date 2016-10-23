@@ -78,25 +78,25 @@
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Weight, new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
-            @Html.TextBoxFor(m => m.PackageInfo.Weight, new {@class = "form-control", @placeholder = "kg"})
+            @Html.TextBoxFor(m => m.PackageInfo.Weight, new {@class = "form-control", @placeholder = "gram"})
         </div>  
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Length, new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
-            @Html.TextBoxFor(m => m.PackageInfo.Length, new { @class = "form-control", @placeholder = "kg" })
+            @Html.TextBoxFor(m => m.PackageInfo.Length, new { @class = "form-control", @placeholder = "mm" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Width, new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
-            @Html.TextBoxFor(m => m.PackageInfo.Width, new { @class = "form-control", @placeholder = "kg" })
+            @Html.TextBoxFor(m => m.PackageInfo.Width, new { @class = "form-control", @placeholder = "mm" })
         </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Height, new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
-            @Html.TextBoxFor(m => m.PackageInfo.Height, new { @class = "form-control", @placeholder = "kg" })
+            @Html.TextBoxFor(m => m.PackageInfo.Height, new { @class = "form-control", @placeholder = "mm" })
         </div>
     </div>
     <div class="form-group">
@@ -125,8 +125,6 @@
         </div>
     </div>
 
-
-
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.sInstructions, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -136,7 +134,9 @@
     <hr/>
     <br/>
     <div class="col-md-4">
-        <label>Estimated cost: @Model.PackageInfo.Cost</label>
+        @if (Model.PackageInfo.Cost != 0) {
+            <label>Estimated cost: $@Model.PackageInfo.Cost</label>
+        }
     </div>
     <div class="col-md-8">
         <div class="form-group">

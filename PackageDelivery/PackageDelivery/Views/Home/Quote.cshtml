@@ -1,7 +1,7 @@
 ﻿@{
     ViewBag.Title = "Delivery quote";
 
-    string[] Speeds = new string[] { "Standard: ", "Fast: ", "Express: " };
+    string[] Speeds = new string[] { "Low: ", "Medium: ", "High: " };
     double[] SpeedPrices = new double[] { 1, 1.5, 2 };
     if (IsPost)
     {
@@ -13,29 +13,28 @@
         int PackageWidth = Request.Form["PackageWidth"].AsInt();
         if (Request.Form["1"] == "0")
         {
-            Speed = "standard";
+            Speed = "low";
             WhichSpeed = 1.0;
         }
         if (Request.Form["1"] == "1")
         {
-            Speed = "fast";
+            Speed = "medium";
             WhichSpeed = 1.5;
         }
         if (Request.Form["1"] == "2")
         {
-            Speed = "express";
+            Speed = "high";
             WhichSpeed = 2.0;
         }
-        //int employeecount = Request.Form["employees"].AsInt();
         double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
         double VolumePrice = (PackageHeight * PackageLength * PackageWidth) / 100000000.0;
-        string volumePrice = VolumePrice.ToString("0.000");
+        string volumePrice = VolumePrice.ToString("0.00");
         double WeightPrice = ((PackageWeight / 1000.0) * 4.0);
-        string weightPrice = WeightPrice.ToString("0.000");
+        string weightPrice = WeightPrice.ToString("0.00");
         double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
-        string speedPrice = SpeedPrice.ToString("0.000");
+        string speedPrice = SpeedPrice.ToString("0.00");
         double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
-        string totalPrice = TotalPrice.ToString("0.000");
+        string totalPrice = TotalPrice.ToString("0.00");
         <text>
             <Strong><u>Your Package's info: </u></strong><br />
 
@@ -56,56 +55,68 @@
             <Strong>You selected @Speed delivery, which increases the cost of shipping by a factor of @PriceIncrease%, which is $@speedPrice</Strong> <br /> <br />
             <Strong>And so, the price of delivery for your package is: $@totalPrice</Strong>
         </text>
+            <br/>
+        
+                <form method="get" >
+                    <div class="input-group">
+                        <input type="hidden" name="height" value="@PackageHeight" class="form-control">
+                        <input type="hidden" name="width" value="@PackageWidth" class="form-control">
+                        <input type="hidden" name="length" value="@PackageLength" class="form-control">
+                        <input type="hidden" name="weight" value="@PackageWeight" class="form-control">
+                        <input type="hidden" name="cost" value="@TotalPrice" class="form-control">
+                        <input type="hidden" name="speed" value="@Speed" class="form-control">
+                         <input  type="submit" class="btn btn-danger" value="Request this order">
+                    </div>
+                </form>
+
     }
 }
+<hr/>
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
 
-
+<br/>
 <form method="post">
     <fieldset>
-        <legend>Input package information</legend>
+        <legend>Input package information:</legend>
 
         <div>
             <label for="packageWeight">Package weight(grams):</label>
-            <input type="number" name="PackageWeight" value="" />
+            <input type="number" name="PackageWeight" value="" class="form-control"/>
         </div>
 
         <div>
             <label for="packageHeight">Package height(mm):</label>
-            <input type="number" name="PackageHeight" value="" />
+            <input type="number" name="PackageHeight" value="" class="form-control"/>
         </div>
 
         <div>
             <label for="packageLength">Package length(mm):</label>
-            <input type="number" name="PackageLength" value="" />
+            <input type="number" name="PackageLength" value="" class="form-control"/>
         </div>
 
         <div>
             <label for="packageWidth">Package width(mm):</label>
-            <input type="number" name="PackageWidth" value="" />
+            <input type="number" name="PackageWidth" value="" class="form-control"/>
         </div>
-
-        <strong>Delivery speed:</strong> <br />
+        <br/>
+        <strong>Delivery priority:</strong> <br/>
 
         @for (var i = 0; i <= 2; i++)
         {
-            @Speeds[i] <input type="radio" name="1" value="@i" /> <br />
+            @Speeds[i]
+            <input type="radio" name="1" value="@i"/>
+            <br/>
         }
 
+        <br/>
+        <input type="hidden" name="something" value="something" class="form-control">
         <div>
             <label>&nbsp;</label>
-            <input type="submit" value="Submit" class="submit" />
+            <input type="submit" value="Calculate" class="btn btn-danger"/>
         </div>
 
 
     </fieldset>
 </form>
-
-
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>

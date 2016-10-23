@@ -2,19 +2,24 @@
     ViewBag.Title = "Home Page";
 }
 
-<div>
-    <h1>Package delivery</h1>
-    <div class="col-md-4">
-        <div class="text-danger">
-            <h5>@ViewBag.Error</h5>
-        </div>
-        <div class="text-success">
-            <h5>@ViewBag.Success</h5>
-        </div>
-    </div>
-    <br/>
-    <hr/>
-    @Html.ActionLink("Request a delivery", "Order", "Home", new { @class = "btn btn-lg btn-danger center-block home-button-link" })
+
+        
+            <h1 class="allign">On the spot delivery</h1>
+            <div class="col-md-4">
+                <div class="text-danger">
+                    <h5>@ViewBag.Error</h5>
+                </div>
+                <div class="text-success">
+                    <h5>@ViewBag.Success</h5>
+                </div>
+            </div>
+            <br />
+            <hr />
 
 
-</div>
+        <h4>On the spot delivery, for when you need fast, secure and safe deliveries.</h4>
+        <img src="/Images/delivery.jpg" alt="Delivery man">
+        <br/>
+
+        @Html.ActionLink("Request a delivery", "Order", "Home", new { @class = "btn btn-lg btn-danger center-block home-button-link" })
+

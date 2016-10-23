@@ -55,11 +55,16 @@ namespace PackageDelivery.Models
         [ForeignKey("User")]
         public string SenderId { get; set; }
         public string RecieverName { get; set; }
+
+        [Display(Name = "Weight(gram)")]
         public double Weight { get; set; }
-        [Display(Name = "Special instructions")]
+        [Display(Name = "Length(mm)")]
         public int Length { get; set; }
+        [Display(Name = "Width(mm)")]
         public int Width { get; set; }
+        [Display(Name = "Height(mm)")]
         public int Height { get; set; }
+        [Display(Name = "Special instructions")]
         public string SpecialInstructions { get; set; }
         [ForeignKey("Adress")]
         public int? RecieverAdressId { get; set; }

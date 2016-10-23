@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PackageDelivery.Areas.Admin.Models;
@@ -42,8 +43,22 @@ namespace PackageDelivery.Controllers
             return View();
         }
 
-        public ActionResult Quote()
+
+        public ActionResult Quote(string weight, string height, string length, string width, string cost, string speed)
         {
+            if (weight != null && height != null && length != null && width != null && cost != null && speed != null)
+            {
+                return RedirectToAction("Order", new { weight = weight, length = length, height = height, cost = cost, width = width, speed=speed });
+            }
+
+            ViewBag.Message = "Get a quote on your delivery before you pay";
+
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Quote(string something)
+        {
+            
             ViewBag.Message = "Get a quote on your delivery before you pay";
 
             return View();
@@ -51,7 +66,7 @@ namespace PackageDelivery.Controllers
 
         //Shows order request form
         [Authorize(Roles = "Owner,Admin,Customer")]
-        public ActionResult Order(string errormessage)
+        public ActionResult Order(string errormessage, string weight, string length, string height, string cost, string width, string speed)
         {
             if (errormessage != null)
             {
@@ -69,8 +84,31 @@ namespace PackageDelivery.Controllers
             };
             var info = new PackageInfo
             {
-                RecieverName = user.Fname + ' ' + user.Lname
+                RecieverName = user.Fname + ' ' + user.Lname,
             };
+            if (weight != null && height != null && length != null && width != null && cost != null && speed != null)
+            {
+                var priority = Priority.Low;
+                if (speed == "high")
+                {
+                    priority = Priority.High;
+
+                }else if (speed == "medium")
+                {
+                    priority = Priority.Medium;
+                }
+                info = new PackageInfo
+                {
+                    RecieverName = user.Fname + ' ' + user.Lname,
+                    Height = height.AsInt(),
+                    Weight = weight.AsFloat(),
+                    Cost = cost.AsInt(),
+                    Length = length.AsInt(),
+                    Width = width.AsInt(),
+                    Priority = priority
+                    
+                };
+            }
             var model = new OrderModel
             {
                 DeliveryAdress = delAdress,
@@ -98,11 +136,23 @@ namespace PackageDelivery.Controllers
 
                 if (model.PackageInfo.ReadyForPickupTIme < DateTime.Now)
                 {
-                    return RedirectToAction("Order", new {errormessage ="Ready for pickup time cannot be in the past"});
+                    return RedirectToAction("Order", new {errormessage ="Ready for pickup time cannot be in the past", height = model.PackageInfo.Height.ToString(),weight=model.PackageInfo.Weight.ToString(),width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(),length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString()});
                 }
                 if (model.PackageInfo.Weight <= 0)
                 {
-                return RedirectToAction("Order", new { errormessage = "Weight cannot be 0" });
+                return RedirectToAction("Order", new { errormessage = "Weight cannot be 0", height = model.PackageInfo.Height.ToString(), weight = model.PackageInfo.Weight.ToString(), width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(), length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString() });
+            }
+            if (model.PackageInfo.Height <= 0)
+            {
+                return RedirectToAction("Order", new { errormessage = "Height cannot be 0", height = model.PackageInfo.Height.ToString(), weight = model.PackageInfo.Weight.ToString(), width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(), length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString() });
+            }
+            if (model.PackageInfo.Length <= 0)
+            {
+                return RedirectToAction("Order", new { errormessage = "Length cannot be 0", height = model.PackageInfo.Height.ToString(), weight = model.PackageInfo.Weight.ToString(), width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(), length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString() });
+            }
+            if (model.PackageInfo.Width <= 0)
+            {
+                return RedirectToAction("Order", new { errormessage = "Width cannot be 0" , height = model.PackageInfo.Height.ToString(), weight = model.PackageInfo.Weight.ToString(), width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(), length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString() });
             }
             //Creates the order
             var pickupAdress = new Adresses
@@ -185,7 +235,6 @@ namespace PackageDelivery.Controllers
                 double WeightPrice = ((model.PackageInfo.Weight) * 4.0);
                 double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
                 double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
-                model.PackageInfo.Cost = TotalPrice;
                 var package = new Packages
                 {
                     SenderId = user.Id,
@@ -197,8 +246,7 @@ namespace PackageDelivery.Controllers
                     SpecialInstructions = model.PackageInfo.sInstructions,
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
-                    Cost = model.PackageInfo.Cost        //Test value, working on it
-
+                    Cost = TotalPrice        
                 };
 
                 context.Packages.Add(package);
