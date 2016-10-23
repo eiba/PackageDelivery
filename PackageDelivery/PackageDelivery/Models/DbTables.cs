@@ -52,6 +52,9 @@ namespace PackageDelivery.Models
         public string SenderId { get; set; }
         public string RecieverName { get; set; }
         public double Weight { get; set; }
+        public int Length { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
         public string SpecialInstructions { get; set; }
         [ForeignKey("Adress")]
         public int? RecieverAdressId { get; set; }

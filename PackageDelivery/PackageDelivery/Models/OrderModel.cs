@@ -64,6 +64,19 @@ namespace PackageDelivery.Models
         public double Weight { get; set; }
 
         [Required]
+        [Display(Name = "Length(mm)")]
+        public int Length { get; set; }
+        [Required]
+        [Display(Name = "Width(mm)")]
+        public int Width { get; set; }
+        [Required]
+        [Display(Name = "Height(mm)")]
+        public int Height { get; set; }
+        [Required]
+        [Display(Name = "Cost")]
+        public double Cost { get; set; }
+
+        [Required]
         [Display(Name = "Reciever name")]
         public string RecieverName { get; set; }
 
