@@ -15,9 +15,16 @@ namespace PackageDelivery.Controllers
     {
         private ApplicationDbContext context = new ApplicationDbContext();
 
-        public ActionResult Index(string message)
+        public ActionResult Index(string successmessage, string errormessage)
         {
-            ViewBag.Success = message;
+            if (errormessage != null)
+            {
+                ViewBag.Error = errormessage;
+            }
+            else if (successmessage != null)
+            {
+                ViewBag.Success = successmessage;
+            }
             return View();
         }
 
@@ -44,8 +51,12 @@ namespace PackageDelivery.Controllers
 
         //Shows order request form
         [Authorize(Roles = "Owner,Admin,Customer")]
-        public ActionResult Order()
+        public ActionResult Order(string errormessage)
         {
+            if (errormessage != null)
+            {
+                ViewBag.Error = errormessage;
+            }
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
             var adress = context.Adresses.Find(user.AdressId);
@@ -75,12 +86,24 @@ namespace PackageDelivery.Controllers
         [HttpPost]
         public ActionResult Order(OrderModel model)
         {
-            var message = "Something went wrong, sorry"; //the message that will be displayed if the order creation does not go through
-            if (ModelState.IsValid) { 
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home", new { errormessage = "Something went wrong, sorry" });
+
+            }
+            
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;     //current user
 
-                //Creates the order
+                if (model.PackageInfo.ReadyForPickupTIme < DateTime.Now)
+                {
+                    return RedirectToAction("Order", new {errormessage ="Ready for pickup time cannot be in the past"});
+                }
+                if (model.PackageInfo.Weight <= 0)
+                {
+                return RedirectToAction("Order", new { errormessage = "Weight cannot be 0" });
+            }
+            //Creates the order
             var pickupAdress = new Adresses
             {
                 StreetAdress = model.PickupAdress.StreetAdress,
@@ -138,14 +161,13 @@ namespace PackageDelivery.Controllers
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
                     Cost = 234.4,        //Test value, no cost estimation added yet
-                    ReadyForPickupTime = order.ReadyForPickupTime
+                    
                 };
 
                 context.Packages.Add(package);
                 context.SaveChanges();
-                message = "Your order has been recieved, thank you!";       //Order creation completed, show this message to user.
-            }
-            return RedirectToAction("Index","Home", new {message=message});
+            
+            return RedirectToAction("Index","Home", new {successmessage= "Your order has been recieved, thank you!" });
         }
 
         //Check if adress is already in database, if it is return that adress instead

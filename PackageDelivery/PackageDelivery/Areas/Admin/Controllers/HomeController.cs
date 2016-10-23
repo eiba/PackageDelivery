@@ -8,6 +8,7 @@ using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls.Expressions;
+using System.Web.WebPages;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using PackageDelivery.Models;
@@ -28,11 +29,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
         public ActionResult Orders(string Search, DateTime? From, DateTime? To)
         {
-            /*
-            if (Search == null)
-            {
-                return View(context.Packages.ToList());
-            }*/
+            
             
             if(Search != "" && (From == null || To == null)) { 
                  var results = from m in context.Packages
@@ -152,15 +149,23 @@ namespace PackageDelivery.Areas.Admin.Controllers
             return View(Package);
         }
 
-        public ActionResult TodaysOrders()
+        public ActionResult TodaysOrders(string errormessage,string successmessage)
         {
+            if (errormessage != null)
+            {
+                ViewBag.Error = errormessage;
+            }
+            else if (successmessage != null)
+            {
+                ViewBag.Success = successmessage;
+            }
             var results = from m in context.Packages
                 where
                     DbFunctions.TruncateTime(m.Order.ReadyForPickupTime) == DateTime.Today
                 orderby m.OrderId
                 select m;
 
-            return View(results);
+            return View(results.ToList());
         }
 
         public string convertDateTime(DateTime? datetime)
@@ -198,19 +203,23 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Packages Package = context.Packages.Find(id);
-            if (Package == null)
+            Packages package = context.Packages.Find(id);
+            if (package == null)
             {
                 return HttpNotFound();
             }
+            
+            package.Order.OrderStatus = Status.Underway;           //Chaorder status to underway and save it
+            context.Entry(package).State = EntityState.Modified;
+            context.SaveChanges();
 
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            ApplicationUser User = manager.FindByIdAsync(Package.SenderId).Result;
+            ApplicationUser User = manager.FindByIdAsync(package.SenderId).Result;
             string to = User.Email;
             string from = "noreply@OnTheSpotDelivery.com";
             MailMessage message = new MailMessage(from, to);
             message.Subject = "Package is underway!";
-            message.Body = "Your order in underway \n Kind regards, On the spot delivery";
+            message.Body = "Your package for "+ package.Adress.StreetAdress + " is underway \n Kind regards, On the spot delivery";
             SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
 
             // Credentials are necessary if the server requires the client 
@@ -225,11 +234,90 @@ namespace PackageDelivery.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception caught in CreateTestMessage2(): {0}",
-                            ex.ToString());
+                return RedirectToAction("TodaysOrders", new { errormessage = "The email could not be sent" });
+
             }
+
+            return RedirectToAction("TodaysOrders", new { successmessage = "The order was successfully started" });
+        }
+
+        public ActionResult CompleteOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages package = context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+
+            package.Order.OrderStatus = Status.Completed;
+            context.Entry(package).State = EntityState.Modified;
+            context.SaveChanges();
+
+
+            return RedirectToAction("TodaysOrders");
+        }
+
+        [HttpGet]
+        public ActionResult DelayOrder(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages package = context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.PackageId = package.PackageId;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult DelayOrder(string packageId, string message)
+        {
             
-            return RedirectToAction("Index");
+            if (packageId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var id = packageId.AsInt();
+            Packages package = context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            ApplicationUser User = manager.FindByIdAsync(package.SenderId).Result;
+            string to = User.Email;
+            string from = "noreply@OnTheSpotDelivery.com";
+            MailMessage mailMessage = new MailMessage(from, to);
+            mailMessage.Subject = "Package delayed";
+            mailMessage.Body = "Your order being delivered to "+ package.Adress.StreetAdress +" has been delayed by "+message+". \n Sorry for the inconvenience, On the spot delivery";
+            SmtpClient client = new SmtpClient("smtp.sendgrid.net", Convert.ToInt32(587));
+
+            // Credentials are necessary if the server requires the client 
+            // to authenticate before it will send e-mail on the client's behalf.
+            client.UseDefaultCredentials = false;
+            var credentials = new NetworkCredential("azure_c2e053642715e025ba3d377408e8c9b2@azure.com", "Password1.");
+            client.Credentials = credentials;
+
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("TodaysOrders",new {errormessage = "The email could not be sent"});
+            }
+
+
+            return RedirectToAction("TodaysOrders", new { successmessage = "The order was successfully delayed" });
         }
     }
 }

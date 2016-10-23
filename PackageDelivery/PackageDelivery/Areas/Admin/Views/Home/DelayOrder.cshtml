@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Delay Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delay Order</h2>
+<hr/>
+<div>
+    <h4>How long will the be package be delayed?</h4>
+    <div class="row">
+        <div class="col-lg-3">
+            <form method="post">
+                <div class="input-group">
+                    <input type="hidden" name="packageId" value="@ViewBag.PackageId" class="form-control">
+                    <input type="text" name="message" class="form-control">
+                    <span class="input-group-btn">
+                        <input type="submit" class="btn btn-danger" value="Delay">
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

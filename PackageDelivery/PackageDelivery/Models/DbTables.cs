@@ -16,11 +16,14 @@ namespace PackageDelivery.Models
         [Key]
         public int AdressId { get; set; }
 
+        [Required]
         public string Suburb { get; set; }
+        [Required]
         [Display(Name = "Postcode")]
         public int PostCode { get; set; }
-
+        [Required]
         public string State { get; set; }
+        [Required]
         [Display(Name = "Street Adress")]
         public string StreetAdress { get; set; }
 
@@ -60,9 +63,6 @@ namespace PackageDelivery.Models
         [ForeignKey("Order")]
         public int OrderId { get; set; }
         public double Cost { get; set; }
-        [Display(Name = "Ready for pickup time")]
-        public DateTime ReadyForPickupTime { get; set; }
-
         public virtual ApplicationUser User { get; set; }
         public virtual Orders Order { get; set; }
         public virtual Adresses Adress { get; set; }
@@ -82,15 +82,13 @@ namespace PackageDelivery.Models
         public int PickupAdressId { get; set; }
 
         [DataType(DataType.DateTime)]
-        //[Required]
+        [Required]
         [Display(Name = "Ready for pickup time")]
         public DateTime ReadyForPickupTime { get; set; }
        
         public string WareHouseArrivalTime { get; set; }
-       
         public Status OrderStatus { get; set; }
         public PaymentType PaymentType { get; set; }
-     
         public Priority OrderPriority { get; set; }
 
         public string WareHouseDepartureTime { get; set; }

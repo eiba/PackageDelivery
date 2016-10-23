@@ -5,7 +5,14 @@
 }
 
 <h2>Order</h2>
-
+<div>
+    <div class="text-danger">
+        <h5>@ViewBag.Error</h5>
+    </div>
+    <div class="text-success">
+        <h5>@ViewBag.Success</h5>
+    </div>
+</div>
 @using (Html.BeginForm("Order", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()

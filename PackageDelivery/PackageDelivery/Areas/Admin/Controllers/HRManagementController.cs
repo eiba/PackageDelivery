@@ -30,14 +30,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
         //cause is the cause of an error
         public ActionResult Index(ManageController.ManageMessageId? message, string search, string cause)
         {
-            /*var store = new UserStore<ApplicationUser>(context);
-            var manager = new UserManager<ApplicationUser>(store);
-            ApplicationUser userr = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            if (userr == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            }*/
 
             ViewBag.StatusMessage =                                                                     //sets values of different message types
                 message == ManageController.ManageMessageId.ChangeProfileSuccess ? "Profile changed."
@@ -221,7 +214,6 @@ namespace PackageDelivery.Areas.Admin.Controllers
             {
                 var store = new UserStore<ApplicationUser>(context);
                 var manager = new UserManager<ApplicationUser>(store);
-                var user = await manager.FindByNameAsync(model.UserName);
                 ApplicationUser appUser = manager.FindByName(model.UserName);   //the current user
 
                 var results = from s in context.Users

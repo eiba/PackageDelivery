@@ -487,36 +487,61 @@ namespace PackageDelivery.Controllers
             Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            if (ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
+                var packages = from s in Context.Packages
+                                where
+                                    s.SenderId == user.Id
+                                select s;
+                var newpackages = packages.ToList();
+                foreach (var packageToAdd in newpackages)
+                {
+                    var orders = from s in Context.Orders
+                                 where
+                                 s.OrderId == packageToAdd.OrderId
+                                 select s;
+
+                    map.Add(packageToAdd, orders.First());
+                }
+
+
+                var models = new OrderViewModel
+                {
+                    OrderDictionaryMap = map
+                };
+                ViewBag.Id = orderId;
+                ViewBag.Error = "Order were not updated";
+                return PartialView("_orderPartial", models);
+            }
 
                 if (model.order.ReadyForPickupTime < DateTime.Now)
                 {
-                    var Packagess = from s in Context.Packages
-                                   where
-                                       s.SenderId == user.Id
-                                   select s;
-                    var Newpackagess = Packagess.ToList();
-                    foreach (var Package in Newpackagess)
-                    {
-                        var orders = from s in Context.Orders
-                                    where
-                                    s.OrderId == Package.OrderId
-                                    select s;
+                var packages = from s in Context.Packages
+                               where
+                                   s.SenderId == user.Id
+                               select s;
+                var newpackages = packages.ToList();
+                foreach (var packageToAdd in newpackages)
+                {
+                    var orders = from s in Context.Orders
+                                 where
+                                 s.OrderId == packageToAdd.OrderId
+                                 select s;
 
-                        map.Add(Package, orders.First());
-                    }
+                    map.Add(packageToAdd, orders.First());
+                }
 
 
-                    var Models = new OrderViewModel
-                    {
-                        OrderDictionaryMap = map
-                    };
+                var models = new OrderViewModel
+                {
+                    OrderDictionaryMap = map
+                };
                     ViewBag.Id = orderId;
                     ViewBag.Error = "Order ready for pickup date cannot be in the past";
-                    return PartialView("_orderPartial", Models);
+                    return PartialView("_orderPartial", models);
                 }
                 var package = Context.Packages.Find(packageId);
-            var order = Context.Orders.Find(orderId);
+                var order = Context.Orders.Find(orderId);
 
                 var pickupAdress = new Adresses
                 {
@@ -555,7 +580,6 @@ namespace PackageDelivery.Controllers
                 }
                 package.SpecialInstructions= model.package.SpecialInstructions;
                 package.RecieverAdressId = deliveryAdress.AdressId;
-                package.ReadyForPickupTime = model.order.ReadyForPickupTime;
                 Context.Entry(package).State = EntityState.Modified;
                 Context.SaveChanges();
 
@@ -565,7 +589,7 @@ namespace PackageDelivery.Controllers
                 Context.Entry(order).State = EntityState.Modified;
                 Context.SaveChanges();
 
-            }
+            
 
             var Packages = from s in Context.Packages
                            where
@@ -574,12 +598,12 @@ namespace PackageDelivery.Controllers
             var Newpackages = Packages.ToList();
             foreach (var Package in Newpackages)
             {
-                var order = from s in Context.Orders
+                var orderToAdd = from s in Context.Orders
                             where
                             s.OrderId == Package.OrderId
                             select s;
 
-                map.Add(Package, order.First());
+                map.Add(Package, orderToAdd.First());
             }
 
 

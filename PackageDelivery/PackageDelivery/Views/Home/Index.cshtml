@@ -4,8 +4,16 @@
 
 <div>
     <h1>Package delivery</h1>
-    <p class="text-success">@ViewBag.Success</p>
-
+    <div class="col-md-4">
+        <div class="text-danger">
+            <h5>@ViewBag.Error</h5>
+        </div>
+        <div class="text-success">
+            <h5>@ViewBag.Success</h5>
+        </div>
+    </div>
+    <br/>
+    <hr/>
     @Html.ActionLink("Request a delivery", "Order", "Home", new { @class = "btn btn-lg btn-danger center-block home-button-link" })
 
 

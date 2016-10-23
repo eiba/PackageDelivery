@@ -63,21 +63,24 @@
 
                 }
 
-                @using (Ajax.BeginForm("showOrderEdit", "Manage", new
+                @if(pair.Value.OrderStatus != Status.Completed)
                 {
-                    orderId = pair.Value.OrderId,
-                    packageId = pair.Key.PackageId
-                }, new AjaxOptions
-                {
-                    UpdateTargetId = "orderModal",
-                    InsertionMode = InsertionMode.Replace,
-                    HttpMethod = "GET",
+                    using (Ajax.BeginForm("showOrderEdit", "Manage", new
+                    {
+                        orderId = pair.Value.OrderId,
+                        packageId = pair.Key.PackageId
+                    }, new AjaxOptions
+                    {
+                        UpdateTargetId = "orderModal",
+                        InsertionMode = InsertionMode.Replace,
+                        HttpMethod = "GET",
 
 
-                }, new { @class = "form-horizontal", role = "form" }))
-                {
+                    }, new { @class = "form-horizontal", role = "form" }))
+                    {
                     <button type="submit" class="btn btn-danger j"><b>Edit</b></button>
 
+                }
                 }
             </td>
         </tr>
