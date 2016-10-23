@@ -105,7 +105,7 @@ namespace PackageDelivery.Models
             {
                 OrderTime = DateTime.Now,
                 PickupAdressId = Owner.AdressId,
-                ReadyForPickupTime = new DateTime(2016,12,30,15,40,56),
+                ReadyForPickupTime = DateTime.Now,
                 BeginDeliveryTime = DateTime.Now,
                 OrderStatus = Status.Recieved,
                 PaymentType = PaymentType.Credit,

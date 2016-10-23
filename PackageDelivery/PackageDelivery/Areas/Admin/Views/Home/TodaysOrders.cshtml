@@ -35,13 +35,14 @@
                     @Html.DisplayFor(modelItem => item.RecieverName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Cost)
+                    $@Html.DisplayFor(modelItem => item.Cost)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Weight)
+                    @Html.DisplayFor(modelItem => item.Weight)g
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
+                    @Html.DisplayFor(modelItem => item.ReadyForPickupTime.Hour) :
+                    @Html.DisplayFor(modelItem => item.ReadyForPickupTime.Minute)
                 </td>
                 <td>
                     @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
@@ -89,13 +90,14 @@ else
                         @Html.DisplayFor(modelItem => item.RecieverName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Cost)
+                        $@Html.DisplayFor(modelItem => item.Cost)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Weight)
+                        @Html.DisplayFor(modelItem => item.Weight)g
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReadyForPickupTime.TimeOfDay)
+                        @Html.DisplayFor(modelItem => item.ReadyForPickupTime.Hour) :
+                        @Html.DisplayFor(modelItem => item.ReadyForPickupTime.Minute)
                     </td>
                     <td>
                         @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
