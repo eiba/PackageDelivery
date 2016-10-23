@@ -95,12 +95,13 @@
                 @* here we have it! the extra buttons, I'll throw in the if then structure here to take you to admin if you are an admin authorized*@
                 <dt><h4>@Html.ActionLink("Change Profile Info", "ChangeProfileInfo")</h4></dt>
                 <dt><h4>@Html.ActionLink("View your orders", "MyOrders")</h4></dt>
-                
+
+                @*
                 @if ((@Model.ChangeProfileViewModel.Role == "Owner")||(@Model.ChangeProfileViewModel.Role == "Admin"))
                 {
 
                     <dt><h4><a href="@Url.Action("Index", "Home", new {area = "Admin"})">Admin Area</h4></dt>
-                }    
+                }  *@  
 </div>
             <div class="col-md-2">
 
