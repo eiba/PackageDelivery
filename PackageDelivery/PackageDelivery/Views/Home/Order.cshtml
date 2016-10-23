@@ -3,7 +3,7 @@
     ViewBag.Title = "Order";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@*Beginning of the page, title block*@
 <h2>Order</h2>
 <div>
     <div class="text-danger">
@@ -19,7 +19,8 @@
     <h4>Place an order.</h4>
     <hr />
     @Html.ValidationSummary("", new { @class = "text-danger" })
-    <h4>Delivery adress:</h4>
+    @*First section, Delivery address*@
+    <h4>Delivery address:</h4>
     <div class="form-group">
         @Html.LabelFor(m => m.DeliveryAdress.StreetAdress, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -45,7 +46,8 @@
         </div>
     </div>
     <hr />
-    <h4>Pickup Adress:</h4>
+    @*Second section, Pickup Address*@
+    <h4>Pickup Address:</h4>
     <div class="form-group">
         @Html.LabelFor(m => m.PickupAdress.StreetAdress, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
@@ -71,12 +73,31 @@
         </div>
     </div>
     <hr/>
+    @*Last section, Package info, edits going in here(sam)*@
     <h4>Package info:</h4>
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.Weight, new { @class = "col-md-2 control-label" })
         <div class="col-md-8">
             @Html.TextBoxFor(m => m.PackageInfo.Weight, new {@class = "form-control", @placeholder = "kg"})
         </div>  
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Length, new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.PackageInfo.Length, new { @class = "form-control", @placeholder = "kg" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Width, new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.PackageInfo.Width, new { @class = "form-control", @placeholder = "kg" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PackageInfo.Height, new { @class = "col-md-2 control-label" })
+        <div class="col-md-8">
+            @Html.TextBoxFor(m => m.PackageInfo.Height, new { @class = "form-control", @placeholder = "kg" })
+        </div>
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.PackageInfo.RecieverName, new {@class = "col-md-2 control-label"})
@@ -112,7 +133,7 @@
     <hr/>
     <br/>
     <div class="col-md-4">
-        <label>Estimated cost:</label>
+        <label>Estimated cost: @Model.PackageInfo.Cost</label>
     </div>
     <div class="col-md-8">
         <div class="form-group">

@@ -151,17 +151,39 @@ namespace PackageDelivery.Controllers
             };
                 context.Orders.Add(order);
                 context.SaveChanges();
-
+                double WhichSpeed = 1.0;
+                if (model.PackageInfo.Priority == Priority.Low)
+                {
+                    WhichSpeed = 1.0;
+                }
+                if (model.PackageInfo.Priority == Priority.Medium)
+                {
+                    WhichSpeed = 1.5;
+                }
+                if (model.PackageInfo.Priority == Priority.High)
+                {
+                    WhichSpeed = 2.0;
+                }
+                //int employeecount = Request.Form["employees"].AsInt();
+                double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
+                double VolumePrice = (model.PackageInfo.Height * model.PackageInfo.Length * model.PackageInfo.Width) / 100000000.0;
+                double WeightPrice = ((model.PackageInfo.Weight) * 4.0);
+                double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
+                double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
+                model.PackageInfo.Cost = TotalPrice;
                 var package = new Packages
                 {
                     SenderId = user.Id,
                     RecieverName = model.PackageInfo.RecieverName,
                     Weight = model.PackageInfo.Weight,
+                    Length = model.PackageInfo.Length,
+                    Width = model.PackageInfo.Width,
+                    Height = model.PackageInfo.Height,
                     SpecialInstructions = model.PackageInfo.sInstructions,
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
-                    Cost = 234.4,        //Test value, no cost estimation added yet
-                    
+                    Cost = model.PackageInfo.Cost        //Test value, working on it
+
                 };
 
                 context.Packages.Add(package);

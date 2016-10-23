@@ -27,10 +27,18 @@
             WhichSpeed = 2.0;
         }
         //int employeecount = Request.Form["employees"].AsInt();
-
-        double PriceIncrease = (WhichSpeed - 1) * 100;
+        double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
+        double VolumePrice = (PackageHeight * PackageLength * PackageWidth) / 100000000.0;
+        string volumePrice = VolumePrice.ToString("0.000");
+        double WeightPrice = ((PackageWeight / 1000.0) * 4.0);
+        string weightPrice = WeightPrice.ToString("0.000");
+        double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
+        string speedPrice = SpeedPrice.ToString("0.000");
+        double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
+        string totalPrice = TotalPrice.ToString("0.000");
         <text>
             <Strong><u>Your Package's info: </u></strong><br />
+
             <Strong>Package Weight:</Strong> @PackageWeight g <br />
             <Strong>Package Height:</Strong> @PackageHeight mm<br />
             <Strong>Package Length:</Strong> @PackageLength mm<br />
@@ -40,14 +48,13 @@
         <text>
             <Strong>Shipping calculation breakdown</Strong><br />
             First, payment for the size of the package (at $10 per cubic meter), is calculated using (height x length x width)/100,000 <br />
-            <Strong>Cost of a package of this size:</Strong>= $@((PackageHeight*PackageLength*PackageWidth)/100000000) <br /> <br />
-            Then, payementfor the weight of the package(at $4 per kg) <br /> 
-            <Strong>Cost for a package of this weight </Strong>$@((PackageWeight / 1000)*4) <br /> <br />
+
+            <Strong>Cost of a package of this size: $</Strong>@volumePrice <br /> <br />
+            Then, payementfor the weight of the package(at $4 per kg) <br />
+            <Strong>Cost for a package of this weight: $</Strong>@weightPrice <br /> <br />
             Then price increases based on shipping speed. <br />
-            <Strong>You selected @Speed delivery, which increases the cost of shipping by a factor of @PriceIncrease%, which is $@(((((PackageHeight * PackageLength * PackageWidth) / 100000000) + ((PackageWeight / 1000) * 4)) * WhichSpeed) - (((PackageHeight * PackageLength * PackageWidth) / 100000000) + ((PackageWeight / 1000) * 4)))</Strong> <br /> <br />
-            <Strong>And so, the price of delivery for your package is: $@((((PackageHeight * PackageLength * PackageWidth) / 100000000) + ((PackageWeight / 1000) * 4)) * WhichSpeed)</Strong>
-
-
+            <Strong>You selected @Speed delivery, which increases the cost of shipping by a factor of @PriceIncrease%, which is $@speedPrice</Strong> <br /> <br />
+            <Strong>And so, the price of delivery for your package is: $@totalPrice</Strong>
         </text>
     }
 }
