@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3397/" />
+<title>Viewing Label Information</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Viewing Label Information</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/?successmessage=Your%20order%20has%20been%20recieved%2C%20thank%20you%21</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=You are logged in as Owner@qut.edu.au</td>
+	<td>You are logged in as Owner@qut.edu.au</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Orders</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.btn.btn-danger</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Sticker</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=h2</td>
+	<td>Automatically generated sticker for Package 1</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//table[2]/tbody/tr/th</td>
+	<td>Reciever name:</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//table[2]/tbody/tr/th[3]</td>
+	<td>Sender name:</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//table[4]/tbody/tr/th[2]</td>
+	<td>Special insturctions: <br />Don't let the cat in</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=img</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

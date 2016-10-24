@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="Create Account Then Place An Order.html">Create Account Then Place An Order</a></td></tr>
+<tr><td><a href="Account Settings And Order Details.html">View Account Details and Change Them,Then View Order Then Change Order Details</a></td></tr>
+<tr><td><a href="Login To Driver Account And Perform Order Operations.html">Login To A Driver Account, Then View Orders And Perform A Pickup With Delay</a></td></tr>
+<tr><td><a href="Employee Management.html">Login To Adminstrator Account, Add an Employee and Then Deactivate Employee</a></td></tr>
+</tbody></table>
+</body>
+</html>

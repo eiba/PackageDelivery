@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="Creating a Customer Account.html">Creating a Customer Account</a></td></tr>
+<tr><td><a href="Logging Off.html">Logging Off</a></td></tr>
+<tr><td><a href="Non Valid Date of Birth.html">Non Valid Date Of Birth</a></td></tr>
+<tr><td><a href="Non Valid Email Address.html">Non Valid Email Address</a></td></tr>
+<tr><td><a href="Password Does Not Meet Required Specifications.html">Password Doesnt Meet Required Specifications</a></td></tr>
+<tr><td><a href="Passwords Do Not Match.html">Passwords Do Not Match</a></td></tr>
+<tr><td><a href="../Delivery Request Form/Viewing Account Details.html">Viewing Account Details</a></td></tr>
+<tr><td><a href="../Delivery Request Form/Editing Account Details.html">Editing Account Details</a></td></tr>
+<tr><td><a href="../Delivery Request Form/Changing Account Password.html">Changing Account Password</a></td></tr>
+</tbody></table>
+</body>
+</html>

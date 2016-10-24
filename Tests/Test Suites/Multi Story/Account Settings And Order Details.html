@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3397/" />
+<title>View Account Details and Change Them,Then View Order Then Change Order Details</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">View Account Details and Change Them,Then View Order Then Change Order Details</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/?successmessage=Your%20order%20has%20been%20recieved%2C%20thank%20you%21</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=You are logged in as 123@123.com</td>
+	<td>You are logged in as 123@123.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=You are logged in as 123@123.com</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Change Profile Info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=StreetAdress</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=PostCode</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Suburb</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=State</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Phone</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.btn.btn-danger</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=View your orders</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='app']/div/div/div/div[2]/h5/dl/dd[16]</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='app']/div/div/div/div[3]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>xpath=(//button[@type='submit'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=deliveradress_StreetAdress</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=deliveradress_PostCode</td>
+	<td>1234456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=deliveradress_Suburb</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=deliveradress_State</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=knapp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=div.text-success</td>
+	<td>Successfully updated order 0</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='submit']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//div[@id='app']/div/div/div/div[2]/h5/dl/dd[16]</td>
+	<td>123456</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

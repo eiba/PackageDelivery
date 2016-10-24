@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://packagedeliveryy.azurewebsites.net/" />
+<title>Creating An Employee</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Creating An Employee</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Log in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Email</td>
+	<td>owner@qut.edu.au</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Password</td>
+	<td>Password1.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.btn.btn-default</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/Admin/HRManagement</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>id=show-modal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=firstName</td>
+	<td>Test</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=lastName</td>
+	<td>Two</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Address</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=City</td>
+	<td>11/22/33</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=zipCode</td>
+	<td>123abc</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Phone</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Email</td>
+	<td>TestEmployee2@One.Com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=StreetAdress</td>
+	<td>1 One St</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=PostCode</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=Suburb</td>
+	<td>Testland</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name=State</td>
+	<td>QLD</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Password</td>
+	<td>Abc123!</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ConfirmPassword</td>
+	<td>Abc123!</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=knapp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=TestEmployee2@One.Com</td>
+	<td>TestEmployee2@One.Com</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

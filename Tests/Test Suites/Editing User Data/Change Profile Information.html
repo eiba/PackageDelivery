@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3397/" />
+<title>Change Profile Info</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Change Profile Info</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=You are logged in as Edit@Test.com</td>
+	<td>You are logged in as Edit@Test.com</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=You are logged in as Edit@Test.com</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Change Profile Info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=StreetAdress</td>
+	<td>123Update</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=PostCode</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Suburb</td>
+	<td>123Update</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=State</td>
+	<td>QLDUpdate</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Phone</td>
+	<td>12345678910</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.btn.btn-danger</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p.text-success</td>
+	<td>Your info has been successfully updated</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//dd[2]</td>
+	<td>123Update</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//dd[3]</td>
+	<td>123456</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//dd[4]</td>
+	<td>123Update</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//dd[5]</td>
+	<td>QLDUpdate</td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>//dd[6]</td>
+	<td>12345678910</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Change Profile Info</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=StreetAdress</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=PostCode</td>
+	<td>1234</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Suburb</td>
+	<td>123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=State</td>
+	<td>QLD</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Phone</td>
+	<td>12345678</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=input.btn.btn-danger</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=p.text-success</td>
+	<td>Your info has been successfully updated</td>
+</tr>
+</tbody></table>
+</body>
+</html>

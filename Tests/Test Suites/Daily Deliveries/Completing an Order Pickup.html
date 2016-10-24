@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://localhost:3397/" />
+<title>Completing An Order Pickup</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Completing An Order Pickup</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/?successmessage=Your%20order%20has%20been%20recieved%2C%20thank%20you%21</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>link=You are logged in as Owner@qut.edu.au</td>
+	<td>You are logged in as Owner@qut.edu.au</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Todays Orders</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Start Pickup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=div.text-success &gt; h5</td>
+	<td>The pickup was successfully started</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Complete Pickup</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertText</td>
+	<td>css=div.text-success &gt; h5</td>
+	<td>Pickup completed</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

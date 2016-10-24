@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+  <title>Test Suite</title>
+</head>
+<body>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr><td><b>Test Suite</b></td></tr>
+<tr><td><a href="Create A New Account.html">Create A New Account</a></td></tr>
+<tr><td><a href="View User Data.html">View User Data</a></td></tr>
+<tr><td><a href="Change Profile Information.html">Change Profile Info And View Changes</a></td></tr>
+<tr><td><a href="Attempt Profile Change with Incorrect Postcode.html">Attempt Profile Change with Incorrect Value in Postcode</a></td></tr>
+<tr><td><a href="Change Password.html">Change Password</a></td></tr>
+<tr><td><a href="Attempt Password Change With Incorrect Password.html">Attempt Password Change With Incorrect Password</a></td></tr>
+<tr><td><a href="Attempt Password Change With Non-Matching Password.html">Attempt Password Change With Non-Matching Password</a></td></tr>
+</tbody></table>
+</body>
+</html>
