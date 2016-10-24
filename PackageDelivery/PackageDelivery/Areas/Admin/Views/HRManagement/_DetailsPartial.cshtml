@@ -1,10 +1,10 @@
 ﻿@model PackageDelivery.Areas.Admin.Models.ShowDetailsModel
 
 @{
-    var fullname = Model.user.Fname + " " + Model.user.Lname;
-    var mailto = "mailto:" + Model.user.Email;
+    var fullname = Model.User.Fname + " " + Model.User.Lname;
+    var mailto = "mailto:" + Model.User.Email;
     var vueId = Model.VueId;
-    var modalId = Model.modalId;
+    var modalId = Model.ModalId;
 
 }
 
@@ -46,19 +46,19 @@
                     Email:
                 </dt>
                 <dd>
-                    <a href="@mailto">@Html.DisplayFor(modelItem => Model.user.Email)</a>
+                    <a href="@mailto">@Html.DisplayFor(modelItem => Model.User.Email)</a>
                 </dd>
                 <dt>
                     Phone number:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.user.Phone)
+                    @Html.DisplayFor(modelItem => Model.User.Phone)
                 </dd>
                 <dt>
                     Date of birth:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.user.DoB)
+                    @Html.DisplayFor(modelItem => Model.User.DoB)
                 </dd>
                 <dt>
                     Street Adress:
@@ -88,7 +88,7 @@
                     User role:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.user.AccessLvL)
+                    @Html.DisplayFor(modelItem => Model.User.AccessLvL)
                 </dd>
                 @if (Model.Employee.EmployeeId != null)
                 {

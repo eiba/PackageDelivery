@@ -6,6 +6,11 @@ using System.Web;
 
 namespace PackageDelivery.Models
 {
+    /// <summary>
+    /// Model for changing user information in the Admin panel,
+    /// only the owner has access to this and can change all close to 
+    /// all the fields in the user accounts. 
+    /// </summary>
     public class ChangeProfileAdmin
     {
         [Required]
@@ -33,7 +38,6 @@ namespace PackageDelivery.Models
         public string State { get; set; }
 
         [Required]
-        //[RegularExpression(@"^[0-9]$", ErrorMessage = "Must be numbers from 0 to 9")]
         [Display(Name = "Phone")]
         public string Phone { get; set; }
 
@@ -52,7 +56,6 @@ namespace PackageDelivery.Models
         [Display(Name = "User role")]
         public string AccessLvL { get; set; }
 
-        //[StringLength(100, ErrorMessage = "{0} Must be at least {2} characters.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -72,9 +75,9 @@ namespace PackageDelivery.Models
         [Display(Name = "Date of Birth")]
         public string DoB { get; set; }
 
-        public string vueIdd { get; set; }
-        public string modalIdd { get; set; }
-        public string check { get; set; }
-        public string search { get; set; }
+        public string VueIdd { get; set; }
+        public string ModalIdd { get; set; }
+        public string Check { get; set; }
+        public string Search { get; set; }
     }
 }

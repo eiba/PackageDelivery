@@ -39,6 +39,10 @@ namespace PackageDelivery.Models
         public string ConfirmPassword { get; set; }
     }
 
+    /// <summary>
+    /// Model used when customer changes their info, allowing them to change
+    /// phone number, street adress, postcode, suburb and state.
+    /// </summary>
     public class ChangeProfileViewModel
     {
         [Required]
@@ -64,6 +68,10 @@ namespace PackageDelivery.Models
 
     }
 
+    /// <summary>
+    /// Joint model for displaying both identity account information and the custom
+    /// fields added.
+    /// </summary>
     public class ChangeProfileIdexViewModel
     {
         public ChangeProfileViewModel ChangeProfileViewModel { get; set; }

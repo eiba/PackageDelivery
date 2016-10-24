@@ -1,7 +1,7 @@
 ﻿@model PackageDelivery.Models.OrderDetailsViewModel
 
 @{
-    var modalId = Model.order.OrderId +"a";
+    var modalId = Model.Order.OrderId +"a";
 }
 
 <script type="x/template" id="@modalId">
@@ -35,7 +35,7 @@
 <div id="app">
 
     <modal :show.sync="showModal">
-        <h3 slot="header">Order @Model.order.OrderId</h3>
+        <h3 slot="header">Order @Model.Order.OrderId</h3>
         <h5 slot="body">
             <dl class="dl-horizontal">
                 <h4>Order details:</h4>
@@ -44,42 +44,42 @@
                     Order Id:
                 </dt>
                 <dd>
-                @Html.DisplayFor(modelItem => Model.order.OrderId)
+                @Html.DisplayFor(modelItem => Model.Order.OrderId)
                 <dt>
                     Order created:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.OrderTime)
+                    @Html.DisplayFor(modelItem => Model.Order.OrderTime)
                 </dd>
                 <dt>
                     Order status:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.OrderStatus)
+                    @Html.DisplayFor(modelItem => Model.Order.OrderStatus)
                 </dd>
                 <dt>
                     Payment Type:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.PaymentType)
+                    @Html.DisplayFor(modelItem => Model.Order.PaymentType)
                 </dd>
                 <dt>
                     Priority:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.OrderPriority)
+                    @Html.DisplayFor(modelItem => Model.Order.OrderPriority)
                 </dd>
                 <dt>
                     Ready for pickup time:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.ReadyForPickupTime)
+                    @Html.DisplayFor(modelItem => Model.Order.ReadyForPickupTime)
                 </dd>
                 <dt>
                     Begin delivery time:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.order.BeginDeliveryTime)
+                    @Html.DisplayFor(modelItem => Model.Order.BeginDeliveryTime)
                 </dd>
                 <br/><br/>
                 <hr />
@@ -89,49 +89,49 @@
                     Package id:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.package.PackageId)
+                    @Html.DisplayFor(modelItem => Model.Package.PackageId)
                 </dd>
                 <dt>
                     Reciever name:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.package.RecieverName)
+                    @Html.DisplayFor(modelItem => Model.Package.RecieverName)
                 </dd>
                 <dt>
                     Weight(gram):
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.package.Weight)
+                    @Html.DisplayFor(modelItem => Model.Package.Weight)
                 </dd>
                 <dt>
                     Package height(mm)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.package.Height)
+                    @Html.DisplayFor(model => model.Package.Height)
                 </dd>
                 <dt>
                     Package length(mm)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.package.Length)
+                    @Html.DisplayFor(model => model.Package.Length)
                 </dd>
                 <dt>
                     Package width(mm)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.package.Width)
+                    @Html.DisplayFor(model => model.Package.Width)
                 </dd>
                 <dt>
                     Special instructions:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.package.SpecialInstructions)
+                    @Html.DisplayFor(modelItem => Model.Package.SpecialInstructions)
                 </dd>
                 <dt>
                     Cost:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.package.Cost)
+                    $@Html.DisplayFor(modelItem => Model.Package.Cost)
                 </dd>
                 <br />
                 <br/>
@@ -142,25 +142,25 @@
                     Street Adress:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.deliveradress.StreetAdress)
+                    @Html.DisplayFor(modelItem => Model.Deliveradress.StreetAdress)
                 </dd>
                 <dt>
                     Postcode:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.deliveradress.PostCode)
+                    @Html.DisplayFor(modelItem => Model.Deliveradress.PostCode)
                 </dd>
                 <dt>
                     Suburb:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.deliveradress.Suburb)
+                    @Html.DisplayFor(modelItem => Model.Deliveradress.Suburb)
                 </dd>
                 <dt>
                     State:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.deliveradress.State)
+                    @Html.DisplayFor(modelItem => Model.Deliveradress.State)
                 </dd>
                 <br />
                 <br/>
@@ -171,25 +171,25 @@
                     Street Adress:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.pickupadress.StreetAdress)
+                    @Html.DisplayFor(modelItem => Model.Pickupadress.StreetAdress)
                 </dd>
                 <dt>
                     Postcode:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.pickupadress.PostCode)
+                    @Html.DisplayFor(modelItem => Model.Pickupadress.PostCode)
                 </dd>
                 <dt>
                     Suburb:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.pickupadress.Suburb)
+                    @Html.DisplayFor(modelItem => Model.Pickupadress.Suburb)
                 </dd>
                 <dt>
                     State:
                 </dt>
                 <dd>
-                    @Html.DisplayFor(modelItem => Model.pickupadress.State)
+                    @Html.DisplayFor(modelItem => Model.Pickupadress.State)
                 </dd>
             </dl>
         </h5>

@@ -6,6 +6,10 @@ using System.Web;
 
 namespace PackageDelivery.Models
 {
+    /// <summary>
+    /// Order model containsing a dictionary with the packages and their corresponding
+    /// orders
+    /// </summary>
     public class OrderViewModel
     {
         public Dictionary<Packages,Orders> OrderDictionaryMap { get; set; }
@@ -14,12 +18,12 @@ namespace PackageDelivery.Models
     public class OrderDetailsViewModel
     {
         [Required]
-        public Orders order { get; set; }
+        public Orders Order { get; set; }
         [Required]
-        public Packages package { get; set; }
+        public Packages Package { get; set; }
         [Required]
-        public Adresses pickupadress { get; set; }
+        public Adresses Pickupadress { get; set; }
         [Required]
-        public Adresses deliveradress { get; set; }
+        public Adresses Deliveradress { get; set; }
     }
 }

@@ -11,11 +11,24 @@ using PackageDelivery.Areas.Admin.Models;
 using PackageDelivery.Models;
 
 namespace PackageDelivery.Controllers
-{
+{   
+    /// <summary>
+    /// This controller method contains methods for the different views on the front end of the website.
+    /// Includes controllers for
+    /// </summary>
     public class HomeController : Controller
     {
-        private ApplicationDbContext context = new ApplicationDbContext();
+        /// <summary>
+        /// The context variable allows us to access the database through the entity framework.
+        /// </summary>
+        private ApplicationDbContext _context = new ApplicationDbContext();
 
+        /// <summary>
+        /// Return front page of the application
+        /// </summary>
+        /// <param name="successmessage">If there is a successmessage, display it</param>
+        /// <param name="errormessage">If there is an errormessage, display it</param>
+        /// <returns>The view</returns>
         public ActionResult Index(string successmessage, string errormessage)
         {
             if (errormessage != null)
@@ -29,13 +42,20 @@ namespace PackageDelivery.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Gets the about page
+        /// </summary>
+        /// <returns>The about view</returns>
         public ActionResult About()
         {
             ViewBag.Message = "About On The Spot";
 
             return View();
         }
-
+        /// <summary>
+        /// Gets the contact page
+        /// </summary>
+        /// <returns>The contact view</returns>
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -43,18 +63,33 @@ namespace PackageDelivery.Controllers
             return View();
         }
 
-
+        /// <summary>
+        /// Method that returns the quote view
+        /// </summary>
+        /// <param name="weight">Weight of package</param>
+        /// <param name="height">Height of package</param>
+        /// <param name="length">Length of package</param>
+        /// <param name="width">Width of package</param>
+        /// <param name="cost">Cost of package</param>
+        /// <param name="speed">Speed/priority of package</param>
+        /// <returns>Returns normal qoute view if one or more of the parameters are null, otherwise
+        /// returns the order form with the parameters as filled in values</returns>
         public ActionResult Quote(string weight, string height, string length, string width, string cost, string speed)
         {
             if (weight != null && height != null && length != null && width != null && cost != null && speed != null)
             {
-                return RedirectToAction("Order", new { weight = weight, length = length, height = height, cost = cost, width = width, speed=speed });
+                return RedirectToAction("Order", new { weight, length, height, cost, width, speed });
             }
 
             ViewBag.Message = "Get a quote on your delivery before you pay";
 
             return View();
         }
+        /// <summary>
+        /// Post method that display's the cost calcualtion
+        /// </summary>
+        /// <param name="something">Does nothing, just need a parameter for post</param>
+        /// <returns>View with the calcualted package delivery cost</returns>
         [HttpPost]
         public ActionResult Quote(string something)
         {
@@ -64,7 +99,19 @@ namespace PackageDelivery.Controllers
             return View();
         }
 
-        //Shows order request form
+        /// <summary>
+        /// Shows the order request form with values from quote and the user's adress. If parameters are
+        /// are null just returns the basic form
+        /// </summary>
+        /// <param name="errormessage">If and error happened when processing the order, returns the view
+        /// with that error</param>
+        /// <param name="weight">Package weight</param>
+        /// <param name="length">Package length</param>
+        /// <param name="height">Package height</param>
+        /// <param name="cost">Package cost</param>
+        /// <param name="width">Package width</param>
+        /// <param name="speed">Package speed/priority </param>
+        /// <returns>The order request form</returns>
         [Authorize(Roles = "Owner,Admin,Customer")]
         public ActionResult Order(string errormessage, string weight, string length, string height, string cost, string width, string speed)
         {
@@ -72,9 +119,9 @@ namespace PackageDelivery.Controllers
             {
                 ViewBag.Error = errormessage;
             }
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            var adress = context.Adresses.Find(user.AdressId);
+            var adress = _context.Adresses.Find(user.AdressId);
             var delAdress = new DeliveryAdress      //gets the logged in users adress
             {
                 StreetAdress = adress.StreetAdress,
@@ -89,11 +136,11 @@ namespace PackageDelivery.Controllers
             if (weight != null && height != null && length != null && width != null && cost != null && speed != null)
             {
                 var priority = Priority.Low;
-                if (speed == "high")
+                if (speed == "High")
                 {
                     priority = Priority.High;
 
-                }else if (speed == "medium")
+                }else if (speed == "Medium")
                 {
                     priority = Priority.Medium;
                 }
@@ -109,6 +156,7 @@ namespace PackageDelivery.Controllers
                     
                 };
             }
+            
             var model = new OrderModel
             {
                 DeliveryAdress = delAdress,
@@ -119,27 +167,35 @@ namespace PackageDelivery.Controllers
             return View(model);
         }
 
-        //Order creation post method
+
+        /// <summary>
+        /// Order creation post method for adding orders from the order form
+        /// to the database.
+        /// </summary>
+        /// <param name="model">The order model containing </param>
+        /// <returns>The front page with an error message if everything goes according to plan,
+        /// otherwise returns the order view with an error message</returns>
         [Authorize(Roles = "Owner,Admin,Customer")]
         [HttpPost]
         public ActionResult Order(OrderModel model)
         {
 
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)    //Model is not valid, return view with error message
             {
-                return RedirectToAction("Index", "Home", new { errormessage = "Something went wrong, sorry" });
+                return RedirectToAction("Order", "Home", new { errormessage = "Something went wrong, sorry" });
 
             }
             
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;     //current user
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+            ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;     //Current user
 
-                if (model.PackageInfo.ReadyForPickupTIme < DateTime.Now)
-                {
-                    return RedirectToAction("Order", new {errormessage ="Ready for pickup time cannot be in the past", height = model.PackageInfo.Height.ToString(),weight=model.PackageInfo.Weight.ToString(),width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(),length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString()});
-                }
-                if (model.PackageInfo.Weight <= 0)
-                {
+            //A series of if statments checking the form validation, otherwise return the order view with the corresponding error message.
+            if (model.PackageInfo.ReadyForPickupTIme < DateTime.Now)
+            {
+                return RedirectToAction("Order", new {errormessage ="Ready for pickup time cannot be in the past", height = model.PackageInfo.Height.ToString(),weight=model.PackageInfo.Weight.ToString(),width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(),length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString()});
+            }
+            if (model.PackageInfo.Weight <= 0)
+            {
                 return RedirectToAction("Order", new { errormessage = "Weight cannot be 0", height = model.PackageInfo.Height.ToString(), weight = model.PackageInfo.Weight.ToString(), width = model.PackageInfo.Width.ToString(), cost = model.PackageInfo.Cost.ToString(), length = model.PackageInfo.Length.ToString(), speed = model.PackageInfo.Priority.ToString() });
             }
             if (model.PackageInfo.Height <= 0)
@@ -164,11 +220,11 @@ namespace PackageDelivery.Controllers
 
 
                 };
-                var pickup = adressExist(pickupAdress);     //Checks if adress is already in the database or not
+                var pickup = AdressExist(pickupAdress);     //Checks if adress is already in the database or not
                 if (pickup == null)
                 {
-                    context.Adresses.Add(pickupAdress);
-                    context.SaveChanges();
+                    _context.Adresses.Add(pickupAdress);
+                    _context.SaveChanges();
                 }
                 else
                 {
@@ -182,11 +238,11 @@ namespace PackageDelivery.Controllers
                     State = model.DeliveryAdress.State,
 
                 };
-                var delivery = adressExist(deliveryAdress);
+                var delivery = AdressExist(deliveryAdress);
                 if (delivery == null)
                 {
-                    context.Adresses.Add(deliveryAdress);
-                    context.SaveChanges();
+                    _context.Adresses.Add(deliveryAdress);
+                    _context.SaveChanges();
                 }
                 else
                 {
@@ -202,6 +258,8 @@ namespace PackageDelivery.Controllers
                     PaymentType = model.PackageInfo.PaymentType,
                     BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme
                 };
+                //Calculates the amount of days it will take to deliver the package based on when it was picked up
+                //and the priority of the package
                 if (model.PackageInfo.Priority == Priority.Low)
                 {
                     order.BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme.AddDays(7);
@@ -214,27 +272,26 @@ namespace PackageDelivery.Controllers
                 {
                     order.BeginDeliveryTime = model.PackageInfo.ReadyForPickupTIme.AddDays(1);
                 }
-                context.Orders.Add(order);
-                context.SaveChanges();
-                double WhichSpeed = 1.0;
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+                //Calculates the cost pased on priority and package dimensions
+                var whichSpeed = 1.0;
                 if (model.PackageInfo.Priority == Priority.Low)
                 {
-                    WhichSpeed = 1.0;
+                    whichSpeed = 1.0;
                 }
                 if (model.PackageInfo.Priority == Priority.Medium)
                 {
-                    WhichSpeed = 1.5;
+                    whichSpeed = 1.5;
                 }
                 if (model.PackageInfo.Priority == Priority.High)
                 {
-                    WhichSpeed = 2.0;
+                    whichSpeed = 2.0;
                 }
-                //int employeecount = Request.Form["employees"].AsInt();
-                double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
-                double VolumePrice = (model.PackageInfo.Height * model.PackageInfo.Length * model.PackageInfo.Width) / 100000000.0;
-                double WeightPrice = ((model.PackageInfo.Weight) * 4.0);
-                double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
-                double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
+                var volumePrice = (model.PackageInfo.Height * model.PackageInfo.Length * model.PackageInfo.Width) / 100000000.0;
+                var weightPrice = (((model.PackageInfo.Weight)/1000) * 4.0);
+                var totalPrice = (volumePrice + weightPrice) * whichSpeed;
+                //Creates the package and adds it to the database
                 var package = new Packages
                 {
                     SenderId = user.Id,
@@ -243,27 +300,31 @@ namespace PackageDelivery.Controllers
                     Length = model.PackageInfo.Length,
                     Width = model.PackageInfo.Width,
                     Height = model.PackageInfo.Height,
-                    SpecialInstructions = model.PackageInfo.sInstructions,
+                    SpecialInstructions = model.PackageInfo.SInstructions,
                     RecieverAdressId = deliveryAdress.AdressId,
                     OrderId = order.OrderId,
-                    Cost = TotalPrice        
+                    Cost = totalPrice        
                 };
 
-                context.Packages.Add(package);
-                context.SaveChanges();
-            
+                _context.Packages.Add(package);
+                _context.SaveChanges();
+            //Success, return front page with success message.
             return RedirectToAction("Index","Home", new {successmessage= "Your order has been recieved, thank you!" });
         }
 
-        //Check if adress is already in database, if it is return that adress instead
-        public Adresses adressExist(Adresses adress)
+        /// <summary>
+        /// Method that checks if an adress already exist in the database.
+        /// </summary>
+        /// <param name="Adress">The adress to check if it already exist</param>
+        /// <returns>Returns the adress or null if the adress does not already exist</returns>
+        public Adresses AdressExist(Adresses Adress)
         {
-            var Adresses = context.Set<Adresses>();
-            foreach (var Adress in Adresses)
+            var adresses = _context.Set<Adresses>();
+            foreach (var adress in adresses)
             {
-                if (adress.StreetAdress == Adress.StreetAdress && adress.PostCode == Adress.PostCode)
+                if (Adress.StreetAdress == adress.StreetAdress && Adress.PostCode == adress.PostCode)
                 {
-                    return Adress;
+                    return adress;
                 }  
             }
             return null;

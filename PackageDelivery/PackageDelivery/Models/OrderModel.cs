@@ -6,6 +6,9 @@ using System.Web;
 
 namespace PackageDelivery.Models
 {
+    /// <summary>
+    /// Model to be sent to the view and recieved when the customer places an order.
+    /// </summary>
     public class OrderModel
     {
 
@@ -14,6 +17,9 @@ namespace PackageDelivery.Models
         public PackageInfo PackageInfo { get; set; }
     }
 
+    /// <summary>
+    /// The adress where package will be delivered
+    /// </summary>
     public class DeliveryAdress
     {
         [Required]
@@ -33,6 +39,9 @@ namespace PackageDelivery.Models
         [Display(Name = "State")]
         public string State { get; set; }
     }
+    /// <summary>
+    /// The adress where the package will be picked up
+    /// </summary>
     public class PickupAdress
     {
         [Required]
@@ -52,12 +61,15 @@ namespace PackageDelivery.Models
         [Display(Name = "State")]
         public string State { get; set; }
     }
-
+    
+    /// <summary>
+    /// General package info
+    /// </summary>
     public class PackageInfo
     {
 
         [Display(Name = "Special instructions")]
-        public string sInstructions { get; set; }
+        public string SInstructions { get; set; }
 
         [Required]
         [Display(Name = "Weight(kg)")]

@@ -15,12 +15,16 @@ using PackageDelivery.Models;
 
 namespace PackageDelivery.Controllers
 {
+    /// <summary>
+    /// Controller for managing user account, consists mostly for framework methods. 
+    /// Other methods has been commented.
+    /// </summary>
     [Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        ApplicationDbContext Context = new ApplicationDbContext();
+        ApplicationDbContext _context = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -56,8 +60,11 @@ namespace PackageDelivery.Controllers
             }
         }
 
-        //
-        // GET: /Manage/Index
+        /// <summary>
+        /// Method for getting and displaying the index page of user management
+        /// </summary>
+        /// <param name="message">MessageId for what message to display, error or success</param>
+        /// <returns>Returns the front view for user self management</returns>
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -81,7 +88,8 @@ namespace PackageDelivery.Controllers
             };
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
             var currentUser = manager.FindById(User.Identity.GetUserId());
-            var adress = Context.Adresses.Find(currentUser.AdressId);
+            var adress = _context.Adresses.Find(currentUser.AdressId);
+            //Gets the custom values
             var model2 = new ChangeProfileViewModel
             {
                 State = adress.State,
@@ -90,6 +98,7 @@ namespace PackageDelivery.Controllers
                 StreetAdress = adress.StreetAdress,
                 Phone = currentUser.Phone,
             };
+            //Model containing all values to be displayed in the view
             var model = new ChangeProfileIdexViewModel
             {
                 ChangeProfileViewModel = model2,
@@ -188,7 +197,6 @@ namespace PackageDelivery.Controllers
         // GET: /Manage/VerifyPhoneNumber
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
             // Send an SMS through the SMS provider to verify the phone number
             return phoneNumber == null ? View("Error") : View(new VerifyPhoneNumberViewModel { PhoneNumber = phoneNumber });
         }
@@ -346,12 +354,16 @@ namespace PackageDelivery.Controllers
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
 
-        //Display page with current user info (adress and phone)
+
+        /// <summary>
+        /// Display page with current user info (adress and phone)
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangeProfileInfo()
         {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())); //Manager for handeling application users
             var currentUser = manager.FindById(User.Identity.GetUserId());                                              //The current logged in user
-            var adress = Context.Adresses.Find(currentUser.AdressId);                                                   //Adress of logged in user
+            var adress = _context.Adresses.Find(currentUser.AdressId);                                                   //Adress of logged in user
             var model = new ChangeProfileViewModel                                                                      //Send in model to view with adress information
             {   
                 State = adress.State,
@@ -364,6 +376,13 @@ namespace PackageDelivery.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Post method that changes the profile info of a user.
+        /// </summary>
+        /// <param name="model">Model from ChangeProfileInfo view, containing the values 
+        /// to be changed in the database</param>
+        /// <returns>View with either a successmessage or reload of same view upon error when 
+        /// changing values.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangeProfileInfo(ChangeProfileViewModel model)
@@ -372,9 +391,8 @@ namespace PackageDelivery.Controllers
             {
                 var store = new UserStore<ApplicationUser>(new ApplicationDbContext());
                 var manager = new UserManager<ApplicationUser>(store);
-                ApplicationUser Model = manager.FindById(User.Identity.GetUserId());
-                Adresses adress = Context.Adresses.Find(Model.AdressId);
-                Model.Phone = model.Phone;
+                ApplicationUser user = manager.FindById(User.Identity.GetUserId());
+                user.Phone = model.Phone;
                 var newAdress = new Adresses
                 {
                     StreetAdress = model.StreetAdress,
@@ -383,20 +401,20 @@ namespace PackageDelivery.Controllers
                     PostCode = model.PostCode
                 };
                 
-                var Adress = adressExist(newAdress);
-                if (Adress == null)
+                var adress = AdressExist(newAdress);
+                if (adress == null)
                 {
-                    Context.Adresses.Add(newAdress);
-                    Context.SaveChanges();
-                    Model.AdressId = newAdress.AdressId;
+                    _context.Adresses.Add(newAdress);
+                    _context.SaveChanges();
+                    user.AdressId = newAdress.AdressId;
                 }
                 else
                 {
-                    Model.AdressId = Adress.AdressId;
+                    user.AdressId = adress.AdressId;
                 }
                 
 
-                IdentityResult result = await manager.UpdateAsync(Model);
+                IdentityResult result = await manager.UpdateAsync(user);
                 store.Context.SaveChanges();
 
                 if (result.Succeeded)
@@ -410,14 +428,18 @@ namespace PackageDelivery.Controllers
 
         }
 
-        //Returns and displays all the users current orders.
+
+        /// <summary>
+        /// Returns and displays all the user's current orders. 
+        /// </summary>
+        /// <returns>The view, which is a list containing the user's orders</returns>
         public ActionResult MyOrders()
         {
 
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
 
-               var packages = from s in Context.Packages
+               var packages = from s in _context.Packages
                 where
                     s.SenderId == user.Id
                 select s;
@@ -426,7 +448,7 @@ namespace PackageDelivery.Controllers
             var newpackages = packages.ToList();
             foreach (var package in newpackages)
             {
-                var order = from s in Context.Orders
+                var order = from s in _context.Orders
                             where 
                             s.OrderId == package.OrderId
                             select s;
@@ -442,60 +464,81 @@ namespace PackageDelivery.Controllers
 
             return View(model);
         }
+        /// <summary>
+        /// A get method that gets and return the partial view which is
+        /// the details modal box for orders in the customer's order panel
+        /// </summary>
+        /// <param name="packageId">Id of the package</param>
+        /// <param name="orderId">Id of the order</param>
+        /// <returns>The details partial view modal box</returns>
         [HttpGet]
-        public ActionResult showOrderDetails(int? packageId, int? orderId)
+        public ActionResult ShowOrderDetails(int? packageId, int? orderId)
         {
             if (packageId == null || orderId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var package = Context.Packages.Find(packageId);
-            var order = Context.Orders.Find(orderId);
+            var package = _context.Packages.Find(packageId);
+            var order = _context.Orders.Find(orderId);
             var model = new OrderDetailsViewModel
             {
-                package =package,
-                order =order,
-                pickupadress = Context.Adresses.Find(order.PickupAdressId),
-                deliveradress = Context.Adresses.Find(package.RecieverAdressId)
+                Package =package,
+                Order =order,
+                Pickupadress = _context.Adresses.Find(order.PickupAdressId),
+                Deliveradress = _context.Adresses.Find(package.RecieverAdressId)
             };
 
             return PartialView("_OrderDetialsPartial",model);
         }
+        /// <summary>
+        /// Show the partial view which is a modal box that allows you the customer
+        /// to edit an order
+        /// </summary>
+        /// <param name="packageId">Id of the package</param>
+        /// <param name="orderId">Id of the order</param>
+        /// <returns>The edit order partial view</returns>
         [HttpGet]
-        public ActionResult showOrderEdit(int? packageId, int? orderId)
+        public ActionResult ShowOrderEdit(int? packageId, int? orderId)
         {
             if (packageId == null || orderId == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var package = Context.Packages.Find(packageId);
-            var order = Context.Orders.Find(orderId);
+            var package = _context.Packages.Find(packageId);
+            var order = _context.Orders.Find(orderId);
             var model = new OrderDetailsViewModel
             {
-                package = package,
-                order = order,
-                pickupadress = Context.Adresses.Find(order.PickupAdressId),
-                deliveradress = Context.Adresses.Find(package.RecieverAdressId)
+                Package = package,
+                Order = order,
+                Pickupadress = _context.Adresses.Find(order.PickupAdressId),
+                Deliveradress = _context.Adresses.Find(package.RecieverAdressId)
             };
-            ViewBag.date = convertDateTime(order.ReadyForPickupTime);
+            ViewBag.date = ConvertDateTime(order.ReadyForPickupTime);
             return PartialView("_OrderEditPartial", model);
         }
-
-        public async Task<ActionResult> editOrder(int? packageId, int? orderId, OrderDetailsViewModel model)
+        /// <summary>
+        /// Edits the order of the user's package, given that it is not picked up yet
+        /// </summary>
+        /// <param name="packageId">Id of package</param>
+        /// <param name="orderId">Id of order</param>
+        /// <param name="model"></param>
+        /// <returns>A partial view, which asynchronously update the list with orders</returns>
+        public async Task<ActionResult> EditOrder(int? packageId, int? orderId, OrderDetailsViewModel model)
         {
-            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();
-            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+
+            Dictionary<Packages, Orders> map = new Dictionary<Packages, Orders>();  //A dictionary containing the package and the corresponding order
+            var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
             ApplicationUser user = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid)    //If order is not valid, return partial view with error message "Order where not updated".
             {
-                var packages = from s in Context.Packages
+                var packages = from s in _context.Packages
                                 where
                                     s.SenderId == user.Id
                                 select s;
                 var newpackages = packages.ToList();
                 foreach (var packageToAdd in newpackages)
                 {
-                    var orders = from s in Context.Orders
+                    var orders = from s in _context.Orders
                                  where
                                  s.OrderId == packageToAdd.OrderId
                                  select s;
@@ -513,16 +556,16 @@ namespace PackageDelivery.Controllers
                 return PartialView("_orderPartial", models);
             }
 
-                if (model.order.ReadyForPickupTime < DateTime.Now || model.order.OrderStatus >= Status.Recieved)
-                {
-                var packages = from s in Context.Packages
+                if (model.Order.ReadyForPickupTime < DateTime.Now || model.Order.OrderStatus >= Status.Recieved)//If ready for pickup time is in the past
+                {                                                                                               //or package has already been recieved at the warehouse you cannt change order
+                var packages = from s in _context.Packages
                                where
                                    s.SenderId == user.Id
                                select s;
                 var newpackages = packages.ToList();
                 foreach (var packageToAdd in newpackages)
                 {
-                    var orders = from s in Context.Orders
+                    var orders = from s in _context.Orders
                                  where
                                  s.OrderId == packageToAdd.OrderId
                                  select s;
@@ -539,21 +582,21 @@ namespace PackageDelivery.Controllers
                     ViewBag.Error = "Order ready for pickup date cannot be in the past, or changed after the order has been recieved";
                     return PartialView("_orderPartial", models);
                 }
-                var package = Context.Packages.Find(packageId);
-                var order = Context.Orders.Find(orderId);
+                var package = _context.Packages.Find(packageId);
+                var order = _context.Orders.Find(orderId);
 
                 var pickupAdress = new Adresses
                 {
-                    State = model.pickupadress.State,
-                    PostCode = model.pickupadress.PostCode,
-                    StreetAdress = model.pickupadress.StreetAdress,
-                    Suburb = model.pickupadress.Suburb,
+                    State = model.Pickupadress.State,
+                    PostCode = model.Pickupadress.PostCode,
+                    StreetAdress = model.Pickupadress.StreetAdress,
+                    Suburb = model.Pickupadress.Suburb,
                 };
-                var pickup = adressExist(pickupAdress);     //Checks if adress is already in the database or not
+                var pickup = AdressExist(pickupAdress);     //Checks if adress is already in the database or not
                 if (pickup == null)
                 {
-                    Context.Adresses.Add(pickupAdress);
-                    Context.SaveChanges();
+                    _context.Adresses.Add(pickupAdress);
+                    _context.SaveChanges();
                 }
                 else
                 {
@@ -561,55 +604,57 @@ namespace PackageDelivery.Controllers
                 }
                 var deliveryAdress = new Adresses
                 {
-                    StreetAdress = model.deliveradress.StreetAdress,
-                    PostCode = model.deliveradress.PostCode,
-                    Suburb = model.deliveradress.Suburb,
-                    State = model.deliveradress.State,
+                    StreetAdress = model.Deliveradress.StreetAdress,
+                    PostCode = model.Deliveradress.PostCode,
+                    Suburb = model.Deliveradress.Suburb,
+                    State = model.Deliveradress.State,
 
                 };
-                var delivery = adressExist(deliveryAdress);
+                var delivery = AdressExist(deliveryAdress);
                 if (delivery == null)
                 {
-                    Context.Adresses.Add(deliveryAdress);
-                    Context.SaveChanges();
+                    _context.Adresses.Add(deliveryAdress);
+                    _context.SaveChanges();
                 }
                 else
                 {
                     deliveryAdress = delivery;
                 }
-                package.SpecialInstructions= model.package.SpecialInstructions;
+                //Validation passed, changing values and saving them in database.
+                package.SpecialInstructions= model.Package.SpecialInstructions;
                 package.RecieverAdressId = deliveryAdress.AdressId;
-                Context.Entry(package).State = EntityState.Modified;
-                Context.SaveChanges();
+                _context.Entry(package).State = EntityState.Modified;
+                _context.SaveChanges();
 
                 order.PickupAdressId = pickupAdress.AdressId;
-                order.ReadyForPickupTime = model.order.ReadyForPickupTime;
+                order.ReadyForPickupTime = model.Order.ReadyForPickupTime;
+
+                //Recalculates the time of delivery based on the new new ready for pickup time.
                 if (order.OrderPriority == Priority.Low)
                 {
                     order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(7);
                 }
                 else if (order.OrderPriority == Priority.Medium)
                 {
-                order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(3);
+                    order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(3);
                 }
                 else
                 {
-                order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(1);
+                    order.BeginDeliveryTime = order.ReadyForPickupTime.AddDays(1);
                 }
 
-                Context.Entry(order).State = EntityState.Modified;
-                Context.SaveChanges();
+            _context.Entry(order).State = EntityState.Modified;
+                _context.SaveChanges();
 
-            
-
-            var Packages = from s in Context.Packages
+           
+            var Packages = from s in _context.Packages
                            where
                                s.SenderId == user.Id
                            select s;
-            var Newpackages = Packages.ToList();
-            foreach (var Package in Newpackages)
+            var newPackages = Packages.ToList();
+            foreach (var Package in newPackages)
             {
-                var orderToAdd = from s in Context.Orders
+                var orderToAdd = from s in _context.Orders
                             where
                             s.OrderId == Package.OrderId
                             select s;
@@ -623,28 +668,40 @@ namespace PackageDelivery.Controllers
                 OrderDictionaryMap = map
             };
             ViewBag.Id = orderId;
-            ViewBag.Success = "Successfully updated order " + model.order.OrderId;
+            ViewBag.Success = "Successfully updated order " + model.Order.OrderId;
             return PartialView("_orderPartial",Model);
         }
 
-        //Method that converts the datetime to a displayable format in the view
-        public string convertDateTime(DateTime? datetime)
+        
+        /// <summary>
+        /// Method that converts the datetime variable to a displayable format that can be passed to
+        /// the datetimepicker in the view.
+        /// </summary>
+        /// <param name="datetime">Datetime variable to be converted to displayable format</param>
+        /// <returns>String that can be correctly placed into a html5 datepicker to show the correct date and time</returns>
+        public string ConvertDateTime(DateTime? datetime)
         {
             var convertedString = "";
             if (datetime.HasValue)
             {
                 var year = datetime.Value.Year.ToString();
-                var month = convertInt(datetime.Value.Month);
-                var day = convertInt(datetime.Value.Day);
-                var hour = convertInt(datetime.Value.Hour);
-                var minute = convertInt(datetime.Value.Minute);
+                var month = ConvertInt(datetime.Value.Month);
+                var day = ConvertInt(datetime.Value.Day);
+                var hour = ConvertInt(datetime.Value.Hour);
+                var minute = ConvertInt(datetime.Value.Minute);
 
                 convertedString = year + "-" + month + "-" + day + "T" + hour + ":" + minute;
             }
             return convertedString;
         }
 
-        public string convertInt(int number)
+        /// <summary>
+        /// Converts the int if it is a single number to have a 0 in front, so that it can be displayed in the datepicker
+        /// </summary>
+        /// <param name="number">Number to convert</param>
+        /// <example>9 is a single number so it returns "09"</example>
+        /// <returns>The converted int as a string</returns>
+        public string ConvertInt(int number)
         {
             var convInt = "";
             if (number < 10)
@@ -699,25 +756,20 @@ namespace PackageDelivery.Controllers
             return false;
         }
 
-        private bool HasPhoneNumber()
-        {
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            if (user != null)
-            {
-                return user.PhoneNumber != null;
-            }
-            return false;
-        }
 
-        //This method checks if the adress sent in already exists in the database. If it doesn't returns null, otherwise returns the adress.
-        public Adresses adressExist(Adresses adress)
+        /// <summary>
+        /// Method that checks if an adress already exist in the database.
+        /// </summary>
+        /// <param name="Adress">The adress to check if it already exist</param>
+        /// <returns>Returns the adress or null if the adress does not already exist</returns>
+        public Adresses AdressExist(Adresses Adress)
         {
-            var Adresses = Context.Set<Adresses>();
-            foreach (var Adress in Adresses)
+            var adresses = _context.Set<Adresses>();
+            foreach (var adress in adresses)
             {
-                if (adress.StreetAdress == Adress.StreetAdress && adress.PostCode == Adress.PostCode)
+                if (Adress.StreetAdress == adress.StreetAdress && Adress.PostCode == adress.PostCode)
                 {
-                    return Adress;
+                    return adress;
                 }
             }
             return null;

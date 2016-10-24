@@ -5,7 +5,7 @@
 @model  PackageDelivery.Areas.Admin.Models.ShowModel
 
 @{
-    ViewBag.w = Model.check;
+    ViewBag.w = Model.Check;
 }
 <div id="employeeModal"></div>
 <div class="col-md-8"></div>
@@ -35,12 +35,10 @@
         </tr>
         @{
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            ApplicationUser userr = userManager.FindByIdAsync(User.Identity.GetUserId()).Result;
-
 
 
             var j = 0;
-            foreach (var model in Model.userss)
+            foreach (var model in Model.Userss)
             {
                 var i = model.Id;
                 var rowId = j.ToString();
@@ -78,7 +76,7 @@
 
                 if ((elementid == "" && @ViewBag.w == "true") || (@ViewBag.w == "false"))
                 {
-                    var m = new StatusModel { status = status, action = action, Id = model.Id };
+                    var m = new StatusModel { Status = status, Action = action, Id = model.Id };
 
                     <tr id="@rowId" class="@color">
                         <td class="@elementid @classR">
@@ -95,7 +93,7 @@
                         </td>
                         <td style="width: 280px">
                             <div>
-                                    @using (Ajax.BeginForm("showEmployeeDetails", "HRManagement", new
+                                    @using (Ajax.BeginForm("ShowEmployeeDetails", "HrManagement", new
                                     {
                                         VueId = vueId,
                                         modalId = modalId,
@@ -113,12 +111,12 @@
 
                                     }
                                     
-                                        @using (Ajax.BeginForm("showEmployeeEdit", "HRManagement", new
+                                        @using (Ajax.BeginForm("ShowEmployeeEdit", "HrManagement", new
                                         {
                                             vueIdd = editvueId,
                                             modalIdd = editmodalId,
-                                            check = Model.check,
-                                            search = Model.search,
+                                            check = Model.Check,
+                                            search = Model.Search,
                                             id = model.Id
                                         }, new AjaxOptions
                                         {

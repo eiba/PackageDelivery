@@ -9,7 +9,10 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace PackageDelivery.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit http://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    /// <summary>
+    /// Application user table, for all users in the database, employee does in addition
+    /// have an employee table.
+    /// </summary>
     [Table("ApplicationUser")]
     public class ApplicationUser : IdentityUser
     {
@@ -29,28 +32,39 @@ namespace PackageDelivery.Models
 
         public virtual Employees Employee { get; set; }
 
-
+        /// <summary>
+        /// Method for asynchronously generating unique and complex ids for the user accounts.
+        /// </summary>
+        /// <param name="manager">The manager gets and handles everything about the users in the database.</param>
+        /// <remarks>Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType</remarks>
+        /// <returns>Returns the the id for the user</returns>
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
             return userIdentity;
         }
     }
 
+    /// <summary>
+    /// The database class, containing all the database tables
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
+        //The database tables.
         public DbSet<Adresses> Adresses { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<Packages> Packages { get; set; }
         public DbSet<Employees> Employees { get; set; }
 
 
+        /// <summary>
+        /// Creates the database
+        /// </summary>
+        /// <returns>Returns a new database object</returns>
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

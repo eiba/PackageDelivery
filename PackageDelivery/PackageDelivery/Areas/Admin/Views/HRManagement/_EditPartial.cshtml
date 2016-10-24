@@ -5,19 +5,17 @@
 @model PackageDelivery.Models.ChangeProfileAdmin
 
 @{
-    var vueIdd = Model.vueIdd;
-    var modalIdd = Model.modalIdd;
+    var vueIdd = Model.VueIdd;
+    var modalIdd = Model.ModalIdd;
     var formId = vueIdd + modalIdd;
 }
 
 <div id="@vueIdd">
 
-
-
     <modal :show.sync="showModal">
-        <h3 slot="header">Rediger bruker</h3>
+        <h3 slot="header">Edit user</h3>
         <h5 slot="body">
-      @using (Ajax.BeginForm("Edit", "HRManagement", new {param=Model.search, check=Model.check},new AjaxOptions
+      @using (Ajax.BeginForm("Edit", "HrManagement", new {param=Model.Search, check=Model.Check},new AjaxOptions
       {
           
           UpdateTargetId = "update",

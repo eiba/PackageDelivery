@@ -13,12 +13,15 @@ using PackageDelivery.Models;
 
 namespace PackageDelivery.Controllers
 {
+    /// <summary>
+    /// Class for handeling user accounts. Mostly framework methods.
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        ApplicationDbContext Context = new ApplicationDbContext();
+        private readonly ApplicationDbContext _context = new ApplicationDbContext();
 
         public AccountController()
         {
@@ -146,7 +149,11 @@ namespace PackageDelivery.Controllers
 
         //
         // POST: /Account/Register
-        //Registers user
+        /// <summary>
+        /// Registers user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>Front page with user logged in if it succees, redisplays form if not</returns>
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -161,11 +168,11 @@ namespace PackageDelivery.Controllers
                     PostCode = model.PostCode,
                     StreetAdress = model.StreetAdress
                 };  
-                var Adress = adressExist(adress);              //Checks is adress already exist in the database. If it does use that adress instead.
+                var Adress = AdressExist(adress);              //Checks is adress already exist in the database. If it does use that adress instead.
                 if (Adress == null)
                 {
-                    Context.Adresses.Add(adress);
-                    Context.SaveChanges();
+                    _context.Adresses.Add(adress);
+                    _context.SaveChanges();
                 }
                 else
                 {
@@ -188,16 +195,10 @@ namespace PackageDelivery.Controllers
                
                 if (result.Succeeded)//if users creation succeeds
                 {
-                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(Context));
+                    var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
                     userManager.AddToRole(user.Id, "Customer");
                     
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -245,12 +246,6 @@ namespace PackageDelivery.Controllers
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
@@ -487,10 +482,10 @@ namespace PackageDelivery.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-        public Adresses adressExist(Adresses adress)
+        public Adresses AdressExist(Adresses adress)
         {
-            var Adresses = Context.Set<Adresses>();
-            foreach (var Adress in Adresses)
+            var adresses = _context.Set<Adresses>();
+            foreach (var Adress in adresses)
             {
                 if (adress.StreetAdress == Adress.StreetAdress && adress.PostCode == Adress.PostCode)
                 {

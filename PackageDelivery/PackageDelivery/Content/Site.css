@@ -1,4 +1,6 @@
-﻿body {
+﻿/*This file contains all the custom css in the application*/
+
+body {
     padding-top: 80px;
     padding-bottom: 20px;
     background-color: #FFF1E9;
@@ -20,48 +22,13 @@
 a,
 a:hover{
     color: #af0200;
-}/*,
-a:hover,
-a:target,
-a:active,
-a:visited,
-a:focus {
-    color: #af0200;
-}*/
-
+}
 
 .btn-danger {
     background-color: #af0200;
     border-color: #990000;
 }
-/*
-.btn-danger:hover,
-.btn-danger:active {
-    background-color: #990000;
-    border-color: #79000c;
-}
 
-.btn-danger:visited,
-.btn-danger:focus {
-    background-color: #79000c !important;
-    border-color: #79000c !important;
-}
-    
-.btn-primary {
-    background-color: #af0200;
-    border-color: #990000;
-}
-.btn-primary:hover,
-.btn-primary:active {
-    background-color: #990000;
-    border-color: #79000c;
-}
-.btn-primary:visited,
-.btn-primary:focus {
-    background-color: #af0200;
-    border-color: #990000;
-}
-    */
 .navbar-inverse {
   background-color: #af0200;
   border-color: #79000c;

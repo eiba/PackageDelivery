@@ -1,47 +1,46 @@
 ﻿@{
     ViewBag.Title = "Delivery quote";
 
-    string[] Speeds = new string[] { "Low: ", "Medium: ", "High: " };
-    double[] SpeedPrices = new double[] { 1, 1.5, 2 };
+    string[] speeds = new string[] { "Low: ", "Medium: ", "High: " };
     if (IsPost)
     {
-        double WhichSpeed = 1.0;
-        var Speed = "";
-        int PackageWeight = Request.Form["PackageWeight"].AsInt();
-        int PackageHeight = Request.Form["PackageHeight"].AsInt();
-        int PackageLength = Request.Form["PackageLength"].AsInt();
-        int PackageWidth = Request.Form["PackageWidth"].AsInt();
+        double whichSpeed = 1.0;
+        var speed = "";
+        int packageWeight = Request.Form["PackageWeight"].AsInt();
+        int packageHeight = Request.Form["PackageHeight"].AsInt();
+        int packageLength = Request.Form["PackageLength"].AsInt();
+        int packageWidth = Request.Form["PackageWidth"].AsInt();
         if (Request.Form["1"] == "0")
         {
-            Speed = "low";
-            WhichSpeed = 1.0;
+            speed = "Low";
+            whichSpeed = 1.0;
         }
         if (Request.Form["1"] == "1")
         {
-            Speed = "medium";
-            WhichSpeed = 1.5;
+            speed = "Medium";
+            whichSpeed = 1.5;
         }
         if (Request.Form["1"] == "2")
         {
-            Speed = "high";
-            WhichSpeed = 2.0;
+            speed = "High";
+            whichSpeed = 2.0;
         }
-        double PriceIncrease = (WhichSpeed - 1.0) * 100.0;
-        double VolumePrice = (PackageHeight * PackageLength * PackageWidth) / 100000000.0;
+        double priceIncrease = (whichSpeed - 1.0) * 100.0;
+        double VolumePrice = (packageHeight * packageLength * packageWidth) / 100000000.0;
         string volumePrice = VolumePrice.ToString("0.00");
-        double WeightPrice = ((PackageWeight / 1000.0) * 4.0);
+        double WeightPrice = ((packageWeight / 1000.0) * 4.0);
         string weightPrice = WeightPrice.ToString("0.00");
-        double SpeedPrice = ((VolumePrice + WeightPrice) * WhichSpeed) - (VolumePrice + WeightPrice);
+        double SpeedPrice = ((VolumePrice + WeightPrice) * whichSpeed) - (VolumePrice + WeightPrice);
         string speedPrice = SpeedPrice.ToString("0.00");
-        double TotalPrice = (VolumePrice + WeightPrice) * WhichSpeed;
+        double TotalPrice = (VolumePrice + WeightPrice) * whichSpeed;
         string totalPrice = TotalPrice.ToString("0.00");
         <text>
             <Strong><u>Your Package's info: </u></strong><br />
 
-            <Strong>Package Weight:</Strong> @PackageWeight g <br />
-            <Strong>Package Height:</Strong> @PackageHeight mm<br />
-            <Strong>Package Length:</Strong> @PackageLength mm<br />
-            <Strong>Package Width:</Strong> @PackageWidth mm<br />
+            <Strong>Package Weight:</Strong> @packageWeight g <br />
+            <Strong>Package Height:</Strong> @packageHeight mm<br />
+            <Strong>Package Length:</Strong> @packageLength mm<br />
+            <Strong>Package Width:</Strong> @packageWidth mm<br />
         </text>
         <br />
         <text>
@@ -52,19 +51,19 @@
             Then, payementfor the weight of the package(at $4 per kg) <br />
             <Strong>Cost for a package of this weight: $</Strong>@weightPrice <br /> <br />
             Then price increases based on shipping speed. <br />
-            <Strong>You selected @Speed delivery, which increases the cost of shipping by a factor of @PriceIncrease%, which is $@speedPrice</Strong> <br /> <br />
+            <Strong>You selected @speed delivery, which increases the cost of shipping by a factor of @priceIncrease%, which is $@speedPrice</Strong> <br /> <br />
             <Strong>And so, the price of delivery for your package is: $@totalPrice</Strong>
         </text>
             <br/>
         
                 <form method="get" >
                     <div class="input-group">
-                        <input type="hidden" name="height" value="@PackageHeight" class="form-control">
-                        <input type="hidden" name="width" value="@PackageWidth" class="form-control">
-                        <input type="hidden" name="length" value="@PackageLength" class="form-control">
-                        <input type="hidden" name="weight" value="@PackageWeight" class="form-control">
+                        <input type="hidden" name="height" value="@packageHeight" class="form-control">
+                        <input type="hidden" name="width" value="@packageWidth" class="form-control">
+                        <input type="hidden" name="length" value="@packageLength" class="form-control">
+                        <input type="hidden" name="weight" value="@packageWeight" class="form-control">
                         <input type="hidden" name="cost" value="@TotalPrice" class="form-control">
-                        <input type="hidden" name="speed" value="@Speed" class="form-control">
+                        <input type="hidden" name="speed" value="@speed" class="form-control">
                          <input  type="submit" class="btn btn-danger" value="Request this order">
                     </div>
                 </form>
@@ -107,7 +106,7 @@
 
         @for (var i = 0; i <= 2; i++)
         {
-            @Speeds[i]
+            @speeds[i]
             <input type="radio" name="1" value="@i"/>
             <br/>
         }

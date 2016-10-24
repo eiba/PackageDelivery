@@ -5,8 +5,8 @@
 @model PackageDelivery.Models.OrderDetailsViewModel
 
 @{
-    var vueIdd = Model.order.OrderId + 'b';
-    var modalIdd = Model.order.OrderId + 'a';
+    var vueIdd = Model.Order.OrderId + 'b';
+    var modalIdd = Model.Order.OrderId + 'a';
     var formId = vueIdd + modalIdd;
 }
 
@@ -17,7 +17,7 @@
     <modal :show.sync="showModal">
         <h3 slot="header">Edit Order</h3>
         <h5 slot="body">
-            @using (Ajax.BeginForm("editOrder", "Manage", new { orderId = Model.order.OrderId, packageId = Model.package.PackageId }, new AjaxOptions
+            @using (Ajax.BeginForm("EditOrder", "Manage", new { orderId = Model.Order.OrderId, packageId = Model.Package.PackageId }, new AjaxOptions
             {
 
                 UpdateTargetId = "update",
@@ -34,81 +34,81 @@
                     <h4>Delivery adress:</h4>
                     <div class="form-group">
                         
-                        @Html.LabelFor(model => model.deliveradress.StreetAdress, new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.Deliveradress.StreetAdress, new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.deliveradress.StreetAdress, new {@class = "form-control", type = ""})
-                            @Html.ValidationMessageFor(model => model.deliveradress.StreetAdress)
+                            @Html.TextBoxFor(m => m.Deliveradress.StreetAdress, new {@class = "form-control", type = ""})
+                            @Html.ValidationMessageFor(model => model.Deliveradress.StreetAdress)
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.deliveradress.PostCode, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Deliveradress.PostCode, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.deliveradress.PostCode, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.deliveradress.PostCode)
+                            @Html.TextBoxFor(m => m.Deliveradress.PostCode, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Deliveradress.PostCode)
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.deliveradress.Suburb, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Deliveradress.Suburb, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.deliveradress.Suburb, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.deliveradress.Suburb)
+                            @Html.TextBoxFor(m => m.Deliveradress.Suburb, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Deliveradress.Suburb)
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.deliveradress.State, new {@class = "control-label col-md-2"})
+                        @Html.LabelFor(model => model.Deliveradress.State, new {@class = "control-label col-md-2"})
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.deliveradress.State, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.deliveradress.State)
+                            @Html.TextBoxFor(m => m.Deliveradress.State, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Deliveradress.State)
                         </div>
                     </div>
                     <hr/>
                     <h4>Pickup adress</h4>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.pickupadress.StreetAdress, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Pickupadress.StreetAdress, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.pickupadress.StreetAdress, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.pickupadress.StreetAdress)
+                            @Html.TextBoxFor(m => m.Pickupadress.StreetAdress, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Pickupadress.StreetAdress)
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.pickupadress.PostCode, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Pickupadress.PostCode, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.pickupadress.PostCode, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.pickupadress.PostCode)
+                            @Html.TextBoxFor(m => m.Pickupadress.PostCode, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Pickupadress.PostCode)
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.pickupadress.Suburb, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Pickupadress.Suburb, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.pickupadress.Suburb, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.pickupadress.Suburb)
+                            @Html.TextBoxFor(m => m.Pickupadress.Suburb, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Pickupadress.Suburb)
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.pickupadress.State, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Pickupadress.State, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.pickupadress.State, new { @class = "form-control", type = "" })
-                            @Html.ValidationMessageFor(model => model.pickupadress.State)
+                            @Html.TextBoxFor(m => m.Pickupadress.State, new { @class = "form-control", type = "" })
+                            @Html.ValidationMessageFor(model => model.Pickupadress.State)
                         </div>
                     </div>
                     <hr />
                     <h4>Order info</h4>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.order.ReadyForPickupTime, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Order.ReadyForPickupTime, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
                             <input type="datetime-local" name="order.ReadyForPickupTIme" value="@ViewBag.date" class="form-control">
-                            @Html.ValidationMessageFor(model => model.order.ReadyForPickupTime)
+                            @Html.ValidationMessageFor(model => model.Order.ReadyForPickupTime)
                         </div>
                     </div>
                     <hr />
                     <h4>Package info</h4>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.package.SpecialInstructions, new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Package.SpecialInstructions, new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.TextAreaFor(m => m.package.SpecialInstructions, new { @class = "form-control", style = "height: 100px;" })
-                            @Html.ValidationMessageFor(model => model.package.SpecialInstructions)
+                            @Html.TextAreaFor(m => m.Package.SpecialInstructions, new { @class = "form-control", style = "height: 100px;" })
+                            @Html.ValidationMessageFor(model => model.Package.SpecialInstructions)
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
 
                 <div class="modal-header">
                     <slot name="header">
-                        <h3>Edit order @Model.order.OrderId </h3>
+                        <h3>Edit order @Model.Order.OrderId </h3>
                     </slot>
                 </div>
 

@@ -9,7 +9,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PackageDelivery.Models
 {
 
-    //This class contains all the database tabels except the user table. See the class "IdentityModels.cs" for the ApplicationUser table.
+    // This class contains all the database tabels except the user table. See the class "IdentityModels.cs" for the ApplicationUser table.
+
+    /// <summary>
+    /// Database table for adresses.
+    /// </summary>
     [Table("Adresses")]
     public class Adresses
     {
@@ -33,7 +37,9 @@ namespace PackageDelivery.Models
 
 
     }
-
+    /// <summary>
+    /// Database tables for employees
+    /// </summary>
     [Table("Employees")]
     public class Employees
     {
@@ -47,6 +53,9 @@ namespace PackageDelivery.Models
         public virtual ApplicationUser User { get; set; }
     }
 
+    /// <summary>
+    /// Database tables for packages.
+    /// </summary>
     [Table("Packages")]
     public class Packages
     {
@@ -77,6 +86,9 @@ namespace PackageDelivery.Models
 
     }
 
+    /// <summary>
+    /// Database tables for orders
+    /// </summary>
     [Table("Orders")]
     public class Orders
     {
@@ -102,19 +114,26 @@ namespace PackageDelivery.Models
 
         public virtual Adresses Adress { get; set; }
 
-        //public virtual IList<Packages> Package { get; set; }
     }
 
-    //Sets the different values for priority and status.
+    /// <summary>
+    /// Status enum, corresponding to the different statues a packages has as it
+    /// traverses through the system.
+    /// </summary>
     public enum Status
     {
         Requested,Pickup,Recieved,Underway,Completed
     }
+    /// <summary>
+    /// Package priority, used for cost calculation and delivery speed
+    /// </summary>
     public enum Priority
     {
         Low, Medium, High
     }
-
+    /// <summary>
+    /// Payment type, corresponding to the payment method chosen by the customer.
+    /// </summary>
     public enum PaymentType
     {
         Cash, Credit

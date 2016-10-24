@@ -13,12 +13,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Users";
     ViewBag.Messsage = " Show only active users";
-    var RegisterViewModel = new RegisterViewModel
-    {
-        param = Model.SearchModel.search
-    };
     var test = "k";
-    ViewBag.Search = Model.SearchModel.search;
+    ViewBag.Search = Model.SearchModel.Search;
 
 }
 
@@ -29,7 +25,7 @@
     <div class="col-lg-3">
         <form method="get">
             <div class="input-group">
-                <input type="text" name="search" value="@Model.SearchModel.search" placeholder="Search users..." class="form-control">
+                <input type="text" name="search" value="@Model.SearchModel.Search" placeholder="Search users..." class="form-control">
                 <span class="input-group-btn">
                     <input type="submit" class="btn btn-danger" value="Search">
                 </span>
@@ -38,7 +34,7 @@
     </div>
 </div>
 
-@using (Ajax.BeginForm("Index", "HRManagement", new { param = Model.SearchModel.search, k = "true" }, new AjaxOptions
+@using (Ajax.BeginForm("Index", "HrManagement", new { param = Model.SearchModel.Search, k = "true" }, new AjaxOptions
 {
 
     UpdateTargetId = "update",
@@ -49,7 +45,7 @@
 {
 
 }
-@using (Ajax.BeginForm("Index", "HRManagement", new { param = Model.SearchModel.search, k = "false" }, new AjaxOptions
+@using (Ajax.BeginForm("Index", "HrManagement", new { param = Model.SearchModel.Search, k = "false" }, new AjaxOptions
 {
 
     UpdateTargetId = "update",
@@ -78,7 +74,7 @@
 </script>
 <div id="regModal"></div>
 <br/>
-@using (Ajax.BeginForm("showEmployeeCreate", "HRManagement", new { param = Model.SearchModel.search }, new AjaxOptions
+@using (Ajax.BeginForm("ShowEmployeeCreate", "HrManagement", new { param = Model.SearchModel.Search }, new AjaxOptions
 {
     UpdateTargetId = "regModal",
     InsertionMode = InsertionMode.Replace,
@@ -104,21 +100,21 @@
 
     @if (!Model.ApplicationUsers.Any())
     {
-        <p>No results for the search "@Model.SearchModel.search"</p>
+        <p>No results for the search "@Model.SearchModel.Search"</p>
         return;
     }
 </div>
 @{
-    var PartialModel = new ShowModel
+    var partialModel = new ShowModel
     {
-        userss = Model.ApplicationUsers,
-        check = "true",
-        search = Model.SearchModel.search
+        Userss = Model.ApplicationUsers,
+        Check = "true",
+        Search = Model.SearchModel.Search
     };
 
 }
 <input type="checkbox" id="checkbox1">@ViewBag.Messsage
 <div id="update">
-    @Html.Partial("_ShowUsersPartial", PartialModel)        @*The entire user list load in as a partial view*@
+    @Html.Partial("_ShowUsersPartial", partialModel)        @*The entire user list load in as a partial view*@
 </div>
 

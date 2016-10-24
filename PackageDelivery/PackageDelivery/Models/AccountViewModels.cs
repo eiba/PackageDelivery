@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace PackageDelivery.Models
-{
+{   /*Mainly Framework models*/
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -62,11 +62,17 @@ namespace PackageDelivery.Models
         public bool RememberMe { get; set; }
     }
 
+    /// <summary>
+    /// Search model for when a search value needs to be sent to or from the view.
+    /// </summary>
     public class SearchModel
     {
-        public string search { get; set; }
+        public string Search { get; set; }
     }
 
+    /// <summary>
+    /// Model for searching for users
+    /// </summary>
     public class SearchUserViewModel
     {
         public SearchModel SearchModel { get; set; }
@@ -74,6 +80,9 @@ namespace PackageDelivery.Models
         public RegisterViewModel RegisterViewModel { get; set; }
     }
 
+    /// <summary>
+    /// Model used when a user is registering an account
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]
@@ -129,10 +138,13 @@ namespace PackageDelivery.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string param { get; set; }
-        public string check { get; set; }
+        public string Param { get; set; }
+        public string Check { get; set; }
     }
 
+    /// <summary>
+    /// Model for when an employee is registered in the admin panel by the owner.
+    /// </summary>
     public class EmployeeRegisterViewModel
     {
         [Required]
@@ -196,8 +208,8 @@ namespace PackageDelivery.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        public string param { get; set; }
-        public string check { get; set; }
+        public string Param { get; set; }
+        public string Check { get; set; }
     }
 
     public class ResetPasswordViewModel

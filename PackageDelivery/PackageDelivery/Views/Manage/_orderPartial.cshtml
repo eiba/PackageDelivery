@@ -46,7 +46,7 @@
             <td>@pair.Key.RecieverName</td>
 
             <td>
-                @using (Ajax.BeginForm("showOrderDetails", "Manage", new
+                @using (Ajax.BeginForm("ShowOrderDetails", "Manage", new
                 {
                     orderId = pair.Value.OrderId,
                     packageId = pair.Key.PackageId
@@ -65,7 +65,7 @@
 
                 @if(pair.Value.OrderStatus != Status.Completed)
                 {
-                    using (Ajax.BeginForm("showOrderEdit", "Manage", new
+                    using (Ajax.BeginForm("ShowOrderEdit", "Manage", new
                     {
                         orderId = pair.Value.OrderId,
                         packageId = pair.Key.PackageId

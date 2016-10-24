@@ -31,26 +31,19 @@
             <div class="navbar-collapse collapse" >
                 <ul class="nav navbar-nav">
                     @* about button *@
-
-                    @*<li>@Html.ActionLink("About", "About", "Home", new { area = "" })</li>*@
                     <li>
-                        @*calls the index.cshtml inside the manage folder?*@
                         <a href="@Url.Action("About", "Home", new {area = ""})">
                             About
                         </a>
                     </li>
                     @* contact button *@
-                    @*<li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" })</li>*@
                     <li>
-                        @*calls the index.cshtml inside the manage folder?*@
                         <a href="@Url.Action("Contact", "Home", new {area = ""})">
                             Contact
                         </a>
                     </li>
                     @* quote button *@
-                    @*<li>@Html.ActionLink("Quote", "Quote", "Home", new { area = "" })</li>*@
                     <li>
-                        @*calls the index.cshtml inside the manage folder?*@
                         <a href="@Url.Action("Quote", "Home", new {area = ""})">
                             Quote
                         </a>
@@ -59,9 +52,9 @@
     @{
         if(User.Identity.GetUserId() != null) {
             var manager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext()));
-            ApplicationUser CurrentUser = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
-            if (CurrentUser != null) {
-                if (CurrentUser.AccessLvL == "Admin" || CurrentUser.AccessLvL == "Owner")
+            ApplicationUser currentUser = manager.FindByIdAsync(User.Identity.GetUserId()).Result;
+            if (currentUser != null) {
+                if (currentUser.AccessLvL == "Admin" || currentUser.AccessLvL == "Owner")
                 {
             <li>
                 <a href="@Url.Action("Index", "Home", new {area = "Admin"})">
@@ -78,7 +71,6 @@
             </div>
         </div>
     </div>
-    @* the body content, I'm assuming @renderbody is some kind of comtainer/object that is manipulated to hold the content of the moment *@
     <div class="container body-content">
         @RenderBody()
         <hr />
