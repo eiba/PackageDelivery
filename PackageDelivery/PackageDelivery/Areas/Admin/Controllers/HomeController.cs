@@ -173,6 +173,27 @@ namespace PackageDelivery.Areas.Admin.Controllers
 
             return View(package);
         }
+
+        /// <summary>
+        /// Creates sticker for package on a blank page, in a new tab
+        /// </summary>
+        /// <param name="id">Id of package</param>
+        /// <returns>The sicker for the package</returns>
+        public ActionResult PrintableStickerMaker(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Packages package = _context.Packages.Find(id);
+            if (package == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(package);
+        }
+
         /// <summary>
         /// Returns page with today's orders to pick up and deliver
         /// </summary>

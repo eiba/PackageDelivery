@@ -2,11 +2,11 @@
 
 @{
         ViewBag.Title = "StickerMaker";
-        Layout = "~/Views/Shared/_Layout.cshtml";
+        Layout = "~/Views/Shared/_Blank.cshtml";
 
 }
 
-<h2>Automatically generated sticker for Package @Html.DisplayFor(model => model.Order.OrderId)</h2>
+<h2><strong>On The Spot</strong></h2>
 <br />
 <br />
 <div>
@@ -55,4 +55,3 @@
         </tr>
     </table>
 </div>
-@Html.ActionLink("Print", "PrintableStickerMaker", new { id = Model.PackageId }, new { @target = "_Blank"})
