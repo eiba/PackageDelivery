@@ -46,6 +46,7 @@
             </td>
             <td>
                 @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger j" })
+                @Html.ActionLink("Sticker", "StickerMaker", new { id = item.PackageId }, new { @class = "btn btn-danger" })
                 @if (item.Order.OrderStatus == Status.Requested)
                 {
                 @Html.ActionLink("Start Pickup", "StartPickup", new {id = item.PackageId}, new {@class = "btn btn-danger j"})
