@@ -222,7 +222,7 @@ namespace PackageDelivery.Areas.Admin.Controllers
         /// Method that converts the datetime variable to a displayable format that can be passed to
         /// the datetimepicker in the view.
         /// </summary>
-        /// <param name="datetime">Datetime variable to be converted to displayable format</param>
+        /// <param name="datetime">Datetime variable to be converted to a displayable format</param>
         /// <returns>String that can be correctly placed into a html5 datepicker to show the correct date and time</returns>
         public string ConvertDateTime(DateTime? datetime)
         {
