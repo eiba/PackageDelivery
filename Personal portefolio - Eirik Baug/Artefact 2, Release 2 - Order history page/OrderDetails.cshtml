@@ -1,0 +1,194 @@
+﻿@model PackageDelivery.Models.Packages
+
+@{
+    ViewBag.Title = "Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Order Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <h4>Order info</h4>
+        <dt>
+            Order Id
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.OrderId)
+        </dd>
+
+        <dt>
+            Order status
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.OrderStatus)
+        </dd>
+
+        <dt>
+            Order priority
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.OrderPriority)
+        </dd>
+
+        <dt>
+            Order placed time
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.OrderTime)
+        </dd>
+
+        <dt>
+            Payment type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.PaymentType)
+
+
+        </dd>
+
+        <dt>
+            Ready for pickup time
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.ReadyForPickupTime)
+
+
+        </dd>
+        <dt>
+            Begin delivery time
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Order.BeginDeliveryTime)
+
+
+        </dd>
+
+        <hr/>
+        <h4>Package info</h4>
+        <dt>
+            Package Id
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PackageId)
+        </dd>
+        <dt>
+            Cost
+        </dt>
+        <dd>
+            $@Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt>
+            Reciever name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RecieverName)
+        </dd>
+        <dt>
+            Special instructions
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SpecialInstructions)
+        </dd>
+        <dt>
+            Package weight(gram)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt>
+            Package height(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+        <dt>
+            Package length(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Length)
+        </dd>
+        <dt>
+            Package width(mm)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Width)
+        </dd>
+        <dt>
+            User Id
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.Id)
+        </dd>
+        <hr/>
+        <h4>Pickup adress</h4>
+        <dt>
+            Street adress
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.Adress.StreetAdress)
+        </dd>
+        <dt>
+            Post code
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.Adress.PostCode)
+        </dd>
+        <dt>
+            Suburb
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.Adress.Suburb)
+        </dd>
+        <dt>
+            State
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order.Adress.State)
+        </dd>
+        <hr />
+        <h4>Delivery adress</h4>
+        <dt>
+            Street adress
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress.StreetAdress)
+        </dd>
+        <dt>
+            Post code
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress.PostCode)
+        </dd>
+        <dt>
+            Suburb
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress.Suburb)
+        </dd>
+        <dt>
+            State
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress.State)
+        </dd>
+        <hr/>
+    </dl>
+</div>
+<p>
+    <div class="row">
+        <div class="col-md-2">
+            <h4>@Html.ActionLink("Today's orders", "TodaysOrders") <i style="padding-left: 35px;">|</i></h4>
+        </div>
+        <div class="col-md-10">
+            <h4>@Html.ActionLink("Order history", "Orders")</h4>
+        </div>
+        </div>
+</p>

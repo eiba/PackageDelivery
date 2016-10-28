@@ -1,0 +1,12 @@
+﻿@model PackageDelivery.Areas.Admin.Models.StatusModel
+@*Deactivate/activate button*@
+@Ajax.ActionLink(Model.Status,
+    Model.Action,
+    "HrManagement",
+    new { id = Model.Id },
+    new AjaxOptions
+    {
+        UpdateTargetId = Model.Id,
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET"
+    },new {@class= "btn btn-danger j bold" })

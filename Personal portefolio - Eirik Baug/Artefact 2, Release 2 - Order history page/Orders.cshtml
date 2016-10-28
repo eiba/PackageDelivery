@@ -1,0 +1,64 @@
+﻿@model IEnumerable<PackageDelivery.Models.Packages>
+
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Orders</h2>
+
+<div class="row">
+    <div class="col-lg-3" style="border: 2px solid black; margin-left: 15px; padding-bottom: 10px; padding-top: 20px;">
+        <form method="get">
+            <label>Apply filter:</label>
+            <hr/>
+            <label>From:</label>
+            <input type="datetime-local" name="from" value="@ViewBag.from" class="form-control">
+            <label>To:</label>
+            <input type="datetime-local" name="to" value="@ViewBag.to" class="form-control">
+            <label>Search:</label>
+            <input type="text" name="search" value="@ViewBag.search" placeholder="Searchword..." class="form-control">
+            <br/>
+            <input type="submit" class="btn btn-danger" value="Apply">
+        </form>
+    </div>
+
+</div>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                Package id
+            </th>
+            <th>
+                Order id
+            </th>
+            <th>
+                Reciever
+            </th>
+            <th></th>
+        </tr>
+        @if (Model == null)
+        {
+            return;
+        }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PackageId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RecieverName)
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "OrderDetails", new { id = item.PackageId }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Sticker", "StickerMaker", new { id = item.PackageId }, new { @class = "btn btn-danger" })
+
+                </td>
+            </tr>
+        }
+
+    </table>

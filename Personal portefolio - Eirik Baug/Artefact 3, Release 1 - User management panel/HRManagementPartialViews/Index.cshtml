@@ -1,0 +1,120 @@
+﻿@using System.Web.Mvc.Html
+@using System.Web.UI.WebControls.Expressions
+@using PackageDelivery.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using System.Web.Mvc.Ajax
+@using PackageDelivery.Areas.Admin.Models
+@using PackageDelivery.Areas.Admin.Controllers
+@using PackageDelivery.Controllers
+@model SearchUserViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Users";
+    ViewBag.Messsage = " Show only active users";
+    var test = "k";
+    ViewBag.Search = Model.SearchModel.Search;
+
+}
+
+
+<h2>@ViewBag.Title</h2>
+@*Search box*@
+<div class="row">
+    <div class="col-lg-3">
+        <form method="get">
+            <div class="input-group">
+                <input type="text" name="search" value="@Model.SearchModel.Search" placeholder="Search users..." class="form-control">
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-danger" value="Search">
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@using (Ajax.BeginForm("Index", "HrManagement", new { param = Model.SearchModel.Search, k = "true" }, new AjaxOptions
+{
+
+    UpdateTargetId = "update",
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST"
+}
+               , new { id = "AjaxForm" }))
+{
+
+}
+@using (Ajax.BeginForm("Index", "HrManagement", new { param = Model.SearchModel.Search, k = "false" }, new AjaxOptions
+{
+
+    UpdateTargetId = "update",
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "POST"
+
+}
+                           , new { id = "k" }))
+{
+
+}
+
+<script>
+    $(document).ready(function() {
+
+        $('#checkbox1').prop('checked', true);
+        $('#checkbox1').change(function() {
+            if ($(this).is(":checked")) {
+
+                $("form#AjaxForm").submit();
+            } else {
+                $("form#k").submit();
+            }
+        });
+    });
+</script>
+<div id="regModal"></div>
+<br/>
+@using (Ajax.BeginForm("ShowEmployeeCreate", "HrManagement", new { param = Model.SearchModel.Search }, new AjaxOptions
+{
+    UpdateTargetId = "regModal",
+    InsertionMode = InsertionMode.Replace,
+    HttpMethod = "GET",
+
+}, new { @class = "form-horizontal", role = "form" }))
+{
+
+    <button id="show-modal" type="submit" class="btn btn-danger j"><b>Create employee</b></button>
+}
+<br /><br />
+<div class="col-md-8"></div>
+<div class="col-md-4">
+    @*Error and success message fields*@
+    @if (ViewBag.StatusMessage != null && ViewBag.StatusMessage == ManageController.ManageMessageId.Error.ToString())
+    {
+        <p class="text-warning">@ViewBag.StatusMessage</p>
+    }
+    else
+    {
+        <p class="text-success">@ViewBag.StatusMessage</p>
+    }
+
+    @if (!Model.ApplicationUsers.Any())
+    {
+        <p>No results for the search "@Model.SearchModel.Search"</p>
+        return;
+    }
+</div>
+@{
+    var partialModel = new ShowModel
+    {
+        Userss = Model.ApplicationUsers,
+        Check = "true",
+        Search = Model.SearchModel.Search
+    };
+
+}
+<input type="checkbox" id="checkbox1">@ViewBag.Messsage
+<div id="update">
+    @Html.Partial("_ShowUsersPartial", partialModel)        @*The entire user list load in as a partial view*@
+</div>
+
